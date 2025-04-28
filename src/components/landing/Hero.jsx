@@ -65,9 +65,9 @@ export default function Hero() {
               {!isVideoPlaying ? (
                 <div className="relative">
                   <video
-                    src="/assets/videos/about-us.mp4"
+                    src="assets/videos/about-us.mp4"
                     className="w-full h-[300px] md:h-[350px] object-cover"
-                    poster="/assets/videos/poster.png"
+                    poster="assets/videos/poster.png"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
                     <button
@@ -88,7 +88,7 @@ export default function Hero() {
                   <video
                     ref={videoRef}
                     className="absolute top-0 left-0 w-full h-full rounded-2xl bg-transparent "
-                    src="/assets/videos/about-us.mp4"
+                    src="assets/videos/about-us.mp4"
                     controls
                     autoPlay
                     loop
