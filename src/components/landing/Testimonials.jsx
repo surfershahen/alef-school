@@ -18,6 +18,7 @@ export default function Testimonials() {
       name: "احمد",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/0428 (1) copy.mov",
+      poster: "assets/videos/0428(1) copy.mov",
     },
     {
       name: "احلام",
@@ -100,6 +101,7 @@ export default function Testimonials() {
                       controls={playingVideo === index}
                       playsInline
                       loop
+                      poster={testimonial.poster}
                     />
                     {playingVideo !== index && (
                       <div
@@ -136,7 +138,6 @@ export default function Testimonials() {
           ))}
         </div>
       </SectionContainer>
-      
     </>
   );
 }
