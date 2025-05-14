@@ -1,35 +1,49 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle, PauseCircle } from "lucide-react";
 
 export default function Testimonials() {
   const [playingVideo, setPlayingVideo] = useState(null);
+  const videoRefs = useRef([]);
 
   const videoTestimonials = [
     {
       name: "براء",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
-      video: "/assets/videos/Braa.mp4",
+      video: "assets/videos/Braa.mp4",
     },
     {
-      name: "براء",
+      name: "احمد",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
-      video: "/assets/videos/0428 (1) copy.mov",
+      video: "assets/videos/0428 (1) copy.mov",
     },
     {
-      name: "براء",
+      name: "احلام",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
-      video: "/assets/videos/0428(1) copy.mov",
+      video: "assets/videos/0428(1) copy.mov",
     },
   ];
 
   const handleVideoClick = index => {
     if (playingVideo === index) {
       setPlayingVideo(null);
+      if (videoRefs.current[index]) {
+        videoRefs.current[index].pause();
+      }
     } else {
       setPlayingVideo(index);
+      if (videoRefs.current[index]) {
+        videoRefs.current[index].play();
+      }
     }
   };
+
+  // Initialize videoRefs array if needed
+  if (videoRefs.current.length !== videoTestimonials.length) {
+    videoRefs.current = Array(videoTestimonials.length)
+      .fill()
+      .map((_, i) => videoRefs.current[i] || null);
+  }
 
   return (
     <section className="py-16 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50">
@@ -64,18 +78,19 @@ export default function Testimonials() {
                 {testimonial.video ? (
                   <>
                     <video
+                      ref={el => (videoRefs.current[index] = el)}
                       src={testimonial.video}
                       className="w-full h-full object-cover"
                       controls={playingVideo === index}
-                      autoPlay={playingVideo === index}
+                      playsInline
                       loop
                     />
                     {playingVideo !== index && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
-                        <button
-                          onClick={() => handleVideoClick(index)}
-                          className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg"
-                        >
+                      <div
+                        className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center cursor-pointer"
+                        onClick={() => handleVideoClick(index)}
+                      >
+                        <button className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
                           <PlayCircle className="w-10 h-10 text-[#E4665A]" />
                         </button>
                       </div>
