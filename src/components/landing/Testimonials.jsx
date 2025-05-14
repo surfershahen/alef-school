@@ -18,6 +18,7 @@ export default function Testimonials() {
       name: "احمد",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/ahmad.mov",
+      poster: "assets/images/ahmad-poster.png",
     },
     {
       name: "احلام",
