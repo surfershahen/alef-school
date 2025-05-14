@@ -16,7 +16,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <div className="w-20 h-20  flex items-center justify-center">
             <img
-              src="/public/alef-logo2.jpeg"
+              src="/alef-logo2.jpeg"
               alt="Alef School Logo"
               className="w-20 h-20"
             />
