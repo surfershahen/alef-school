@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { createMondayItem } from "@/utils/monday";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -65,10 +66,11 @@ export default function SignupForm() {
     }
 
     setIsSubmitting(true);
+    setErrors(prev => ({ ...prev, submit: "" }));
 
     try {
-      // TODO: Save form data to backend
-      console.log("Form data:", formData);
+      // Create item in Monday.com
+      await createMondayItem(formData);
 
       // Navigate to exam page with form data
       navigate(createPageUrl("exam"), {
@@ -76,6 +78,10 @@ export default function SignupForm() {
       });
     } catch (error) {
       console.error("Error submitting form:", error);
+      setErrors(prev => ({
+        ...prev,
+        submit: "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
+      }));
     } finally {
       setIsSubmitting(false);
     }
@@ -201,6 +207,12 @@ export default function SignupForm() {
                   >
                     {isSubmitting ? "جاري التسجيل..." : "ابدأ التقييم المجاني"}
                   </Button>
+
+                  {errors.submit && (
+                    <p className="mt-2 text-sm text-red-500 text-center">
+                      {errors.submit}
+                    </p>
+                  )}
 
                   <p className="text-sm text-center text-gray-500 mt-4">
                     بالتسجيل، أنت توافق على{" "}

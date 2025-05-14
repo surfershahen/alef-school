@@ -22,7 +22,7 @@ function ErrorBoundary() {
   );
 }
 
-export const router = createBrowserRouter([
+const router = createBrowserRouter([
   {
     path: "/",
     element: <LandingPage />,
@@ -38,3 +38,5 @@ export const router = createBrowserRouter([
     element: <ErrorBoundary />,
   },
 ]);
+
+export default router;
