@@ -18,15 +18,15 @@ export default function Hero() {
 
   return (
     <>
-      <SectionContainer className="bg-blue-100 pt-24 pb-8 sm:pt-32 lg:pt-40 lg:pb-14">
+      <SectionContainer className="bg-blue-100 pt-32 pb-8 px-6 sm:px-6 sm:pt-36 lg:pt-40 lg:pb-14">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute left-0 top-0 w-1/3 h-1/3 bg-[#E3B134] opacity-5 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute right-0 bottom-0 w-1/2 h-1/2 bg-[#0188D6] opacity-5 rounded-full transform translate-x-1/4 translate-y-1/4"></div>
         </div>
         <div className="flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 z-10 flex flex-col items-start text-right">
+          <div className="md:w-1/2 z-10 flex flex-col items-center text-center md:items-start md:text-right">
             <motion.h1
-              className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 title-font"
+              className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight mb-4 title-font"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -35,7 +35,7 @@ export default function Hero() {
               <span className="block text-[#0188D6]">بدون ضغط، فقط نجاح</span>
             </motion.h1>
             <motion.p
-              className="text-lg md:text-xl text-gray-700 mb-6 body-font"
+              className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 body-font"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -43,12 +43,12 @@ export default function Hero() {
               انضم إلى مئات المتحدثين بالعربية الذين أتقنوا العبرية معنا.
             </motion.p>
             <motion.div
-              className="w-full flex justify-start mt-4"
+              className="w-full flex justify-center md:justify-start mt-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base sm:text-lg transition-all shadow-lg hover:shadow-xl body-font inline-flex items-center">
+              <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center">
                 احجز مكاني الآن
                 <ChevronRight className="mr-2 w-5 h-5" />
               </ScrollToForm>
@@ -77,7 +77,7 @@ export default function Hero() {
                     </button>
                   </div>
                   <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <p className="font-medium text-sm sm:text-base body-font text-center sm:text-right">
+                    <p className="font-medium text-sm sm:text-base body-font text-center md:text-right">
                       شاهد الفيديو: كيف تتقن العبرية خلال أسابيع
                     </p>
                   </div>
@@ -98,7 +98,6 @@ export default function Hero() {
           </div>
         </div>
       </SectionContainer>
-      <SectionDivider color="#aaa" />
     </>
   );
 }
