@@ -25,8 +25,8 @@ export default function LandingPage() {
       <SignupForm />
       <Features />
       <LearningSteps />
-      <WhatsAppTestimonials />
       <Testimonials />
+      <WhatsAppTestimonials />
       <Qualifications />
       <FinalCTA />
     </div>

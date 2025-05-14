@@ -95,7 +95,7 @@ export default function LearningSteps() {
           </div>
         </div>
       </section>
-      <SectionDivider color="#aaa" />
+      <SectionDivider color="#E3B134" />
     </>
   );
 }

@@ -14,11 +14,11 @@ export default function Header() {
 
         {/* Right side - Logo and name */}
         <div className="flex items-center gap-3">
-          <div className="w-14 h-14 bg-black flex items-center justify-center">
+          <div className="w-20 h-20  flex items-center justify-center">
             <img
-              src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/5c433d_LOGO.jpg"
+              src="/public/alef-logo2.jpeg"
               alt="Alef School Logo"
-              className="w-8 h-8"
+              className="w-20 h-20"
             />
           </div>
           <div className="flex flex-col items-start">

@@ -48,7 +48,7 @@ export default function Features() {
 
   return (
     <>
-      <SectionContainer className="bg-gray-50" hasDivider>
+      <SectionContainer className="bg-gray-150" hasDivider>
         <motion.div
           className="text-center mb-10"
           initial={{ opacity: 0, y: 20 }}
@@ -84,7 +84,7 @@ export default function Features() {
           ))}
         </div>
       </SectionContainer>
-      <SectionDivider color="#aaa" />
+      <SectionDivider color="#0188D6" />
     </>
   );
 }

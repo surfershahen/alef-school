@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import SectionDivider from "@/components/ui/SectionDivider";
 
 export default function WhatsAppTestimonials() {
   const testimonials = [

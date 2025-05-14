@@ -142,6 +142,7 @@ export default function SignupForm() {
                         type="text"
                         value={formData.name}
                         onChange={handleChange}
+                        dir="rtl"
                         className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                           errors.name
                             ? "border-red-300 focus:border-red-500"
@@ -169,6 +170,7 @@ export default function SignupForm() {
                         type="email"
                         value={formData.email}
                         onChange={handleChange}
+                        dir="rtl"
                         className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                           errors.email
                             ? "border-red-300 focus:border-red-500"
@@ -196,6 +198,7 @@ export default function SignupForm() {
                         type="tel"
                         value={formData.phone}
                         onChange={handleChange}
+                        dir="rtl"
                         className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                           errors.phone
                             ? "border-red-300 focus:border-red-500"
@@ -213,7 +216,7 @@ export default function SignupForm() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg font-medium transition-colors"
+                      className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg  transition-colors font-bold"
                     >
                       {isSubmitting
                         ? "جاري التسجيل..."
@@ -266,7 +269,7 @@ export default function SignupForm() {
           </div>
         </div>
       </SectionContainer>
-      <SectionDivider color="#bfdbfe" />
+      <SectionDivider color="#E4665A" />
     </>
   );
 }

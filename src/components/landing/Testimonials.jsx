@@ -24,6 +24,21 @@ export default function Testimonials() {
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/0428(1) copy.mov",
     },
+    {
+      name: "مريم",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/maryem.mov",
+    },
+    {
+      name: "ماريا",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/maria.mov",
+    },
+    {
+      name: "ماريا",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/0428 (3).mov",
+    },
   ];
 
   const handleVideoClick = index => {
@@ -121,7 +136,7 @@ export default function Testimonials() {
           ))}
         </div>
       </SectionContainer>
-      <SectionDivider color="#aaa" />
+      
     </>
   );
 }
