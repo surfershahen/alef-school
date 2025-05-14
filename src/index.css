@@ -8,6 +8,20 @@
   }
 }
 
+@layer components {
+  .mobile-center {
+    @apply text-center md:text-right;
+  }
+
+  .section-spacing {
+    @apply py-10 sm:py-16;
+  }
+
+  .section-divider {
+    @apply my-8 border-t border-gray-100;
+  }
+}
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { createMondayItem } from "@/utils/monday";
+import { SectionContainer } from "@/components/ui/section-container";
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -88,41 +89,48 @@ export default function SignupForm() {
   };
 
   return (
-    <section id="signup" className="py-12 px-4 sm:px-6">
+    <SectionContainer
+      id="signup"
+      className="pt-8 pb-16 sm:pt-10 sm:pb-20"
+      hasDivider
+    >
       <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded-[2rem] shadow-xl overflow-hidden">
+        <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-xl overflow-hidden">
           <div className="flex flex-col md:flex-row">
             {/* Form Side */}
-            <div className="w-full md:w-1/2 p-8 md:p-12">
-              <h2 className="text-2xl font-bold mb-8 title-font">
+            <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12">
+              <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 title-font text-center sm:text-right">
                 سجل للحصول على تقييم مجاني
               </h2>
 
               {isSubmitted ? (
                 <motion.div
-                  className="bg-green-50 border border-green-200 rounded-lg p-6 text-center"
+                  className="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 text-center"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5 }}
                 >
                   <div className="flex justify-center mb-4">
-                    <div className="rounded-full bg-green-100 p-3">
-                      <CheckCircle className="h-10 w-10 text-green-600" />
+                    <div className="rounded-full bg-green-100 p-2 sm:p-3">
+                      <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
                     </div>
                   </div>
-                  <h3 className="text-xl font-bold text-green-800 mb-2">
+                  <h3 className="text-lg sm:text-xl font-bold text-green-800 mb-2">
                     تم التسجيل بنجاح!
                   </h3>
-                  <p className="text-green-700">
+                  <p className="text-green-700 text-sm sm:text-base">
                     شكراً لتسجيلك! سنتواصل معك قريباً عبر الواتساب.
                   </p>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                  onSubmit={handleSubmit}
+                  className="space-y-4 sm:space-y-6"
+                >
                   <div>
                     <Label
                       htmlFor="name"
-                      className="block text-base font-medium text-gray-700 mb-2"
+                      className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2 text-center sm:text-right"
                     >
                       الاسم الكامل
                     </Label>
@@ -132,7 +140,7 @@ export default function SignupForm() {
                       type="text"
                       value={formData.name}
                       onChange={handleChange}
-                      className={`w-full p-3 rounded-xl text-base ${
+                      className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                         errors.name
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200"
@@ -140,14 +148,16 @@ export default function SignupForm() {
                       placeholder="أدخل اسمك الكامل"
                     />
                     {errors.name && (
-                      <p className="mt-1 text-sm text-red-500">{errors.name}</p>
+                      <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
+                        {errors.name}
+                      </p>
                     )}
                   </div>
 
                   <div>
                     <Label
                       htmlFor="email"
-                      className="block text-base font-medium text-gray-700 mb-2"
+                      className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2 text-center sm:text-right"
                     >
                       البريد الإلكتروني
                     </Label>
@@ -157,7 +167,7 @@ export default function SignupForm() {
                       type="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className={`w-full p-3 rounded-xl text-base ${
+                      className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                         errors.email
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200"
@@ -166,7 +176,7 @@ export default function SignupForm() {
                       dir="ltr"
                     />
                     {errors.email && (
-                      <p className="mt-1 text-sm text-red-500">
+                      <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
                         {errors.email}
                       </p>
                     )}
@@ -175,7 +185,7 @@ export default function SignupForm() {
                   <div>
                     <Label
                       htmlFor="phone"
-                      className="block text-base font-medium text-gray-700 mb-2"
+                      className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2 text-center sm:text-right"
                     >
                       رقم الهاتف (للتواصل عبر واتساب)
                     </Label>
@@ -185,7 +195,7 @@ export default function SignupForm() {
                       type="tel"
                       value={formData.phone}
                       onChange={handleChange}
-                      className={`w-full p-3 rounded-xl text-base ${
+                      className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
                         errors.phone
                           ? "border-red-300 focus:border-red-500"
                           : "border-gray-200"
@@ -194,7 +204,7 @@ export default function SignupForm() {
                       dir="ltr"
                     />
                     {errors.phone && (
-                      <p className="mt-1 text-sm text-red-500">
+                      <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
                         {errors.phone}
                       </p>
                     )}
@@ -203,18 +213,18 @@ export default function SignupForm() {
                   <Button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-3 text-lg font-medium transition-colors"
+                    className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg font-medium transition-colors"
                   >
                     {isSubmitting ? "جاري التسجيل..." : "ابدأ التقييم المجاني"}
                   </Button>
 
                   {errors.submit && (
-                    <p className="mt-2 text-sm text-red-500 text-center">
+                    <p className="mt-2 text-xs sm:text-sm text-red-500 text-center">
                       {errors.submit}
                     </p>
                   )}
 
-                  <p className="text-sm text-center text-gray-500 mt-4">
+                  <p className="text-xs sm:text-sm text-center text-gray-500 mt-2 sm:mt-4">
                     بالتسجيل، أنت توافق على{" "}
                     <a href="#" className="text-blue-500 hover:underline">
                       شروط الاستخدام
@@ -229,21 +239,21 @@ export default function SignupForm() {
             </div>
 
             {/* Blue Side */}
-            <div className="w-full md:w-1/2 bg-[#0188D6] p-8 md:p-12 text-white flex flex-col justify-center">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 title-font">
+            <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
                 خطوة واحدة تفصلك
                 <br />
                 عن إتقان العبرية
               </h2>
 
-              <p className="text-lg mb-8">
+              <p className="text-base sm:text-lg mb-6 sm:mb-8">
                 سجل الآن واحصل على تقييم شخصي
                 <br />
                 لمستواك الحالي في العبرية.
               </p>
 
-              <div className="bg-white/20 rounded-xl p-4 backdrop-blur-sm">
-                <p className="text-lg">
+              <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
+                <p className="text-base sm:text-lg">
                   "ستتلقى رسالة ترحيبية على واتساب
                   <br />
                   خلال 10 دقائق من تسجيلك"
@@ -253,6 +263,6 @@ export default function SignupForm() {
           </div>
         </div>
       </div>
-    </section>
+    </SectionContainer>
   );
 }

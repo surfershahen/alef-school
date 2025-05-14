@@ -22,8 +22,8 @@ export default function Header() {
             />
           </div>
           <div className="flex flex-col items-start">
-            <h1 className="text-2xl font-bold">ALEFH SCHOOL</h1>
-            <span className="text-[#0188D6] text-lg">مدرسة ألف</span>
+            {/* <h1 className="text-2xl font-bold">ALEFH SCHOOL</h1>
+            <span className="text-[#0188D6] text-lg">مدرسة ألف</span> */}
           </div>
         </div>
       </div>

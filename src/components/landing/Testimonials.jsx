@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle, PauseCircle } from "lucide-react";
+import { SectionContainer } from "@/components/ui/section-container";
 
 export default function Testimonials() {
   const [playingVideo, setPlayingVideo] = useState(null);
@@ -46,80 +47,81 @@ export default function Testimonials() {
   }
 
   return (
-    <section className="py-16 px-4 sm:px-6 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-5xl mx-auto">
-        <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1D1D1B] title-font">
-            ماذا يقول طلابنا؟
-          </h2>
-          <p className="text-xl text-gray-600 mt-2 body-font">
-            نتائج حقيقية من طلاب حقيقيين
-          </p>
-        </motion.div>
+    <SectionContainer
+      className="bg-gradient-to-b from-white to-gray-50"
+      hasDivider
+    >
+      <motion.div
+        className="text-center mb-10 sm:mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2 className="text-2xl sm:text-3xl font-bold text-[#1D1D1B] title-font">
+          ماذا يقول طلابنا؟
+        </h2>
+        <p className="text-xl text-gray-600 mt-2 body-font">
+          نتائج حقيقية من طلاب حقيقيين
+        </p>
+      </motion.div>
 
-        {/* Video Testimonials */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
-          {videoTestimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              className="group relative overflow-hidden rounded-2xl shadow-xl bg-white body-font"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-            >
-              <div className="relative h-[300px] overflow-hidden">
-                {testimonial.video ? (
-                  <>
-                    <video
-                      ref={el => (videoRefs.current[index] = el)}
-                      src={testimonial.video}
-                      className="w-full h-full object-cover"
-                      controls={playingVideo === index}
-                      playsInline
-                      loop
-                    />
-                    {playingVideo !== index && (
-                      <div
-                        className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center cursor-pointer"
-                        onClick={() => handleVideoClick(index)}
-                      >
-                        <button className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
-                          <PlayCircle className="w-10 h-10 text-[#E4665A]" />
-                        </button>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
-                      <button className="w-16 h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
-                        <PlayCircle className="w-10 h-10 text-[#E4665A]" />
+      {/* Video Testimonials */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        {videoTestimonials.map((testimonial, index) => (
+          <motion.div
+            key={index}
+            className="group relative overflow-hidden rounded-2xl shadow-xl bg-white body-font max-w-sm mx-auto w-full"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: index * 0.2 }}
+          >
+            <div className="relative h-[220px] sm:h-[250px] overflow-hidden">
+              {testimonial.video ? (
+                <>
+                  <video
+                    ref={el => (videoRefs.current[index] = el)}
+                    src={testimonial.video}
+                    className="w-full h-full object-cover"
+                    controls={playingVideo === index}
+                    playsInline
+                    loop
+                  />
+                  {playingVideo !== index && (
+                    <div
+                      className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center cursor-pointer"
+                      onClick={() => handleVideoClick(index)}
+                    >
+                      <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
+                        <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
                       </button>
                     </div>
-                  </>
-                )}
-              </div>
-              <div className="p-6 bg-white">
-                <div className="flex items-center gap-3 mb-3">
-                  <div>
-                    <h3 className="font-bold text-lg text-[#1D1D1B] title-font">
-                      {testimonial.name}
-                    </h3>
+                  )}
+                </>
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
+                    <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
+                      <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
+                    </button>
                   </div>
-                </div>
-                <p className="text-gray-600 body-font">{testimonial.quote}</p>
+                </>
+              )}
+            </div>
+            <div className="p-4 sm:p-6 bg-white text-center sm:text-right">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-3 mb-2 sm:mb-3 justify-center sm:justify-start">
+                <h3 className="font-bold text-lg text-[#1D1D1B] title-font">
+                  {testimonial.name}
+                </h3>
               </div>
-            </motion.div>
-          ))}
-        </div>
+              <p className="text-gray-600 body-font text-sm sm:text-base">
+                {testimonial.quote}
+              </p>
+            </div>
+          </motion.div>
+        ))}
       </div>
-    </section>
+    </SectionContainer>
   );
 }
