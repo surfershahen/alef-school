@@ -100,7 +100,6 @@ export default function Testimonials() {
                       className="w-full h-full object-cover"
                       controls={playingVideo === index}
                       playsInline
-                      loop
                       poster={testimonial.poster}
                     />
                     {playingVideo !== index && (
