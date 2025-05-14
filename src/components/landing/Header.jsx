@@ -18,7 +18,7 @@ export default function Header() {
             <img
               src="/alef-logo2.jpeg"
               alt="Alef School Logo"
-              className="w-20 h-20"
+              className="w-20 h-20 bg-transparent"
             />
           </div>
           <div className="flex flex-col items-start">
