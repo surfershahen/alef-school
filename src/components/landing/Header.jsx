@@ -3,7 +3,7 @@ import ScrollToForm from "./ScrollToForm";
 
 export default function Header() {
   return (
-    <header className="fixed top-0 right-0 left-0 bg-gray-100 z-50 py-4 px-6 sm:px-12">
+    <header className="fixed top-0 right-0 left-0 bg-gray-50 z-50 py-4 px-6 sm:px-12">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         {/* Left side - Contact Us button */}
         <div className="order-last">
