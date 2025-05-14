@@ -20,7 +20,6 @@ export default function LandingPage() {
       dir="rtl"
     >
       <FontStyles />
-
       <Header />
       <Hero />
       <SignupForm />

@@ -1,41 +1,29 @@
 import React from "react";
 
+// This component doesn't render anything visible
+// It just adds global styles to the document
 export default function FontStyles() {
   return (
-    <style>{`
-      @font-face {
-        font-family: "Almoni";
-        src: url("https://fonts.cdnfonts.com/css/almoni-dl") format("woff2");
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-
-      @font-face {
-        font-family: "Ishmael";
-        src: url("https://fonts.cdnfonts.com/css/ishmael") format("woff2");
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
-      }
-
+    <style jsx global>{`
+      /* Apply title font to all h1, h2, h3 elements */
       h1,
       h2,
       h3,
-      h4,
-      h5,
-      h6,
       .title-font {
-        font-family: "Ishmael", sans-serif;
+        font-family: "Droid Arabic Kufi", sans-serif;
+        font-weight: 800;
+        font-size: 34px;
+        line-height: 1.3;
       }
 
-      body,
+      /* Apply body font to all paragraphs and default text */
       p,
-      button,
-      input,
-      textarea,
+      body,
       .body-font {
-        font-family: "Almoni", sans-serif;
+        font-family: "Droid Arabic Kufi", sans-serif;
+        font-weight: 400;
+        font-size: 23px;
+        line-height: 1.5;
       }
     `}</style>
   );
