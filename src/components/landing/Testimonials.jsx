@@ -13,6 +13,7 @@ export default function Testimonials() {
       name: "براء",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/Braa.mp4",
+      poster: "assets/images/braa-poster.png",
     },
     {
       name: "احمد",
@@ -24,21 +25,25 @@ export default function Testimonials() {
       name: "احلام",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/ahlam.mov",
+      poster: "assets/images/ahlam-poster.png",
     },
     {
       name: "مريم",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/maryem.mov",
+      poster: "assets/images/maryam-poster.png",
     },
     {
       name: "ماريا",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/maria.mov",
+      poster: "assets/images/maria-poster.png",
     },
     {
       name: "ماريا",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/0428 (3).mov",
+      poster: "assets/images/knowon-poster.png",
     },
   ];
 
