@@ -5,14 +5,13 @@ export function SectionContainer({
   children,
   className,
   id,
-  hasDivider = false,
+  hasDivider = true,
 }) {
   return (
     <section
       id={id}
       className={cn(
         "relative w-full px-4 py-16 sm:px-6 sm:py-20",
-        "overflow-hidden",
         hasDivider && "border-t border-gray-100",
         className
       )}

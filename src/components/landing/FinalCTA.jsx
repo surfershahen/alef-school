@@ -5,7 +5,7 @@ import ScrollToForm from "./ScrollToForm";
 
 export default function FinalCTA() {
   return (
-    <section className="py-12 px-4 sm:px-6 bg-gradient-to-r from-[#0188D6] to-[#0165a3] text-white">
+    <section className="py-12 px-4 sm:px-6 bg-blue-200 text-[#1D1D1B]">
       <div className="max-w-4xl mx-auto text-center">
         <motion.h2
           className="text-3xl sm:text-4xl font-bold mb-4 title-font"
