@@ -5,9 +5,13 @@ export default function ScrollToForm({ children, className }) {
     e.preventDefault();
     const formElement = document.getElementById("signup");
     if (formElement) {
-      formElement.scrollIntoView({
+      const headerOffset = 64; // px
+      const elementPosition =
+        formElement.getBoundingClientRect().top + window.pageYOffset;
+      const offsetPosition = elementPosition - headerOffset;
+      window.scrollTo({
+        top: offsetPosition,
         behavior: "smooth",
-        block: "start",
       });
     }
   };
