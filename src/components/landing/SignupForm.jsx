@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { createMondayItem } from "@/utils/monday";
+
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
 
@@ -71,9 +71,6 @@ export default function SignupForm() {
     setErrors(prev => ({ ...prev, submit: "" }));
 
     try {
-      // Create item in Monday.com
-      await createMondayItem(formData);
-
       // Navigate to exam page with form data
       navigate(createPageUrl("exam"), {
         state: { formData },

@@ -64,7 +64,7 @@ export default function Hero() {
               {!isVideoPlaying ? (
                 <div className="relative">
                   <video
-                    src="assets/videos/about-us.mp4"
+                    src="assets/videos/about-us .mp4"
                     className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover"
                     poster="assets/videos/poster.png"
                   />
@@ -83,14 +83,15 @@ export default function Hero() {
                   </div>
                 </div>
               ) : (
-                <div className="relative pt-[56.25%]">
+                <div className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden">
                   <video
                     ref={videoRef}
-                    className="absolute top-0 left-0 w-full h-full rounded-2xl bg-transparent"
-                    src="assets/videos/about-us.mp4"
+                    className="w-full h-full object-cover rounded-2xl bg-transparent"
+                    src="/assets/videos/about-us .mp4"
                     controls
                     autoPlay
-                    loop
+                    playsInline
+                    preload="auto"
                   />
                 </div>
               )}

@@ -53,13 +53,6 @@ export default function Exam() {
 
     setIsSubmitting(true);
     try {
-      // Combine form data with exam answers
-      const submissionData = {
-        ...formData,
-        ...answers,
-        submission_date: new Date().toISOString(),
-      };
-
       // TODO: Submit exam answers to backend
       console.log("Submitting exam answers:", submissionData);
 
