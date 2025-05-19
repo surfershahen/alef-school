@@ -41,7 +41,7 @@ export default function Testimonials() {
       poster: "assets/images/maria-poster.png",
     },
     {
-      name: "ماريا",
+      name: "عرين",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/0428 (3).mov",
       poster: "assets/images/knowon-poster.png",

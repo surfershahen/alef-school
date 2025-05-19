@@ -30,7 +30,7 @@ export default function Features() {
     },
     {
       icon: <Clock className="h-8 w-8 text-[#0188D6]" />,
-      title: "تعلم بوتيرتك الخاصة",
+      title: "تعلم من المصدر!",
       description: " معلمين يهود بحكوا عربي -  بعلموا لغتهم الأم!",
     },
     {
@@ -58,7 +58,8 @@ export default function Features() {
           <div className="inline-flex items-center justify-center mb-4">
             <Lock className="h-5 w-5 text-[#0188D6] mr-2" />
             <h2 className="text-2xl sm:text-3xl font-bold title-font">
-              لماذا تختار مدرسة ألف؟
+              ليش تختار <span className="text-[#0188D6]">ALEF</span>{" "}
+              <span className="text-red-500">SCHOOL</span>?
             </h2>
           </div>
         </motion.div>
