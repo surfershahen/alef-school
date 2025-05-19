@@ -31,8 +31,8 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              تعلّم العبرية بسهولة
-              <span className="block text-[#0188D6]">بدون ضغط، فقط نجاح</span>
+              بتحلم تحكي عبري
+              <span className="block text-[#0188D6]">بطلاقة وب - ستايل ؟</span>
             </motion.h1>
             <motion.p
               className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 body-font"
@@ -40,7 +40,8 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              انضم إلى مئات المتحدثين بالعربية الذين أتقنوا العبرية معنا.
+              تعال جرّب الطريقة اللي خلت آلاف العرب يحكوا عبري بطلاقة وبسهولة...
+              بدون ضغط، بدون ملل، بس نتائج حقيقية 👌.
             </motion.p>
             <motion.div
               className="w-full flex justify-center md:justify-start mt-4"
@@ -49,7 +50,7 @@ export default function Hero() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center">
-                احجز مكاني الآن
+                بدي احكي بطلاقة
                 <ChevronRight className="mr-2 w-5 h-5" />
               </ScrollToForm>
             </motion.div>

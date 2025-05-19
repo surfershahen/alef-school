@@ -178,10 +178,10 @@ export default function WhatsAppTestimonials() {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-2xl sm:text-3xl font-bold title-font">
-            آراء طلابنا على الواتساب
+            آراء حقيقية من واتساب
           </h2>
           <p className="text-xl text-gray-600 mt-2 body-font">
-            تجارب حقيقية من طلاب حقيقيين
+            صور وتصوير شاشة من محادثات مع طلابنا!
           </p>
         </motion.div>
 

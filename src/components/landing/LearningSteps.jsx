@@ -10,12 +10,9 @@ export default function LearningSteps() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl sm:text-4xl font-bold mb-4 title-font">
-              كيف تبدأ رحلة تعلم العبرية معنا
+              كيف بتبلّش؟ (3 خطوات بسيطة)
             </h2>
-            <p className="text-xl text-gray-600">
-              ثلاث خطوات بسيطة تفصلك عن بدء رحلتك في تعلم العبرية بسهولة وبدون
-              تعقيد
-            </p>
+            <p className="text-xl text-gray-600"></p>
           </div>
 
           <div className="relative">
@@ -69,8 +66,7 @@ export default function LearningSteps() {
                   استلام رسالة ترحيبية
                 </h3>
                 <p className="text-gray-600">
-                  ستتلقى فيديو ترحيبي ورسالة على واتساب خلال دقائق من التسجيل
-                  لمساعدتك في البدء.
+                  بتوصلك رسالة وفيديو ترحيبي عالواتساب
                 </p>
               </div>
               <div className="bg-white rounded-2xl shadow p-8 h-full text-center">
@@ -87,8 +83,7 @@ export default function LearningSteps() {
                   اختبار قصير واتصال
                 </h3>
                 <p className="text-gray-600">
-                  ستأخذ اختبارًا قصيرًا لتحديد مستواك، ثم انتظر مكالمة من أحد
-                  مستشارينا المختصين.
+                  اعمل تقييم اولي لمستواك وبنحكي معك شو الأنسب إلك{" "}
                 </p>
               </div>
             </div>

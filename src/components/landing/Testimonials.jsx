@@ -11,7 +11,8 @@ export default function Testimonials() {
   const videoTestimonials = [
     {
       name: "براء",
-      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      quote:
+        "أنا كنت أفهم عبري، بس ما كنت أقدر أحكي! بعد دورة ألف فلوانس، بحكي بثقة بشغلي ",
       video: "assets/videos/Braa.mp4",
       poster: "assets/images/braa-poster.png",
     },
@@ -23,7 +24,7 @@ export default function Testimonials() {
     },
     {
       name: "احلام",
-      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      quote: "تعلمت أعبر عن حالي بالعبرية بوضوح، وفتحتلي فرص شغل!",
       video: "assets/videos/ahlam.mov",
       poster: "assets/images/ahlam-poster.png",
     },
@@ -35,7 +36,7 @@ export default function Testimonials() {
     },
     {
       name: "ماريا",
-      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      quote: "كل شي كان سهل وممتع، صرت أشرح حالي بالعبري بدون تردد! ",
       video: "assets/videos/maria.mov",
       poster: "assets/images/maria-poster.png",
     },

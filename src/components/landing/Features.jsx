@@ -16,33 +16,32 @@ export default function Features() {
     {
       icon: <Users className="h-8 w-8 text-[#0188D6]" />,
       title: "+2500 طالب",
-      description: "أكثر من 2500 متحدث باللغة العربية تعلموا العبرية بنجاح",
+      description: "أكثر من 2500 طالب عرب جرّبونا وبيحكوا عبري بستايل!",
     },
     {
       icon: <MessageCircle className="h-8 w-8 text-[#0188D6]" />,
       title: "تعلم بالمحادثة",
-      description: "تعلم العبرية من خلال المحادثة، وليس بحفظ القواعد النحوية!",
+      description: " منتعلم عبري بالمحادثة مش بحفظ القواعد",
     },
     {
       icon: <ThumbsUp className="h-8 w-8 text-[#0188D6]" />,
       title: "دعم شخصي",
-      description: "احصل على دعم شخصي عبر الواتساب من اليوم الأول",
+      description: " دعم شخصي ومرافقة من أول يوم",
     },
     {
       icon: <Clock className="h-8 w-8 text-[#0188D6]" />,
       title: "تعلم بوتيرتك الخاصة",
-      description: "تعلم بوتيرتك الخاصة - جدول زمني مرن يناسب احتياجاتك",
+      description: " معلمين يهود بحكوا عربي -  بعلموا لغتهم الأم!",
     },
     {
       icon: <BookOpen className="h-8 w-8 text-[#0188D6]" />,
       title: "طريقة مثبتة",
-      description:
-        "طريقة مثبتة مصممة للمتحدثين بالعربية وتركز على المحادثة اليومية",
+      description: " طريقة خاصة للعرب – بتخليك تحكي عبري زي أهل البلاد",
     },
     {
       icon: <MessageCircle className="h-8 w-8 text-[#0188D6]" />,
       title: "دعم مستمر",
-      description: "دعم مستمر من المعلمين وزملائك في الدراسة طوال رحلة التعلم",
+      description: " دعم مستمر ومجتمع بيشجّعك تتقدّم",
     },
   ];
 

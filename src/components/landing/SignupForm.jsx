@@ -15,6 +15,7 @@ export default function SignupForm() {
     name: "",
     phone: "",
     email: "",
+    city: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -210,6 +211,34 @@ export default function SignupForm() {
                       )}
                     </div>
 
+                    <div>
+                      <Label
+                        htmlFor="name"
+                        className="block text-sm sm:text-base  text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
+                      >
+                        اسم لمدينة
+                      </Label>
+                      <Input
+                        id="city"
+                        name="city"
+                        type="text"
+                        value={formData.city}
+                        onChange={handleChange}
+                        dir="rtl"
+                        className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
+                          errors.name
+                            ? "border-red-300 focus:border-red-500"
+                            : "border-gray-200"
+                        }`}
+                        placeholder="ادخل اسم لمدينة"
+                      />
+                      {errors.city && (
+                        <p className="mt-1 text-xs sm:text-sm text-red-500  sm:text-right">
+                          {errors.city}
+                        </p>
+                      )}
+                    </div>
+
                     <Button
                       type="submit"
                       disabled={isSubmitting}
@@ -243,22 +272,20 @@ export default function SignupForm() {
               {/* Blue Side */}
               <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
-                  خطوة واحدة تفصلك
-                  <br />
-                  عن إتقان العبرية
+                  احصل على تقييم <br />
+                  أولي مجاني لمستواك بالعبري!{" "}
                 </h2>
 
                 <p className="text-base sm:text-lg mb-6 sm:mb-8">
-                  سجل الآن واحصل على تقييم شخصي
-                  <br />
-                  لمستواك الحالي في العبرية.
+                  سجل تفاصيلك وخلينا نبعتلك <br />
+                  فيديو ترحيبي واختبار صغير.
                 </p>
 
                 <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
                   <p className="text-base sm:text-lg">
-                    "ستتلقى رسالة ترحيبية على واتساب
+                    " 🕐 خلال 10 دقايق بتوصلك
                     <br />
-                    خلال 10 دقائق من تسجيلك"
+                    رسالة ترحيب عالواتساب – خليك جاهز! "
                   </p>
                 </div>
               </div>

@@ -49,25 +49,33 @@ export default function Exam() {
   };
 
   const handleSubmit = async () => {
-    if (!formData) return;
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      age: formData.age,
+      q1: answers.q1,
+      q2: answers.q2,
+      q3: answers.q3,
+      q4: answers.q4,
+      q5: answers.q5,
+      q6: answers.q6,
+      q7: answers.q7,
+    };
 
-    setIsSubmitting(true);
     try {
-      // TODO: Submit exam answers to backend
-      console.log("Submitting exam answers:", submissionData);
-
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1500));
-
-      // Show thank you screen
-      setIsCompleted(true);
+      const response = await fetch("http://localhost:3001/api/submit-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!response.ok) throw new Error("Failed to submit");
+      // Show success UI
     } catch (error) {
-      console.error("Error submitting exam:", error);
-    } finally {
-      setIsSubmitting(false);
+      // Show error UI
+      console.error(error);
     }
   };
-
   // Calculate progress percentage
   const progressPercentage = Math.min(
     ((currentQuestionIndex + 1) / totalQuestions) * 100,

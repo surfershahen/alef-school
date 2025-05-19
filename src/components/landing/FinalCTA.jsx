@@ -14,7 +14,7 @@ export default function FinalCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          هل أنت مستعد للتحدث بالعبرية بثقة؟
+          جاهز تبلّش تحكي عبري بثقة؟
         </motion.h2>
 
         <motion.p
@@ -24,8 +24,8 @@ export default function FinalCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
-          اتخذ الخطوة الأولى اليوم! انضم إلى آلاف المتحدثين بالعربية الذين
-          اكتشفوا مدى سهولة وإثارة تعلم العبرية مع مدرسة ألف.
+          احنا معك خطوة بخطوة لحد ما توصل للطلاقة! الطلب على العبري كبير -
+          والاماكن محدودة جداً
         </motion.p>
 
         <motion.div
@@ -35,12 +35,8 @@ export default function FinalCTA() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-10 py-7 text-xl transition-all shadow-lg hover:shadow-xl body-font inline-flex items-center">
-            نعم، أريد البدء الآن!
+            سجّل وابدا احكي بطلاقة 🚀
           </ScrollToForm>
-
-          <p className="text-sm mt-4 opacity-80 body-font">
-            🚀 الأماكن محدودة — احجز مكانك اليوم وابدأ رحلتك مع اللغة العبرية!
-          </p>
         </motion.div>
       </div>
     </section>

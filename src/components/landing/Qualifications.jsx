@@ -14,10 +14,10 @@ export default function Qualifications() {
           transition={{ duration: 0.6 }}
         >
           <span className="inline-block font-bold text-[#E4665A] mb-2 body-font">
-            ⚡ معلومات مهمة!
+            ⚠️ مهم تعرف!
           </span>
           <h2 className="text-2xl sm:text-3xl font-bold title-font">
-            🚫 ليس كل شخص سينجح في تعلم العبرية معنا...
+            🚫 مش الكل رح ينجح معنا…
           </h2>
         </motion.div>
 
@@ -30,13 +30,13 @@ export default function Qualifications() {
             transition={{ duration: 0.6 }}
           >
             <h3 className="text-xl font-bold mb-4 text-red-600 title-font">
-              هذا البرنامج ليس لك إذا:
+              هالدورة مش للك إذا:
             </h3>
-            <ul className="space-y-4">
+            <ul className="space-y-10">
               {[
-                "كنت تبحث عن نتائج سريعة دون بذل الحد الأدنى من الجهد.",
-                "لم تكن جادًا في ممارسة التواصل باللغة العبرية.",
-                "كنت تفضل حفظ قواعد النحو على التحدث.",
+                "بدك نتيجة سحرية بلا جهد",
+                "مش حابب تحكي عبري فعليًا",
+                "بتحب تحفظ قواعد أكتر من تحكي",
               ].map((item, index) => (
                 <li key={index} className="flex items-start body-font">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-red-100 flex items-center justify-center mt-0.5 ml-2">
@@ -56,13 +56,13 @@ export default function Qualifications() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <h3 className="text-xl font-bold mb-4 text-green-600 title-font">
-              هذا البرنامج مناسب لك إذا:
+              ✔️ بس إذا:
             </h3>
             <ul className="space-y-4">
               {[
-                "كنت مستعدًا للتوقف عن التأجيل واتخاذ إجراء مع طريقة مثبتة.",
-                "كنت تحلم بالتحدث باللغة العبرية بثقة في الحياة اليومية.",
-                "كنت تبحث عن طريقة ذكية وبسيطة وداعمة لتعلم العبرية.",
+                " بدك تحكي عبري بطلاقة وبطريقة عملية",
+                " تعبت من المحاولات الفاشلة",
+                "مستعد تبلّش اليوم بخطوة صغيرة",
               ].map((item, index) => (
                 <li key={index} className="flex items-start body-font">
                   <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-100 flex items-center justify-center mt-0.5 ml-2">
@@ -74,7 +74,7 @@ export default function Qualifications() {
             </ul>
             <div className="mt-6 text-center body-font">
               <p className="font-bold text-lg body-font">
-                👉 إذن هذا البرنامج هو بالضبط لك!
+                فأنت بالمكان الصح! 👌
               </p>
             </div>
           </motion.div>
