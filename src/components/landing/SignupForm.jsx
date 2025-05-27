@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
+import { submitToGoogleSheets } from "@/utils/googleSheets";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -41,20 +42,28 @@ export default function SignupForm() {
   const validateForm = () => {
     const newErrors = {};
 
+    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = "الاسم مطلوب";
     }
 
+    // Phone validation
     if (!formData.phone.trim()) {
       newErrors.phone = "رقم الهاتف مطلوب";
     } else if (!/^[0-9+\s()-]{8,15}$/.test(formData.phone.trim())) {
       newErrors.phone = "يرجى إدخال رقم هاتف صحيح";
     }
 
+    // Email validation
     if (!formData.email.trim()) {
       newErrors.email = "البريد الإلكتروني مطلوب";
     } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
       newErrors.email = "يرجى إدخال بريد إلكتروني صحيح";
+    }
+
+    // City validation (optional but good to have)
+    if (!formData.city.trim()) {
+      newErrors.city = "اسم المدينة مطلوب";
     }
 
     setErrors(newErrors);
@@ -72,6 +81,13 @@ export default function SignupForm() {
     setErrors(prev => ({ ...prev, submit: "" }));
 
     try {
+      // Submit form data to Google Sheets
+      const result = await submitToGoogleSheets(formData);
+
+      if (!result.success) {
+        throw new Error(result.message);
+      }
+
       // Navigate to exam page with form data
       navigate(createPageUrl("exam"), {
         state: { formData },
@@ -213,10 +229,10 @@ export default function SignupForm() {
 
                     <div>
                       <Label
-                        htmlFor="name"
+                        htmlFor="city"
                         className="block text-sm sm:text-base  text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
                       >
-                        اسم لمدينة
+                        اسم المدينة
                       </Label>
                       <Input
                         id="city"
@@ -226,11 +242,11 @@ export default function SignupForm() {
                         onChange={handleChange}
                         dir="rtl"
                         className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
-                          errors.name
+                          errors.city
                             ? "border-red-300 focus:border-red-500"
                             : "border-gray-200"
                         }`}
-                        placeholder="ادخل اسم لمدينة"
+                        placeholder="ادخل اسم المدينة"
                       />
                       {errors.city && (
                         <p className="mt-1 text-xs sm:text-sm text-red-500  sm:text-right">
