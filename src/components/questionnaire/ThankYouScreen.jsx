@@ -2,13 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Navigate, useNavigate } from "react-router-dom";
-import { createPageUrl } from "@/utils";
+import { useNavigate } from "react-router-dom";
 
 export default function ThankYouScreen({ name }) {
+  const navigate = useNavigate();
   // Extract first name
   const firstName = name?.split(" ")[0] || "";
-  const navigate = useNavigate();
 
   return (
     <div className="text-center">
@@ -38,7 +37,7 @@ export default function ThankYouScreen({ name }) {
         transition={{ duration: 0.5, delay: 0.3 }}
         className="text-xl mb-6 text-gray-600"
       >
-        تم تلقي إجاباتك بنجاح
+        تم إكمال الاختبار بنجاح
       </motion.p>
 
       <motion.div
@@ -52,8 +51,7 @@ export default function ThankYouScreen({ name }) {
           <h3 className="font-bold text-lg text-[#0188D6]">الخطوة التالية</h3>
         </div>
         <p className="text-gray-700">
-          سيقوم أحد خبرائنا بالاتصال بك خلال الـ 24 ساعة القادمة لمناقشة خطة
-          تعلم مخصصة تناسب احتياجاتك واهدافك.
+          سيقوم أحد خبرائنا بالاتصال بك خلال الـ 24 ساعة القادمة.
         </p>
       </motion.div>
 

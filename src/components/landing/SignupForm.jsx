@@ -260,9 +260,7 @@ export default function SignupForm() {
                       disabled={isSubmitting}
                       className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg  transition-colors font-bold"
                     >
-                      {isSubmitting
-                        ? "جاري التسجيل..."
-                        : "ابدأ التقييم المجاني"}
+                      {isSubmitting ? "جاري التسجيل..." : "ابدأ التحدي  "}
                     </Button>
 
                     {errors.submit && (

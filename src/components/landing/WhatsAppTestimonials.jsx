@@ -6,137 +6,52 @@ import SectionDivider from "@/components/ui/SectionDivider";
 export default function WhatsAppTestimonials() {
   const testimonials = [
     {
-      name: "דונא אבוחארגא",
-      messages: [
-        {
-          text: "الكورس كبير حلو كثير كثير وحبيت كيف لمعلمة بتشارك معنا انو بتعطي معنا واحنا كطلاب كثير بنشارك وهاي الاشي كثير حلو وتعلمت من الكورس كثير كلمات مكنتش أعرفها",
-          time: "14:12",
-          type: "received",
-        },
-        {
-          text: "وشكراً كبير الكم وللمعلمة 🙏 ❤️",
-          time: "14:16",
-          type: "received",
-        },
-        {
-          text: "شكرا الك كبير على رأيك ❤️ يسعدنا كثير استفادتك وتقدمك بالكورس ومحبتك للمجموعة 🥰🥰",
-          time: "16:42",
-          type: "sent",
-        },
-      ],
-      image:
-        "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/e5822b_testimonials-5.jpeg",
+      name: "شهادة 1",
+      image: "/assets/images/whatsapp/m1.jpg",
     },
     {
-      name: "יעל",
-      messages: [
-        {
-          text: "צוהרים טובים יעל",
-          time: "14:41",
-          type: "received",
-        },
-        {
-          text: "סליחה על האיחור",
-          time: "14:41",
-          type: "received",
-        },
-        {
-          text: "בבקשה יעל חשוב לי לשמור על סדירות כשם",
-          time: "14:43",
-          type: "received",
-        },
-        {
-          text: "שלום יעל, כמתחילה רציתי להגיד לך תודה רבה על המאמץ בכול השיעורים, מהתחילת הקורס עד היום יש התקדמות משמעותית בדיבור, מוזכרת בצורה נכונה עם כמעט עצמי. יעל מורה משתמשת בשיטות לימוד מגוונות המסייעות להבנת החומר ואף להנאה ממנו... נלמדת גם בזמן-מורה סבלנית, התנהלות על פי הקצב האישי",
-          time: "14:43",
-          type: "received",
-        },
-        {
-          text: "באמת זה כתוב מהלב",
-          time: "14:44",
-          type: "received",
-        },
-        {
-          text: "את מורה מדהימה 😍",
-          time: "14:44",
-          type: "received",
-        },
-        {
-          text: "תודה רבה!",
-          time: "14:45",
-          type: "sent",
-        },
-      ],
-      image:
-        "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/cb45b9_testimonials-3.jpeg",
+      name: "شهادة 2",
+      image: "/assets/images/whatsapp/m2.jpg",
     },
     {
-      name: "أم جنى",
-      messages: [
-        {
-          text: "صباح الخير ....كثير شكرا على هالفتره تبعت الدوره ....البنت جدا استفادت وخساره انو خلصت.....شكرا كثير الكوا وللمعلمه وعنجد مهنيه بتقديم الماده وطرحها للاولاد ....وان شاء الله راح يكون استمراريه لتسجيل لكمان دوره عبري ....✅",
-          time: "10:18",
-          type: "received",
-        },
-        {
-          text: "صباح الورد 🌹 شكرا الك كبييير على كلماتك اللطيفه والمحفزه 🥰 بسعدنا جدا انها استفادت من الدوره وحست بتقدم واهم اشي انها كانت مرتاحه ومبسوطه 🙏",
-          time: "13:24",
-          type: "sent",
-        },
-        {
-          text: "اكيد",
-          time: "13:24",
-          type: "received",
-        },
-      ],
-      image:
-        "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/a5b3fc_testimonials-5.png",
+      name: "شهادة 3",
+      image: "/assets/images/whatsapp/m3.jpg",
     },
     {
-      name: "רינה",
-      messages: [
-        {
-          text: "ההודעה נמחקה",
-          time: "14:40",
-          type: "received",
-        },
-        {
-          text: "צהרים טובים יעל",
-          time: "14:41",
-          type: "received",
-        },
-        {
-          text: "סליחה על האיחור",
-          time: "14:41",
-          type: "received",
-        },
-        {
-          text: "בבקשה יעל חשוב לי לשמור על סדירות כשם",
-          time: "14:43",
-          type: "received",
-        },
-        {
-          text: "שלום יעל, כמתחילה רציתי להגיד לך תודה רבה על המאמץ בכול השיעורים. מהתחילת הקורס עד היום יש התקדמות משמעותית בדיבור, מוזכרת בצורה נכונה עם כמעט עצמי. יעל מורה משתמשת בשיטות לימוד מגוונות המסייעות להבנת החומר ואף להנאה ממנו... נלמדת גם בזמן-מורה סבלנית, התנהלות על פי הקצב האישי.",
-          time: "14:43",
-          type: "received",
-        },
-        {
-          text: "באמת זה כתוב מהלב",
-          time: "14:44",
-          type: "received",
-        },
-        {
-          text: "את מורה מדהימה 😍",
-          time: "14:44",
-          type: "received",
-        },
-        {
-          text: "תודה רבה!",
-          time: "14:45",
-          type: "sent",
-        },
-      ],
-      image:
-        "https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/d4f854_testimonials-2.png",
+      name: "شهادة 4",
+      image: "/assets/images/whatsapp/m4.jpg",
+    },
+    {
+      name: "شهادة 5",
+      image: "/assets/images/whatsapp/m5.jpg",
+    },
+    {
+      name: "شهادة 6",
+      image: "/assets/images/whatsapp/m6.jpg",
+    },
+    {
+      name: "شهادة 7",
+      image: "/assets/images/whatsapp/m7.jpg",
+    },
+    {
+      name: "شهادة 8",
+      image: "/assets/images/whatsapp/m8.jpg",
+    },
+    {
+      name: "شهادة 9",
+      image: "/assets/images/whatsapp/m9.jpg",
+    },
+    {
+      name: "شهادة 10",
+      image: "/assets/images/whatsapp/m10.jpg",
+    },
+    {
+      name: "شهادة 11",
+      image: "/assets/images/whatsapp/m11.jpg",
+    },
+    {
+      name: "شهادة 12",
+      image: "/assets/images/whatsapp/m12.jpg",
     },
   ];
 
