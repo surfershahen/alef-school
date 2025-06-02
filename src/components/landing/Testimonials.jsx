@@ -10,17 +10,10 @@ export default function Testimonials() {
 
   const videoTestimonials = [
     {
-      name: "براء",
-      quote:
-        "أنا كنت أفهم عبري، بس ما كنت أقدر أحكي! بعد دورة ألف فلوانس، بحكي بثقة بشغلي ",
-      video: "assets/videos/Braa.mp4",
-      poster: "assets/images/braa-poster.png",
-    },
-    {
-      name: "احمد",
+      name: "مريم",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
-      video: "assets/videos/ahmad.mov",
-      poster: "assets/images/ahmad-poster.png",
+      video: "assets/videos/maryem.mov",
+      poster: "assets/images/maryam-poster.png",
     },
     {
       name: "احلام",
@@ -29,11 +22,25 @@ export default function Testimonials() {
       poster: "assets/images/ahlam-poster.png",
     },
     {
-      name: "مريم",
-      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
-      video: "assets/videos/maryem.mov",
-      poster: "assets/images/maryam-poster.png",
+      name: "براء",
+      quote:
+        "أنا كنت أفهم عبري، بس ما كنت أقدر أحكي! بعد دورة ألف فلوانس، بحكي بثقة بشغلي ",
+      video: "assets/videos/Braa.mp4",
+      poster: "assets/images/braa-poster.png",
     },
+    {
+      name: "عروة",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/aroaa.mp4",
+      poster: "assets/images/aroaa-poster.jpg",
+    },
+    {
+      name: "احمد",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/ahmad.mov",
+      poster: "assets/images/ahmad-poster.png",
+    },
+
     {
       name: "ماريا",
       quote: "كل شي كان سهل وممتع، صرت أشرح حالي بالعبري بدون تردد! ",
