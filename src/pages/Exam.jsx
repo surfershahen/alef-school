@@ -16,15 +16,14 @@ import { ArrowRight, Loader2, X, AlertTriangle } from "lucide-react";
 import { questions } from "@/components/questionnaire/questions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-
-import ThankYouScreen from "@/components/questionnaire/ThankYouScreen";
+import { updateQuestionnaireStatus } from "@/utils/googleSheets";
+import { validateQuestionnaireAnswers } from "@/utils/aiProcessing";
 
 export default function Exam() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [isCompleted, setIsCompleted] = useState(false);
   const [formData, setFormData] = useState(null);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const location = useLocation();
@@ -65,8 +64,50 @@ export default function Exam() {
 
     try {
       console.log("Questionnaire completed with answers:", answers);
-      // For now, just complete the questionnaire without updating Google Sheets
-      setIsCompleted(true);
+
+      // Validate that all required questions are answered
+      const validation = validateQuestionnaireAnswers(answers);
+      if (!validation.isValid) {
+        alert(
+          `يرجى الإجابة على جميع الأسئلة المطلوبة: ${validation.missingFields.join(
+            ", "
+          )}`
+        );
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Update questionnaire status to completed (true) in Google Sheets WITH REAL ANSWERS
+      // The Google Apps Script will handle AI processing automatically when status becomes true
+      if (formData?.email) {
+        console.log(
+          "📤 Sending REAL questionnaire answers to Google Apps Script for AI processing..."
+        );
+        const statusResult = await updateQuestionnaireStatus(
+          formData,
+          true,
+          answers
+        );
+        if (!statusResult.success) {
+          console.error(
+            "Failed to update questionnaire status:",
+            statusResult.message
+          );
+          // Continue anyway - don't block user experience
+        } else {
+          console.log(
+            "✅ Questionnaire status updated with REAL answers - AI processing will be handled by Google Apps Script"
+          );
+        }
+      }
+
+      // Navigate to thank you page with user's name
+      navigate("/thank-you", {
+        state: {
+          name: formData?.name,
+          answers: answers,
+        },
+      });
     } catch (error) {
       console.error("Error completing questionnaire:", error);
       alert("حدث خطأ أثناء إنهاء الاستبيان. يرجى المحاولة مرة أخرى.");
@@ -79,10 +120,29 @@ export default function Exam() {
     setShowQuitDialog(true);
   };
 
-  const confirmQuit = () => {
+  const confirmQuit = async () => {
     console.log("User chose to quit questionnaire");
+
+    try {
+      // Update questionnaire status to quit/incomplete (false) in Google Sheets
+      if (formData?.email) {
+        const statusResult = await updateQuestionnaireStatus(formData, false);
+        if (!statusResult.success) {
+          console.error(
+            "Failed to update questionnaire status:",
+            statusResult.message
+          );
+          // Continue anyway - don't block user experience
+        }
+      }
+    } catch (error) {
+      console.error("Error updating questionnaire status:", error);
+      // Continue anyway - don't block user experience
+    }
+
     setShowQuitDialog(false);
-    setIsCompleted(true);
+    // Navigate to thank you page with user's name
+    navigate("/thank-you", { state: { name: formData?.name } });
   };
 
   const cancelQuit = () => {
@@ -106,11 +166,6 @@ export default function Exam() {
         </div>
       </div>
     );
-  }
-
-  // Show thank you screen
-  if (isCompleted) {
-    return <ThankYouScreen name={formData?.name} />;
   }
 
   return (

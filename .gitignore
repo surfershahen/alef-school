@@ -39,3 +39,10 @@ lerna-debug.log*
 
 # Vite
 *.local
+
+# Documentation files (keep only main README.md)
+README-*.md
+SOLUTION-*.md
+QUICK_START_*.md
+*-Integration.md
+*-Fix.md

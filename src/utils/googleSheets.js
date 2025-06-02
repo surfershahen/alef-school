@@ -4,12 +4,12 @@
  */
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwfeqn31ZIklm0CsCZo_ZcUiyQCGlkUd8_J5lB7RmDb7GjrUNj1leR6TgDv0q88xuZp7g/exec";
+  "https://script.google.com/macros/s/AKfycbyt51E3axE_XY6DVDI4C_b2mlMU3oFbCsOyuJqmTEPDK-6p2-ZEpacBaEgTKfFf-qRtDg/exec";
 
 /**
  * Submits form data to Google Sheets via Google Apps Script
  * @param {Object} formData - The form data to submit
- * @param {string} formData.name - User's full name
+ * @param {string} formData.name - User's full nameß
  * @param {string} formData.phone - User's phone number
  * @param {string} formData.email - User's email address
  * @param {string} formData.city - User's city
@@ -24,6 +24,7 @@ export const submitToGoogleSheets = async formData => {
     formDataToSend.append("email", formData.email);
     formDataToSend.append("city", formData.city);
     formDataToSend.append("date", new Date().toLocaleString());
+    formDataToSend.append("status", "false"); // Default status is false (questionnaire not completed)
 
     // Log the data being sent (for debugging)
     console.log("📤 Submitting data to Google Sheets:", {
@@ -32,6 +33,7 @@ export const submitToGoogleSheets = async formData => {
       email: formData.email,
       city: formData.city,
       date: new Date().toLocaleString(),
+      status: "false",
     });
 
     // Submit to Google Apps Script
@@ -73,12 +75,87 @@ export const submitToGoogleSheets = async formData => {
 };
 
 /**
+ * Updates questionnaire status for a user in Google Sheets
+ * @param {Object} userData - The user data to identify the record
+ * @param {string} userData.email - User's email address (used as identifier)
+ * @param {boolean} completed - Whether the questionnaire was completed (true) or quit (false)
+ * @param {Object} answers - The questionnaire answers (optional, only when completed=true)
+ * @returns {Promise<Object>} - Success/error response
+ */
+export const updateQuestionnaireStatus = async (
+  userData,
+  completed,
+  answers = null
+) => {
+  try {
+    // Prepare form data for status update
+    const formDataToSend = new FormData();
+    formDataToSend.append("action", "updateStatus");
+    formDataToSend.append("email", userData.email);
+    formDataToSend.append("status", completed ? "true" : "false");
+
+    // If questionnaire is completed and answers are provided, send them for AI processing
+    if (completed && answers) {
+      formDataToSend.append("answers", JSON.stringify(answers));
+      console.log("📋 Including questionnaire answers for AI processing");
+    }
+
+    // Log the data being sent (for debugging)
+    console.log("📤 Updating questionnaire status in Google Sheets:", {
+      email: userData.email,
+      status: completed ? "true" : "false",
+      action: "updateStatus",
+      hasAnswers: completed && answers ? "YES" : "NO",
+      answersCount: answers ? Object.keys(answers).length : 0,
+    });
+
+    // Submit to Google Apps Script
+    const response = await fetch(GOOGLE_SCRIPT_URL, {
+      method: "POST",
+      body: formDataToSend,
+    });
+
+    // Get response text
+    const result = await response.text();
+    console.log("📥 Google Apps Script response:", result);
+
+    // Check if request was successful
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    // Validate response content
+    if (result !== "Updated") {
+      throw new Error("Unexpected response from Google Apps Script");
+    }
+
+    console.log(
+      "✅ Questionnaire status updated successfully in Google Sheets"
+    );
+
+    return {
+      success: true,
+      message: "Questionnaire status updated successfully",
+      data: result,
+    };
+  } catch (error) {
+    console.error("❌ Error updating questionnaire status:", error);
+
+    return {
+      success: false,
+      message: error.message || "Failed to update questionnaire status",
+      error: error,
+    };
+  }
+};
+
+/**
  * Validates form data before submission
  * @param {Object} formData - The form data to validate
  * @returns {boolean} - True if valid, false otherwise
  */
 export const validateFormData = formData => {
-  const requiredFields = ["name", "phone", "email", "city"];
+  const requiredFields = ["name", "phone", "city", "email"];
 
   for (const field of requiredFields) {
     if (!formData[field] || !formData[field].trim()) {

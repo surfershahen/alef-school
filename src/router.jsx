@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "@/pages/index";
 import Exam from "@/pages/Exam";
+import ThankYou from "@/pages/ThankYou";
 
 // Error component
 function ErrorBoundary() {
@@ -31,6 +32,11 @@ const router = createBrowserRouter([
   {
     path: "/exam",
     element: <Exam />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: "/thank-you",
+    element: <ThankYou />,
     errorElement: <ErrorBoundary />,
   },
   {
