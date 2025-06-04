@@ -1,67 +1,16 @@
-import React, { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import SectionDivider from "@/components/ui/SectionDivider";
+import { imageTestimonials } from "@/data/testimonials";
 
 export default function WhatsAppTestimonials() {
-  const testimonials = [
-    {
-      name: "شهادة 1",
-      image: "/assets/images/whatsapp/m1.jpg",
-    },
-    {
-      name: "شهادة 2",
-      image: "/assets/images/whatsapp/m2.jpg",
-    },
-    {
-      name: "شهادة 3",
-      image: "/assets/images/whatsapp/m3.jpg",
-    },
-    {
-      name: "شهادة 4",
-      image: "/assets/images/whatsapp/m4.jpg",
-    },
-    {
-      name: "شهادة 5",
-      image: "/assets/images/whatsapp/m5.jpg",
-    },
-    {
-      name: "شهادة 6",
-      image: "/assets/images/whatsapp/m6.jpg",
-    },
-    {
-      name: "شهادة 7",
-      image: "/assets/images/whatsapp/m7.jpg",
-    },
-    {
-      name: "شهادة 8",
-      image: "/assets/images/whatsapp/m8.jpg",
-    },
-    {
-      name: "شهادة 9",
-      image: "/assets/images/whatsapp/m9.jpg",
-    },
-    {
-      name: "شهادة 10",
-      image: "/assets/images/whatsapp/m10.jpg",
-    },
-    {
-      name: "شهادة 11",
-      image: "/assets/images/whatsapp/m11.jpg",
-    },
-    {
-      name: "شهادة 12",
-      image: "/assets/images/whatsapp/m12.jpg",
-    },
-  ];
-
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const nextTestimonial = () => {
     if (isAnimating) return;
     setIsAnimating(true);
-    setCurrentIndex(prevIndex => (prevIndex + 1) % testimonials.length);
+    setCurrentIndex(prevIndex => (prevIndex + 1) % imageTestimonials.length);
     setTimeout(() => setIsAnimating(false), 500);
   };
 
@@ -69,7 +18,8 @@ export default function WhatsAppTestimonials() {
     if (isAnimating) return;
     setIsAnimating(true);
     setCurrentIndex(
-      prevIndex => (prevIndex - 1 + testimonials.length) % testimonials.length
+      prevIndex =>
+        (prevIndex - 1 + imageTestimonials.length) % imageTestimonials.length
     );
     setTimeout(() => setIsAnimating(false), 500);
   };
@@ -106,7 +56,7 @@ export default function WhatsAppTestimonials() {
             {/* Just show the image */}
             <div className="w-full aspect-[4/3] overflow-hidden">
               <img
-                src={testimonials[currentIndex].image}
+                src={imageTestimonials[currentIndex].image}
                 alt="Student testimonial"
                 className="w-full h-full object-cover object-top"
               />
@@ -122,7 +72,7 @@ export default function WhatsAppTestimonials() {
               </button>
 
               <div className="flex gap-1 items-center">
-                {testimonials.map((_, idx) => (
+                {imageTestimonials.map((_, idx) => (
                   <div
                     key={idx}
                     className={`h-2 rounded-full transition-all duration-300 ${
