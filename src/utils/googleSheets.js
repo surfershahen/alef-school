@@ -2,9 +2,13 @@
  * Google Sheets API utility for submitting form data
  * Uses Google Apps Script as the backend endpoint
  */
+// https://script.google.com/macros/s/AKfycbyt51E3axE_XY6DVDI4C_b2mlMU3oFbCsOyuJqmTEPDK-6p2-ZEpacBaEgTKfFf-qRtDg/exec
+
+import { handleApiError, logError } from "./errorHandling";
+import { validateForm, commonRules } from "./validation";
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbyt51E3axE_XY6DVDI4C_b2mlMU3oFbCsOyuJqmTEPDK-6p2-ZEpacBaEgTKfFf-qRtDg/exec";
+  "https://script.google.com/macros/s/AKfycbw0ot0ANaHoTr9r2IX_Ke3bhgoXpz4OZbh1K_UAnPfij8lj4ga5zQJkyV5VGJ9rM2Eyjg/exec";
 
 /**
  * Submits form data to Google Sheets via Google Apps Script
@@ -17,6 +21,12 @@ const GOOGLE_SCRIPT_URL =
  */
 export const submitToGoogleSheets = async formData => {
   try {
+    // Validate form data
+    const validation = validateForm(formData, commonRules);
+    if (!validation.isValid) {
+      throw handleValidationError(validation.errors);
+    }
+
     // Prepare form data for submission
     const formDataToSend = new FormData();
     formDataToSend.append("name", formData.name);
@@ -64,13 +74,8 @@ export const submitToGoogleSheets = async formData => {
       data: result,
     };
   } catch (error) {
-    console.error("❌ Error submitting to Google Sheets:", error);
-
-    return {
-      success: false,
-      message: error.message || "Failed to submit data to Google Sheets",
-      error: error,
-    };
+    logError(error, "GoogleSheets.submitToGoogleSheets");
+    return handleApiError(error);
   }
 };
 
@@ -88,6 +93,12 @@ export const updateQuestionnaireStatus = async (
   answers = null
 ) => {
   try {
+    // Validate user data
+    const validation = validateForm(userData, { email: commonRules.email });
+    if (!validation.isValid) {
+      throw handleValidationError(validation.errors);
+    }
+
     // Prepare form data for status update
     const formDataToSend = new FormData();
     formDataToSend.append("action", "updateStatus");
@@ -139,13 +150,8 @@ export const updateQuestionnaireStatus = async (
       data: result,
     };
   } catch (error) {
-    console.error("❌ Error updating questionnaire status:", error);
-
-    return {
-      success: false,
-      message: error.message || "Failed to update questionnaire status",
-      error: error,
-    };
+    logError(error, "GoogleSheets.updateQuestionnaireStatus");
+    return handleApiError(error);
   }
 };
 

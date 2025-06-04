@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { submitToGoogleSheets } from "@/utils/googleSheets";
+import { validateForm, commonRules } from "@/utils/validation";
+import { handleValidationError, logError } from "@/utils/errorHandling";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -39,41 +41,13 @@ export default function SignupForm() {
     }
   };
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    // Name validation
-    if (!formData.name.trim()) {
-      newErrors.name = "الاسم مطلوب";
-    }
-
-    // Phone validation
-    if (!formData.phone.trim()) {
-      newErrors.phone = "رقم الهاتف مطلوب";
-    } else if (!/^[0-9+\s()-]{8,15}$/.test(formData.phone.trim())) {
-      newErrors.phone = "يرجى إدخال رقم هاتف صحيح";
-    }
-
-    // Email validation
-    if (!formData.email.trim()) {
-      newErrors.email = "البريد الإلكتروني مطلوب";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email.trim())) {
-      newErrors.email = "يرجى إدخال بريد إلكتروني صحيح";
-    }
-
-    // City validation (optional but good to have)
-    if (!formData.city.trim()) {
-      newErrors.city = "اسم المدينة مطلوب";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
   const handleSubmit = async e => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    // Validate form using centralized validation
+    const validation = validateForm(formData, commonRules);
+    if (!validation.isValid) {
+      setErrors(validation.errors);
       return;
     }
 
@@ -88,15 +62,19 @@ export default function SignupForm() {
         throw new Error(result.message);
       }
 
+      setIsSubmitted(true);
+
       // Navigate to exam page with form data
       navigate(createPageUrl("exam"), {
         state: { formData },
       });
     } catch (error) {
-      console.error("Error submitting form:", error);
+      logError(error, "SignupForm.handleSubmit");
       setErrors(prev => ({
         ...prev,
-        submit: "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
+        submit:
+          error.message ||
+          "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
       }));
     } finally {
       setIsSubmitting(false);
@@ -146,7 +124,7 @@ export default function SignupForm() {
                     <div>
                       <Label
                         htmlFor="name"
-                        className="block text-sm sm:text-base  text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
+                        className="block text-sm sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
                       >
                         الاسم الكامل
                       </Label>
@@ -165,7 +143,7 @@ export default function SignupForm() {
                         placeholder="أدخل اسمك الكامل"
                       />
                       {errors.name && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500  sm:text-right">
+                        <p className="mt-1 text-xs sm:text-sm text-red-500 sm:text-right">
                           {errors.name}
                         </p>
                       )}
@@ -218,7 +196,7 @@ export default function SignupForm() {
                             ? "border-red-300 focus:border-red-500"
                             : "border-gray-200"
                         }`}
-                        placeholder="أدخل رقم هاتفك "
+                        placeholder="أدخل رقم هاتفك"
                       />
                       {errors.phone && (
                         <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
@@ -230,7 +208,7 @@ export default function SignupForm() {
                     <div>
                       <Label
                         htmlFor="city"
-                        className="block text-sm sm:text-base  text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
+                        className="block text-sm sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
                       >
                         اسم المدينة
                       </Label>
@@ -249,7 +227,7 @@ export default function SignupForm() {
                         placeholder="ادخل اسم المدينة"
                       />
                       {errors.city && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500  sm:text-right">
+                        <p className="mt-1 text-xs sm:text-sm text-red-500 sm:text-right">
                           {errors.city}
                         </p>
                       )}
@@ -258,9 +236,9 @@ export default function SignupForm() {
                     <Button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg  transition-colors font-bold"
+                      className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg transition-colors font-bold"
                     >
-                      {isSubmitting ? "جاري التسجيل..." : "ابدأ التحدي  "}
+                      {isSubmitting ? "جاري التسجيل..." : "ابدأ التحدي"}
                     </Button>
 
                     {errors.submit && (
@@ -268,17 +246,6 @@ export default function SignupForm() {
                         {errors.submit}
                       </p>
                     )}
-
-                    <p className="text-xs sm:text-sm text-center text-gray-500 mt-2 sm:mt-4">
-                      بالتسجيل، أنت توافق على{" "}
-                      <a href="#" className="text-blue-500 hover:underline">
-                        شروط الاستخدام
-                      </a>{" "}
-                      و{" "}
-                      <a href="#" className="text-blue-500 hover:underline">
-                        سياسة الخصوصية
-                      </a>
-                    </p>
                   </form>
                 )}
               </div>
