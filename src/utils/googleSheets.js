@@ -8,7 +8,7 @@ import { handleApiError, logError } from "./errorHandling";
 import { validateForm, commonRules } from "./validation";
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbw0ot0ANaHoTr9r2IX_Ke3bhgoXpz4OZbh1K_UAnPfij8lj4ga5zQJkyV5VGJ9rM2Eyjg/exec";
+  "https://script.google.com/macros/s/AKfycbySi3xa8TA5TqLirCtcijvqf1cmlUnTrmdKYQ3Nvuc2KmrvnJ_kcHh7sOv2bYLr7xviWw/exec";
 
 /**
  * Submits form data to Google Sheets via Google Apps Script

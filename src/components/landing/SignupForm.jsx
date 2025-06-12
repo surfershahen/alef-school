@@ -238,7 +238,7 @@ export default function SignupForm() {
                       disabled={isSubmitting}
                       className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg transition-colors font-bold"
                     >
-                      {isSubmitting ? "جاري التسجيل..." : "ابدأ التحدي"}
+                      {isSubmitting ? "جاري التسجيل..." :"سجل وابدا احكي بطلاقة "}
                     </Button>
 
                     {errors.submit && (
@@ -253,8 +253,8 @@ export default function SignupForm() {
               {/* Blue Side */}
               <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
-                  احصل على تقييم <br />
-                  أولي مجاني لمستواك بالعبري!{" "}
+                سجل واحصل على قاموس 
+                سلينج هدية منا الك<br />{" "}
                 </h2>
 
                 <p className="text-base sm:text-lg mb-6 sm:mb-8">
