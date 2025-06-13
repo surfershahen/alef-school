@@ -1,5 +1,3 @@
-import React from "react";
-import { motion } from "framer-motion";
 import { Phone, MessageCircle, CheckCircle } from "lucide-react";
 import SectionDivider from "@/components/ui/SectionDivider";
 

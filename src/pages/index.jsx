@@ -1,6 +1,3 @@
-import React from "react";
-import { motion } from "framer-motion";
-
 // Import all landing page components
 import FontStyles from "@/components/landing/FontStyles";
 import Header from "@/components/landing/Header";

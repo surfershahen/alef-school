@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
@@ -18,7 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { updateQuestionnaireStatus } from "@/utils/googleSheets";
 import { validateQuestionnaireAnswers } from "@/utils/aiProcessing";
-import { handleApiError, logError } from "@/utils/errorHandling";
+import { logError } from "@/utils/errorHandling";
 
 export default function Exam() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -48,15 +48,15 @@ export default function Exam() {
   const currentQuestion = questions[currentQuestionIndex];
   const totalQuestions = questions.length;
 
-  const handleAnswer = answer => {
-    setAnswers(prev => ({
+  const handleAnswer = (answer) => {
+    setAnswers((prev) => ({
       ...prev,
       [currentQuestion.id]: answer,
     }));
 
     // Move to next question
     if (currentQuestionIndex < totalQuestions - 1) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex((prev) => prev + 1);
       window.scrollTo(0, 0);
     }
   };
@@ -192,7 +192,7 @@ export default function Exam() {
           </h2>
 
           <div className="space-y-4">
-            {currentQuestion.options.map((option, index) => (
+            {currentQuestion.options.map((option) => (
               <motion.button
                 key={option.value}
                 onClick={() => handleAnswer(option.value)}

@@ -1,8 +1,7 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { PlayCircle, PauseCircle } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import { SectionContainer } from "@/components/ui/section-container";
-import SectionDivider from "@/components/ui/SectionDivider";
 
 export default function Testimonials() {
   const [playingVideo, setPlayingVideo] = useState(null);
@@ -30,7 +29,8 @@ export default function Testimonials() {
     },
     {
       name: "عروة",
-      quote: "بفضل الف سكول اتقنت لغة لعبرية بسهولة واصبحت اتحدث بطلاقة في العمل ",
+      quote:
+        "بفضل الف سكول اتقنت لغة لعبرية بسهولة واصبحت اتحدث بطلاقة في العمل ",
       video: "assets/videos/aroaa.mp4",
       poster: "assets/images/aroaa-poster.jpg",
     },
@@ -55,7 +55,7 @@ export default function Testimonials() {
     },
   ];
 
-  const handleVideoClick = index => {
+  const handleVideoClick = (index) => {
     if (playingVideo === index) {
       setPlayingVideo(null);
       if (videoRefs.current[index]) {
@@ -108,7 +108,7 @@ export default function Testimonials() {
                 {testimonial.video ? (
                   <>
                     <video
-                      ref={el => (videoRefs.current[index] = el)}
+                      ref={(el) => (videoRefs.current[index] = el)}
                       src={testimonial.video}
                       className="w-full h-full object-cover"
                       controls={playingVideo === index}
