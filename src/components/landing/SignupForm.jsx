@@ -93,9 +93,9 @@ export default function SignupForm() {
             <div className="flex flex-col md:flex-row">
               {/* Form Side */}
               <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12">
-                <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 title-font text-center sm:text-right">
+                {/* <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 title-font text-center sm:text-right">
                   سجل للحصول على تقييم مجاني
-                </h2>
+                </h2> */}
 
                 {isSubmitted ? (
                   <motion.div
@@ -257,16 +257,24 @@ export default function SignupForm() {
                 سلينج هدية منا الك<br />{" "}
                 </h2>
 
-                <p className="text-base sm:text-lg mb-6 sm:mb-8">
+                {/* <p className="text-base sm:text-lg mb-6 sm:mb-8">
                   سجل تفاصيلك وخلينا نبعتلك <br />
                   فيديو ترحيبي واختبار صغير.
-                </p>
+                </p> */}
+                
 
-                <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
+                {/* <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
                   <p className="text-base sm:text-lg">
                     " 🕐 خلال 10 دقايق بتوصلك
                     <br />
                     رسالة ترحيب عالواتساب – خليك جاهز! "
+                  </p>
+                </div> */}
+                 <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
+                  <p className="text-base sm:text-lg">
+                    " 🕐 خلال 24 ساعة راح نتواصل معك 
+                    <br />
+                     خليك جاهز! "
                   </p>
                 </div>
               </div>

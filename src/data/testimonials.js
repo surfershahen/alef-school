@@ -20,7 +20,7 @@ export const videoTestimonials = [
   },
   {
     name: "عروة",
-    quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+    quote:"بفضل الف سكول اتقنت لغة لعبرية بسهولة واصبحت اتحدث بطلاقة في العمل ",
     video: "assets/videos/aroaa.mp4",
     poster: "assets/images/aroaa-poster.jpg",
   },
