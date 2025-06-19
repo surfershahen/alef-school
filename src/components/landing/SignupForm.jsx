@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { submitToGoogleSheets } from "@/utils/googleSheets";
 import { validateForm, commonRules } from "@/utils/validation";
-import { handleValidationError, logError } from "@/utils/errorHandling";
+import { logError } from "@/utils/errorHandling";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -25,23 +25,23 @@ export default function SignupForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = e => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
 
     // Clear error when user types
     if (errors[name]) {
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
         [name]: "",
       }));
     }
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Validate form using centralized validation
@@ -52,7 +52,7 @@ export default function SignupForm() {
     }
 
     setIsSubmitting(true);
-    setErrors(prev => ({ ...prev, submit: "" }));
+    setErrors((prev) => ({ ...prev, submit: "" }));
 
     try {
       // Submit form data to Google Sheets
@@ -70,7 +70,7 @@ export default function SignupForm() {
       });
     } catch (error) {
       logError(error, "SignupForm.handleSubmit");
-      setErrors(prev => ({
+      setErrors((prev) => ({
         ...prev,
         submit:
           error.message ||
@@ -238,7 +238,9 @@ export default function SignupForm() {
                       disabled={isSubmitting}
                       className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg transition-colors font-bold"
                     >
-                      {isSubmitting ? "جاري التسجيل..." :"سجل وابدا احكي بطلاقة "}
+                      {isSubmitting
+                        ? "جاري التسجيل..."
+                        : "سجل وابدا احكي بطلاقة "}
                     </Button>
 
                     {errors.submit && (
@@ -253,15 +255,14 @@ export default function SignupForm() {
               {/* Blue Side */}
               <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
-                سجل واحصل على قاموس 
-                سلينج هدية منا الك<br />{" "}
+                  سجل واحصل على قاموس سلينج هدية منا الك
+                  <br />{" "}
                 </h2>
 
                 {/* <p className="text-base sm:text-lg mb-6 sm:mb-8">
                   سجل تفاصيلك وخلينا نبعتلك <br />
                   فيديو ترحيبي واختبار صغير.
                 </p> */}
-                
 
                 {/* <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
                   <p className="text-base sm:text-lg">
@@ -270,11 +271,11 @@ export default function SignupForm() {
                     رسالة ترحيب عالواتساب – خليك جاهز! "
                   </p>
                 </div> */}
-                 <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
+                <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
                   <p className="text-base sm:text-lg">
-                    " 🕐 خلال 24 ساعة راح نتواصل معك 
+                    🕐 خلال 24 ساعة راح نتواصل معك
                     <br />
-                     خليك جاهز! "
+                    خليك جاهز!
                   </p>
                 </div>
               </div>

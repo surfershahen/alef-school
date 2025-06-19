@@ -18,8 +18,8 @@ export default function Features() {
           <div className="inline-flex items-center justify-center mb-4">
             <Lock className="h-5 w-5 text-[#0188D6] mr-2" />
             <h2 className="text-2xl sm:text-3xl font-bold title-font">
-              ليش تختار <span className="text-[#0188D6]">ALEF</span>{" "}
-              <span className="text-red-500">SCHOOL</span>?
+              ليش تختار <span className="text-[#0188D6]">اكاديمية</span>{" "}
+              <span className="text-red-500">אלף</span>?
             </h2>
           </div>
         </motion.div>
@@ -44,6 +44,7 @@ export default function Features() {
           ))}
         </div>
       </SectionContainer>
+
       <SectionDivider color="#0188D6" />
     </>
   );

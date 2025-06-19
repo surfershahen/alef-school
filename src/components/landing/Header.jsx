@@ -1,4 +1,3 @@
-import React from "react";
 import ScrollToForm from "./ScrollToForm";
 
 export default function Header() {

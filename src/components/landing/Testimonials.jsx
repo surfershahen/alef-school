@@ -9,6 +9,12 @@ export default function Testimonials() {
 
   const videoTestimonials = [
     {
+      name: "بشير",
+      quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
+      video: "assets/videos/bashir.mp4",
+      poster: "assets/images/bashir-poster.png",
+    },
+    {
       name: "مريم",
       quote: "تعلمت العبرية بسهولة وأصبحت أتحدث بطلاقة في العمل",
       video: "assets/videos/maryem.mov",

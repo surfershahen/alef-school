@@ -1,7 +1,7 @@
-import React from "react";
+import PropTypes from "prop-types";
 
 export default function ScrollToForm({ children, className }) {
-  const handleScrollToForm = e => {
+  const handleScrollToForm = (e) => {
     e.preventDefault();
     const formElement = document.getElementById("signup");
     if (formElement) {
@@ -22,3 +22,8 @@ export default function ScrollToForm({ children, className }) {
     </button>
   );
 }
+
+ScrollToForm.propTypes = {
+  children: PropTypes.node.isRequired,
+  className: PropTypes.string,
+};

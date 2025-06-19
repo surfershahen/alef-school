@@ -1,10 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle, ChevronRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import ScrollToForm from "./ScrollToForm";
 import { SectionContainer } from "@/components/ui/section-container";
-import SectionDivider from "@/components/ui/SectionDivider";
 
 export default function Hero() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
