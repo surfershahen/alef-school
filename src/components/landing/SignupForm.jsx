@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -25,61 +25,110 @@ export default function SignupForm() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+  // Memoized and optimized change handler for better INP
+  const handleChange = useCallback(
+    (e) => {
+      const { name, value } = e.target;
 
-    // Clear error when user types
-    if (errors[name]) {
-      setErrors((prev) => ({
-        ...prev,
-        [name]: "",
-      }));
-    }
-  };
+      // Use requestAnimationFrame for non-critical updates to improve INP
+      requestAnimationFrame(() => {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+        // Clear error when user types
+        if (errors[name]) {
+          setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+          }));
+        }
+      });
+    },
+    [errors]
+  );
 
-    // Validate form using centralized validation
-    const validation = validateForm(formData, commonRules);
-    if (!validation.isValid) {
-      setErrors(validation.errors);
-      return;
-    }
+  // Optimized submit handler
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    setIsSubmitting(true);
-    setErrors((prev) => ({ ...prev, submit: "" }));
-
-    try {
-      // Submit form data to Google Sheets
-      const result = await submitToGoogleSheets(formData);
-
-      if (!result.success) {
-        throw new Error(result.message);
+      // Validate form using centralized validation
+      const validation = validateForm(formData, commonRules);
+      if (!validation.isValid) {
+        setErrors(validation.errors);
+        return;
       }
 
-      setIsSubmitted(true);
+      setIsSubmitting(true);
+      setErrors((prev) => ({ ...prev, submit: "" }));
 
-      // Navigate to exam page with form data
-      navigate(createPageUrl("exam"), {
-        state: { formData },
-      });
-    } catch (error) {
-      logError(error, "SignupForm.handleSubmit");
-      setErrors((prev) => ({
-        ...prev,
-        submit:
-          error.message ||
-          "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
-      }));
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+      try {
+        // Submit form data to Google Sheets
+        const result = await submitToGoogleSheets(formData);
+
+        if (!result.success) {
+          throw new Error(result.message);
+        }
+
+        setIsSubmitted(true);
+
+        // Delay navigation slightly to ensure success message is visible
+        setTimeout(() => {
+          navigate(createPageUrl("exam"), {
+            state: { formData },
+          });
+        }, 1000);
+      } catch (error) {
+        logError(error, "SignupForm.handleSubmit");
+        setErrors((prev) => ({
+          ...prev,
+          submit:
+            error.message ||
+            "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
+        }));
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [formData, navigate]
+  );
+
+  // Memoized form fields to prevent unnecessary re-renders
+  const formFields = useMemo(
+    () => [
+      {
+        id: "name",
+        name: "name",
+        type: "text",
+        label: "الاسم الكامل",
+        placeholder: "أدخل اسمك الكامل",
+      },
+      {
+        id: "email",
+        name: "email",
+        type: "email",
+        label: "البريد الإلكتروني",
+        placeholder: "أدخل بريدك الإلكتروني",
+      },
+      {
+        id: "phone",
+        name: "phone",
+        type: "tel",
+        label: "رقم الهاتف (للتواصل عبر واتساب)",
+        placeholder: "أدخل رقم هاتفك",
+      },
+      {
+        id: "city",
+        name: "city",
+        type: "text",
+        label: "اسم المدينة",
+        placeholder: "ادخل اسم المدينة",
+      },
+    ],
+    []
+  );
 
   return (
     <>
@@ -91,186 +140,138 @@ export default function SignupForm() {
         <div className="max-w-6xl mx-auto">
           <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-xl overflow-hidden">
             <div className="flex flex-col md:flex-row">
-              {/* Form Side */}
-              <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12">
-                {/* <h2 className="text-xl sm:text-2xl font-bold mb-6 sm:mb-8 title-font text-center sm:text-right">
-                  سجل للحصول على تقييم مجاني
-                </h2> */}
-
-                {isSubmitted ? (
-                  <motion.div
-                    className="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 text-center"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <div className="flex justify-center mb-4">
-                      <div className="rounded-full bg-green-100 p-2 sm:p-3">
-                        <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
-                      </div>
-                    </div>
-                    <h3 className="text-lg sm:text-xl font-bold text-green-800 mb-2">
-                      تم التسجيل بنجاح!
-                    </h3>
-                    <p className="text-green-700 text-sm sm:text-base">
-                      شكراً لتسجيلك! سنتواصل معك قريباً عبر الواتساب.
-                    </p>
-                  </motion.div>
-                ) : (
-                  <form
-                    onSubmit={handleSubmit}
-                    className="space-y-4 sm:space-y-6"
-                  >
-                    <div>
-                      <Label
-                        htmlFor="name"
-                        className="block text-sm sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
+              {/* Form Side - Fixed dimensions to prevent any layout shift */}
+              <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 relative">
+                {/* Fixed height container that prevents all layout shifts */}
+                <div className="min-h-[650px] sm:min-h-[600px] flex flex-col justify-center relative">
+                  {/* Success Message Overlay - Better positioned to prevent CLS */}
+                  {isSubmitted && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-95 z-20 backdrop-blur-sm">
+                      <motion.div
+                        className="bg-green-50 border border-green-200 rounded-lg p-4 sm:p-6 text-center max-w-sm mx-auto shadow-lg"
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        الاسم الكامل
-                      </Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        type="text"
-                        value={formData.name}
-                        onChange={handleChange}
-                        dir="rtl"
-                        className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
-                          errors.name
-                            ? "border-red-300 focus:border-red-500"
-                            : "border-gray-200"
-                        }`}
-                        placeholder="أدخل اسمك الكامل"
-                      />
-                      {errors.name && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500 sm:text-right">
-                          {errors.name}
+                        <div className="flex justify-center mb-4">
+                          <div className="rounded-full bg-green-100 p-2 sm:p-3">
+                            <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
+                          </div>
+                        </div>
+                        <h3 className="text-lg sm:text-xl font-bold text-green-800 mb-2">
+                          تم التسجيل بنجاح!
+                        </h3>
+                        <p className="text-green-700 text-sm sm:text-base">
+                          شكراً لتسجيلك! سنتواصل معك قريباً عبر الواتساب.
                         </p>
-                      )}
+                      </motion.div>
                     </div>
+                  )}
 
-                    <div>
-                      <Label
-                        htmlFor="email"
-                        className="block text-sm sm:text-base font-bold text-gray-700 mb-1 sm:mb-2 sm:text-right"
-                      >
-                        البريد الإلكتروني
-                      </Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        dir="rtl"
-                        className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
-                          errors.email
-                            ? "border-red-300 focus:border-red-500"
-                            : "border-gray-200"
-                        }`}
-                        placeholder="أدخل بريدك الإلكتروني"
-                      />
-                      {errors.email && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
-                          {errors.email}
-                        </p>
-                      )}
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="phone"
-                        className="block text-sm sm:text-base font-bold text-gray-700 mb-1 sm:mb-2 sm:text-right"
-                      >
-                        رقم الهاتف (للتواصل عبر واتساب)
-                      </Label>
-                      <Input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handleChange}
-                        dir="rtl"
-                        className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
-                          errors.phone
-                            ? "border-red-300 focus:border-red-500"
-                            : "border-gray-200"
-                        }`}
-                        placeholder="أدخل رقم هاتفك"
-                      />
-                      {errors.phone && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500 text-center sm:text-right">
-                          {errors.phone}
-                        </p>
-                      )}
-                    </div>
-
-                    <div>
-                      <Label
-                        htmlFor="city"
-                        className="block text-sm sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
-                      >
-                        اسم المدينة
-                      </Label>
-                      <Input
-                        id="city"
-                        name="city"
-                        type="text"
-                        value={formData.city}
-                        onChange={handleChange}
-                        dir="rtl"
-                        className={`w-full p-2 sm:p-3 rounded-xl text-sm sm:text-base ${
-                          errors.city
-                            ? "border-red-300 focus:border-red-500"
-                            : "border-gray-200"
-                        }`}
-                        placeholder="ادخل اسم المدينة"
-                      />
-                      {errors.city && (
-                        <p className="mt-1 text-xs sm:text-sm text-red-500 sm:text-right">
-                          {errors.city}
-                        </p>
-                      )}
-                    </div>
-
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="w-full bg-[#E4665A] hover:bg-[#d13a3a] text-white rounded-xl p-2 sm:p-3 text-base sm:text-lg transition-colors font-bold"
+                  {/* Form Container - Always maintains same dimensions */}
+                  <div className="w-full">
+                    <form
+                      onSubmit={handleSubmit}
+                      className="space-y-5 sm:space-y-6 w-full"
+                      noValidate
                     >
-                      {isSubmitting
-                        ? "جاري التسجيل..."
-                        : "سجل وابدا احكي بطلاقة "}
-                    </Button>
+                      {formFields.map((field) => (
+                        <div key={field.id} className="min-h-[85px]">
+                          <Label
+                            htmlFor={field.id}
+                            className="block text-sm sm:text-base text-gray-700 font-bold mb-2 sm:text-right"
+                          >
+                            {field.label}
+                          </Label>
+                          <Input
+                            id={field.id}
+                            name={field.name}
+                            type={field.type}
+                            value={formData[field.name]}
+                            onChange={handleChange}
+                            dir="rtl"
+                            autoComplete={
+                              field.name === "email"
+                                ? "email"
+                                : field.name === "tel"
+                                ? "tel"
+                                : "on"
+                            }
+                            className={`w-full p-3 rounded-xl text-sm sm:text-base min-h-[44px] transition-colors duration-150 ${
+                              errors[field.name]
+                                ? "border-red-300 focus:border-red-500 focus:ring-red-200"
+                                : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
+                            }`}
+                            placeholder={field.placeholder}
+                          />
+                          {/* Fixed height error container to prevent layout shift */}
+                          <div className="h-5 mt-1 flex items-start">
+                            {errors[field.name] && (
+                              <p className="text-xs sm:text-sm text-red-500 sm:text-right animate-in fade-in-50 duration-150">
+                                {errors[field.name]}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
 
-                    {errors.submit && (
-                      <p className="mt-2 text-xs sm:text-sm text-red-500 text-center">
-                        {errors.submit}
-                      </p>
-                    )}
-                  </form>
-                )}
+                      {/* Button Container - Fixed dimensions */}
+                      <div className="pt-4 min-h-[60px]">
+                        <Button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="w-full bg-[#E4665A] hover:bg-[#d13a3a] disabled:bg-gray-400 text-white rounded-xl p-3 text-base sm:text-lg font-bold min-h-[52px] flex items-center justify-center transition-all duration-150 transform active:scale-95"
+                        >
+                          {isSubmitting ? (
+                            <span className="flex items-center">
+                              <svg
+                                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
+                              </svg>
+                              جاري التسجيل...
+                            </span>
+                          ) : (
+                            "سجل وابدا احكي بطلاقة"
+                          )}
+                        </Button>
+                      </div>
+
+                      {/* Fixed height error container for submit errors */}
+                      <div className="h-6 flex items-start justify-center">
+                        {errors.submit && (
+                          <p className="text-xs sm:text-sm text-red-500 text-center animate-in fade-in-50 duration-150">
+                            {errors.submit}
+                          </p>
+                        )}
+                      </div>
+                    </form>
+                  </div>
+                </div>
               </div>
 
-              {/* Blue Side */}
-              <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right">
+              {/* Blue Side - Optimized with transform for better performance */}
+              <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right will-change-transform">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
                   سجل واحصل على قاموس سلينج هدية منا الك
                   <br />{" "}
                 </h2>
 
-                {/* <p className="text-base sm:text-lg mb-6 sm:mb-8">
-                  سجل تفاصيلك وخلينا نبعتلك <br />
-                  فيديو ترحيبي واختبار صغير.
-                </p> */}
-
-                {/* <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
-                  <p className="text-base sm:text-lg">
-                    " 🕐 خلال 10 دقايق بتوصلك
-                    <br />
-                    رسالة ترحيب عالواتساب – خليك جاهز! "
-                  </p>
-                </div> */}
                 <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
                   <p className="text-base sm:text-lg">
                     🕐 خلال 24 ساعة راح نتواصل معك

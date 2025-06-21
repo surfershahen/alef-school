@@ -110,7 +110,8 @@ export default function Testimonials() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
             >
-              <div className="relative h-[220px] sm:h-[250px] overflow-hidden">
+              {/* Fixed aspect ratio container to prevent layout shift */}
+              <div className="relative w-full aspect-video overflow-hidden">
                 {testimonial.video ? (
                   <>
                     <video
@@ -121,16 +122,19 @@ export default function Testimonials() {
                       playsInline
                       poster={testimonial.poster}
                     />
-                    {playingVideo !== index && (
-                      <div
-                        className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center cursor-pointer"
-                        onClick={() => handleVideoClick(index)}
-                      >
-                        <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
-                          <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
-                        </button>
-                      </div>
-                    )}
+                    {/* Play button overlay - always present but conditionally visible */}
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center cursor-pointer transition-opacity duration-300 ${
+                        playingVideo === index
+                          ? "opacity-0 pointer-events-none"
+                          : "opacity-100"
+                      }`}
+                      onClick={() => handleVideoClick(index)}
+                    >
+                      <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
+                        <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
+                      </button>
+                    </div>
                   </>
                 ) : (
                   <>
