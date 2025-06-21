@@ -97,17 +97,12 @@ export const getAllTrackingParameters = () => {
 export const determineSourceValue = (trackingParams) => {
   const { fbclid, gclid, utm_source, utm_campaign } = trackingParams;
 
-  // Priority 1: Facebook Click ID
-  if (fbclid) {
-    return fbclid;
+  // Priority 1: Facebook or Google Click ID - return the full URL
+  if (fbclid || gclid) {
+    return window.location.href;
   }
 
-  // Priority 2: Google Click ID
-  if (gclid) {
-    return gclid;
-  }
-
-  // Priority 3: UTM parameters
+  // Priority 2: UTM parameters
   if (utm_source) {
     if (utm_campaign) {
       return `${utm_source} - ${utm_campaign}`;
