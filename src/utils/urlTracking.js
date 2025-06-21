@@ -88,3 +88,36 @@ export const getAllTrackingParameters = () => {
 
   return cleanParams;
 };
+
+/**
+ * Determines the source value from tracking parameters based on priority.
+ * @param {Object} trackingParams - The combined tracking parameters.
+ * @returns {string} The determined source value.
+ */
+export const determineSourceValue = (trackingParams) => {
+  const { fbclid, gclid, utm_source, utm_campaign } = trackingParams;
+
+  // Priority 1: Facebook Click ID
+  if (fbclid) {
+    return fbclid;
+  }
+
+  // Priority 2: Google Click ID
+  if (gclid) {
+    return gclid;
+  }
+
+  // Priority 3: UTM parameters
+  if (utm_source) {
+    if (utm_campaign) {
+      return `${utm_source} - ${utm_campaign}`;
+    }
+    return utm_source;
+  }
+  if (utm_campaign) {
+    return utm_campaign;
+  }
+
+  // Default fallback
+  return "Direct";
+};

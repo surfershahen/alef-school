@@ -6,7 +6,7 @@
 
 import { handleApiError, logError } from "./errorHandling";
 import { validateForm, commonRules } from "./validation";
-import { getAllTrackingParameters } from "./urlTracking";
+import { getAllTrackingParameters, determineSourceValue } from "./urlTracking";
 
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbySi3xa8TA5TqLirCtcijvqf1cmlUnTrmdKYQ3Nvuc2KmrvnJ_kcHh7sOv2bYLr7xviWw/exec";
@@ -25,11 +25,13 @@ export const submitToGoogleSheets = async (formData) => {
     // Validate form data
     const validation = validateForm(formData, commonRules);
     if (!validation.isValid) {
-      throw handleValidationError(validation.errors);
+      // Throw a new error with the validation details
+      throw new Error(JSON.stringify(validation.errors));
     }
 
-    // Get URL tracking parameters
+    // Get URL tracking parameters and determine the source
     const trackingParams = getAllTrackingParameters();
+    const sourceValue = determineSourceValue(trackingParams);
 
     // Prepare form data for submission
     const formDataToSend = new FormData();
@@ -40,12 +42,8 @@ export const submitToGoogleSheets = async (formData) => {
     formDataToSend.append("date", new Date().toLocaleString());
     formDataToSend.append("status", "false"); // Default status is false (questionnaire not completed)
 
-    // Add URL tracking parameters
-    Object.keys(trackingParams).forEach((key) => {
-      if (trackingParams[key]) {
-        formDataToSend.append(key, trackingParams[key]);
-      }
-    });
+    // Append the determined source value with the key "source"
+    formDataToSend.append("source", sourceValue);
 
     // Log the data being sent (for debugging)
     console.log("📤 Submitting data to Google Sheets:", {
@@ -55,7 +53,7 @@ export const submitToGoogleSheets = async (formData) => {
       city: formData.city,
       date: new Date().toLocaleString(),
       status: "false",
-      tracking_params: trackingParams,
+      source: sourceValue, // Log the final source value being sent
     });
 
     // Submit to Google Apps Script
@@ -108,7 +106,8 @@ export const updateQuestionnaireStatus = async (
     // Validate user data
     const validation = validateForm(userData, { email: commonRules.email });
     if (!validation.isValid) {
-      throw handleValidationError(validation.errors);
+      // Throw a new error with the validation details
+      throw new Error(JSON.stringify(validation.errors));
     }
 
     // Prepare form data for status update
