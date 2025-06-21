@@ -9,7 +9,7 @@ import { validateForm, commonRules } from "./validation";
 import { getAllTrackingParameters, determineSourceValue } from "./urlTracking";
 
 const GOOGLE_SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbwxZkRMs00l0NgE1Zf-68LGYam0fUjNyebNmLz1baMv8wWeOdOvtfgpxcn5lpzoDfBnYg/exec";
+  "https://script.google.com/macros/s/AKfycbwS4L70FjUC3RMn1lxSckjKXZJcQ7HwYzXBl0ji1L1qRtUrbAjJjNbfGs2tT_3yRUWThQ/exec";
 
 /**
  * Submits form data to Google Sheets via Google Apps Script
