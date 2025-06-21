@@ -6,6 +6,7 @@
 
 import { handleApiError, logError } from "./errorHandling";
 import { validateForm, commonRules } from "./validation";
+import { getAllTrackingParameters } from "./urlTracking";
 
 const GOOGLE_SCRIPT_URL =
   "https://script.google.com/macros/s/AKfycbySi3xa8TA5TqLirCtcijvqf1cmlUnTrmdKYQ3Nvuc2KmrvnJ_kcHh7sOv2bYLr7xviWw/exec";
@@ -13,19 +14,22 @@ const GOOGLE_SCRIPT_URL =
 /**
  * Submits form data to Google Sheets via Google Apps Script
  * @param {Object} formData - The form data to submit
- * @param {string} formData.name - User's full nameß
+ * @param {string} formData.name - User's full name
  * @param {string} formData.phone - User's phone number
  * @param {string} formData.email - User's email address
  * @param {string} formData.city - User's city
  * @returns {Promise<Object>} - Success/error response
  */
-export const submitToGoogleSheets = async formData => {
+export const submitToGoogleSheets = async (formData) => {
   try {
     // Validate form data
     const validation = validateForm(formData, commonRules);
     if (!validation.isValid) {
       throw handleValidationError(validation.errors);
     }
+
+    // Get URL tracking parameters
+    const trackingParams = getAllTrackingParameters();
 
     // Prepare form data for submission
     const formDataToSend = new FormData();
@@ -36,6 +40,13 @@ export const submitToGoogleSheets = async formData => {
     formDataToSend.append("date", new Date().toLocaleString());
     formDataToSend.append("status", "false"); // Default status is false (questionnaire not completed)
 
+    // Add URL tracking parameters
+    Object.keys(trackingParams).forEach((key) => {
+      if (trackingParams[key]) {
+        formDataToSend.append(key, trackingParams[key]);
+      }
+    });
+
     // Log the data being sent (for debugging)
     console.log("📤 Submitting data to Google Sheets:", {
       name: formData.name,
@@ -44,6 +55,7 @@ export const submitToGoogleSheets = async formData => {
       city: formData.city,
       date: new Date().toLocaleString(),
       status: "false",
+      tracking_params: trackingParams,
     });
 
     // Submit to Google Apps Script
@@ -160,7 +172,7 @@ export const updateQuestionnaireStatus = async (
  * @param {Object} formData - The form data to validate
  * @returns {boolean} - True if valid, false otherwise
  */
-export const validateFormData = formData => {
+export const validateFormData = (formData) => {
   const requiredFields = ["name", "phone", "city", "email"];
 
   for (const field of requiredFields) {

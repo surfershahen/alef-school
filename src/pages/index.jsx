@@ -1,4 +1,5 @@
 // Import all landing page components
+import { useEffect } from "react";
 import FontStyles from "@/components/landing/FontStyles";
 import Header from "@/components/landing/Header";
 import Hero from "@/components/landing/Hero";
@@ -9,8 +10,14 @@ import Testimonials from "@/components/landing/Testimonials";
 import WhatsAppTestimonials from "@/components/landing/WhatsAppTestimonials";
 import Qualifications from "@/components/landing/Qualifications";
 import FinalCTA from "@/components/landing/FinalCTA";
+import { initializeUrlTracking } from "@/utils/urlTracking";
 
 export default function LandingPage() {
+  // Initialize URL tracking on page load
+  useEffect(() => {
+    initializeUrlTracking();
+  }, []);
+
   return (
     <div
       className="bg-white min-h-screen text-[#1D1D1B] overflow-x-hidden font-almoni"
