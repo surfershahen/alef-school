@@ -9,6 +9,7 @@ import { createPageUrl } from "@/utils";
 import { submitToGoogleSheets } from "@/utils/googleSheets";
 import { validateForm, commonRules } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
+import { saveUserInfo } from "@/utils/localStorage";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -71,6 +72,9 @@ export default function SignupForm() {
         if (!result.success) {
           throw new Error(result.message);
         }
+
+        // Persist user info for later Calendly prefill
+        saveUserInfo({ name: formData.name, email: formData.email });
 
         setIsSubmitted(true);
 

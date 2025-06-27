@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import { getUserInfo } from "@/utils/localStorage";
 
 export default function ThankYou() {
   const navigate = useNavigate();
@@ -10,6 +12,57 @@ export default function ThankYou() {
   // Get name from navigation state or default to empty string
   const name = location.state?.name || "";
   const firstName = name?.split(" ")[0] || "";
+
+  // Retrieve stored user info for Calendly pre-fill
+  const { name: storedName, email: storedEmail } = getUserInfo();
+
+  // Calendly base scheduling page (event or landing) – make sure this is correct
+  const CALENDLY_BASE_URL = "https://calendly.com/alefschool10"; // <- update if needed
+
+  // Ref that will host the Calendly iframe
+  const calendlyContainerRef = useRef(null);
+
+  // Dynamically load Calendly script and initialize widget with pre-filled answers
+  useEffect(() => {
+    const scriptSrc = "https://assets.calendly.com/assets/external/widget.js";
+
+    const initCalendly = () => {
+      if (!window.Calendly || !calendlyContainerRef.current) return;
+
+      // Avoid initializing multiple times (e.g., React StrictMode in dev)
+      if (calendlyContainerRef.current.dataset.initialized) return;
+
+      window.Calendly.initInlineWidget({
+        url: CALENDLY_BASE_URL,
+        parentElement: calendlyContainerRef.current,
+        prefill: {
+          name: storedName || name || "",
+          email: storedEmail || "",
+        },
+      });
+
+      calendlyContainerRef.current.dataset.initialized = "true";
+    };
+
+    if (window.Calendly) {
+      initCalendly();
+    } else {
+      const existingScript = document.querySelector(
+        `script[src='${scriptSrc}']`
+      );
+      if (existingScript) {
+        existingScript.addEventListener("load", initCalendly);
+      } else {
+        const script = document.createElement("script");
+        script.src = scriptSrc;
+        script.async = true;
+        script.onload = initCalendly;
+        document.body.appendChild(script);
+      }
+    }
+
+    // No cleanup required – we want to keep the widget/script across navigations
+  }, [CALENDLY_BASE_URL, storedName, storedEmail, name]);
 
   return (
     <div
@@ -61,10 +114,27 @@ export default function ThankYou() {
           </p>
         </motion.div>
 
+        {/* Calendly inline scheduling widget */}
         <motion.div
           initial={{ y: 20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.5 }}
+          className="mt-10"
+        >
+          {/* Container for Calendly embed – iframe injected by Calendly SDK */}
+          <div
+            ref={calendlyContainerRef}
+            className="rounded-lg shadow-lg"
+            style={{ minWidth: "320px", height: "700px" }}
+          />
+        </motion.div>
+
+        {/* Back to home button */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-8"
         >
           <Button
             onClick={() => navigate("/")}
