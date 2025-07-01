@@ -35,6 +35,7 @@ import {
   Battery,
   BatteryMedium,
   BatteryCharging,
+  PersonStanding,
 } from "lucide-react";
 
 export const questions = [
@@ -42,7 +43,12 @@ export const questions = [
     id: "age_range",
     title: "ما هي الفئة العمرية الخاصة بك؟",
     options: [
-      { value: "18-24", label: "18-24", icon: <Baby className="h-5 w-5" /> },
+      { value: "18-", label: "18-", icon: <Baby className="h-5 w-5" /> },
+      {
+        value: "18-24",
+        label: "18-24",
+        icon: <PersonStanding className="h-5 w-5" />,
+      },
       { value: "25-34", label: "25-34", icon: <Users className="h-5 w-5" /> },
       { value: "35-44", label: "35-44", icon: <User className="h-5 w-5" /> },
       { value: "45-54", label: "45-54", icon: <Laugh className="h-5 w-5" /> },
