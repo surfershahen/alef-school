@@ -3,10 +3,24 @@ import { track } from "@vercel/analytics";
 // Track custom events with Vercel Analytics
 export const trackEvent = (eventName, properties = {}) => {
   try {
+    // Add environment logging for debugging
+    console.log("Environment:", {
+      isDev: import.meta.env.DEV,
+      mode: import.meta.env.MODE,
+      url: window.location.href,
+      host: window.location.host
+    });
+    
     track(eventName, properties);
     console.log("Vercel Analytics event tracked:", eventName, properties);
   } catch (error) {
     console.warn("Failed to track Vercel Analytics event:", error);
+    console.error("Analytics error details:", {
+      eventName,
+      properties,
+      error: error.message,
+      stack: error.stack
+    });
   }
 };
 
