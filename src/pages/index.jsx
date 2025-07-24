@@ -15,7 +15,7 @@ import { trackPageView } from "@/utils/vercelAnalytics";
 import { useScrollTracking } from "@/hooks/useScrollTracking";
 
 export default function LandingPage() {
-  // Initialize scroll tracking
+  // Initialize scroll tracking with enhanced section timing (this automatically handles section tracking)
   useScrollTracking("landing_page");
 
   // Initialize URL tracking on page load
@@ -31,14 +31,39 @@ export default function LandingPage() {
     >
       <FontStyles />
       <Header />
-      <Hero />
-      <SignupForm />
-      <Features />
-      <LearningSteps />
-      <Testimonials />
-      <WhatsAppTestimonials />
-      <Qualifications />
-      <FinalCTA />
+
+      {/* Add data-section attributes for precise tracking */}
+      <section data-section="hero">
+        <Hero />
+      </section>
+
+      <section data-section="signup">
+        <SignupForm />
+      </section>
+
+      <section data-section="features">
+        <Features />
+      </section>
+
+      <section data-section="steps">
+        <LearningSteps />
+      </section>
+
+      <section data-section="testimonials">
+        <Testimonials />
+      </section>
+
+      <section data-section="whatsapp">
+        <WhatsAppTestimonials />
+      </section>
+
+      <section data-section="qualifications">
+        <Qualifications />
+      </section>
+
+      <section data-section="cta">
+        <FinalCTA />
+      </section>
     </div>
   );
 }

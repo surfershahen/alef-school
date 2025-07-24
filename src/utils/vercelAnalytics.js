@@ -102,13 +102,34 @@ export const trackVideoInteraction = (videoName, action, currentTime = 0) => {
   });
 };
 
-// Section/Component visibility
+// Section/Component visibility with enhanced timing
 export const trackSectionView = (sectionName, timeOnSection = null) => {
-  trackEvent("section_view", {
+  console.log("🔍 trackSectionView called:", { sectionName, timeOnSection });
+
+  const eventData = {
     section_name: sectionName,
-    time_on_section: timeOnSection,
     timestamp: Date.now(),
-  });
+  };
+
+  if (timeOnSection !== null) {
+    const timeInSeconds = Math.round(timeOnSection / 1000);
+    eventData.time_on_section = timeOnSection;
+    eventData.time_in_seconds = timeInSeconds;
+
+    // Categorize engagement level based on time spent
+    eventData.engagement_level =
+      timeInSeconds >= 10 ? "high" : timeInSeconds >= 5 ? "medium" : "low";
+
+    console.log("📊 Section time tracking data:", eventData);
+
+    // Track as a more specific event for time-based analysis
+    trackEvent("section_time_tracking", eventData);
+  } else {
+    console.log("👁️ Section view start data:", eventData);
+
+    // Track as section view start
+    trackEvent("section_view", eventData);
+  }
 };
 
 // Exam/Questionnaire specific tracking
