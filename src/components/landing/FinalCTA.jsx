@@ -33,7 +33,10 @@ export default function FinalCTA() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-10 py-7 text-xl transition-all shadow-lg hover:shadow-xl body-font inline-flex items-center">
+          <ScrollToForm
+            className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-10 py-7 text-xl transition-all shadow-lg hover:shadow-xl body-font inline-flex items-center"
+            ctaLocation="final_cta_section"
+          >
             سجّل وابدا احكي بطلاقة 🚀
           </ScrollToForm>
         </motion.div>

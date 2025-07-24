@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { PlayCircle, ChevronRight } from "lucide-react";
 import ScrollToForm from "./ScrollToForm";
 import { SectionContainer } from "@/components/ui/section-container";
+import { trackVideoInteraction } from "@/utils/vercelAnalytics";
 
 export default function Hero() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
@@ -47,7 +48,10 @@ export default function Hero() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <ScrollToForm className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center">
+              <ScrollToForm
+                className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center"
+                ctaLocation="hero_section"
+              >
                 بدي احكي بطلاقة
                 <ChevronRight className="mr-2 w-5 h-5" />
               </ScrollToForm>
@@ -69,7 +73,10 @@ export default function Hero() {
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
                     <button
-                      onClick={() => setIsVideoPlaying(true)}
+                      onClick={() => {
+                        setIsVideoPlaying(true);
+                        trackVideoInteraction("hero_intro_video", "play");
+                      }}
                       className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white flex items-center justify-center transition-transform transform hover:scale-110"
                     >
                       <PlayCircle className="w-12 h-12 sm:w-16 sm:h-16 text-[#E4665A]" />

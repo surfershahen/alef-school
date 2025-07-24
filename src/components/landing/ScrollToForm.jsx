@@ -1,28 +1,39 @@
 import PropTypes from "prop-types";
 import { useCallback } from "react";
+import { trackCTAClick } from "@/utils/vercelAnalytics";
 
-export default function ScrollToForm({ children, className }) {
-  const handleScrollToForm = useCallback((e) => {
-    e.preventDefault();
+export default function ScrollToForm({
+  children,
+  className,
+  ctaLocation = "unknown",
+}) {
+  const handleScrollToForm = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    // Use requestAnimationFrame for smooth scrolling performance
-    requestAnimationFrame(() => {
-      const formElement = document.getElementById("signup");
-      if (formElement) {
-        const headerOffset = 64; // px
-        const elementPosition =
-          formElement.getBoundingClientRect().top + window.pageYOffset;
-        const offsetPosition = elementPosition - headerOffset;
+      // Track CTA click
+      trackCTAClick("scroll_to_signup", ctaLocation, "signup_form");
 
-        // Use smooth scrolling with optimized behavior
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: "smooth",
-          block: "start",
-        });
-      }
-    });
-  }, []);
+      // Use requestAnimationFrame for smooth scrolling performance
+      requestAnimationFrame(() => {
+        const formElement = document.getElementById("signup");
+        if (formElement) {
+          const headerOffset = 64; // px
+          const elementPosition =
+            formElement.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = elementPosition - headerOffset;
+
+          // Use smooth scrolling with optimized behavior
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      });
+    },
+    [ctaLocation]
+  );
 
   return (
     <button
@@ -39,4 +50,5 @@ export default function ScrollToForm({ children, className }) {
 ScrollToForm.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
+  ctaLocation: PropTypes.string,
 };

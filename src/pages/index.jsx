@@ -12,8 +12,12 @@ import Qualifications from "@/components/landing/Qualifications";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { initializeUrlTracking } from "@/utils/urlTracking";
 import { trackPageView } from "@/utils/vercelAnalytics";
+import { useScrollTracking } from "@/hooks/useScrollTracking";
 
 export default function LandingPage() {
+  // Initialize scroll tracking
+  useScrollTracking("landing_page");
+
   // Initialize URL tracking on page load
   useEffect(() => {
     initializeUrlTracking();

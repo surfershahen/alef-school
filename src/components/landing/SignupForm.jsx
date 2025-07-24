@@ -10,7 +10,11 @@ import { submitToGoogleSheets } from "@/utils/googleSheets";
 import { validateForm, commonRules } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
 import { saveUserInfo } from "@/utils/localStorage";
-import { trackFormSubmission } from "@/utils/vercelAnalytics";
+import {
+  trackFormSubmission,
+  trackFormFieldInteraction,
+  trackError,
+} from "@/utils/vercelAnalytics";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -45,6 +49,8 @@ export default function SignupForm() {
             ...prev,
             [name]: "",
           }));
+          // Track error clearing
+          trackFormFieldInteraction(name, "clear_error", "signup_form");
         }
       });
     },
@@ -60,6 +66,15 @@ export default function SignupForm() {
       const validation = validateForm(formData, commonRules);
       if (!validation.isValid) {
         setErrors(validation.errors);
+
+        // Track validation errors for each field
+        Object.keys(validation.errors).forEach((fieldName) => {
+          trackFormFieldInteraction(fieldName, "error", "signup_form");
+          trackError("validation_error", validation.errors[fieldName], {
+            field: fieldName,
+            form: "signup_form",
+          });
+        });
         return;
       }
 
@@ -201,6 +216,20 @@ export default function SignupForm() {
                             type={field.type}
                             value={formData[field.name]}
                             onChange={handleChange}
+                            onFocus={() =>
+                              trackFormFieldInteraction(
+                                field.name,
+                                "focus",
+                                "signup_form"
+                              )
+                            }
+                            onBlur={() =>
+                              trackFormFieldInteraction(
+                                field.name,
+                                "blur",
+                                "signup_form"
+                              )
+                            }
                             dir="rtl"
                             autoComplete={
                               field.name === "email"

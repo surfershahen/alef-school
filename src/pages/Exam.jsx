@@ -18,7 +18,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { updateQuestionnaireStatus } from "@/utils/googleSheets";
 import { validateQuestionnaireAnswers } from "@/utils/aiProcessing";
-import { trackPageView } from "@/utils/vercelAnalytics";
+import {
+  trackPageView,
+  trackExamProgress,
+  trackExamCompletion,
+  trackExamAbandonment,
+  trackError,
+} from "@/utils/vercelAnalytics";
 import { logError } from "@/utils/errorHandling";
 
 export default function Exam() {
@@ -29,6 +35,8 @@ export default function Exam() {
   const [formData, setFormData] = useState(null);
   const [showQuitDialog, setShowQuitDialog] = useState(false);
   const [error, setError] = useState(null);
+  const [examStartTime, setExamStartTime] = useState(null);
+  const [questionStartTime, setQuestionStartTime] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -42,6 +50,8 @@ export default function Exam() {
       // Simulate loading delay
       setTimeout(() => {
         setIsLoading(false);
+        setExamStartTime(Date.now());
+        setQuestionStartTime(Date.now());
       }, 1000);
     } else {
       // Redirect to home if no form data
@@ -58,9 +68,16 @@ export default function Exam() {
       [currentQuestion.id]: answer,
     }));
 
+    // Track question completion time
+    if (questionStartTime) {
+      const timeSpent = Date.now() - questionStartTime;
+      trackExamProgress(currentQuestionIndex + 1, totalQuestions, timeSpent);
+    }
+
     // Move to next question
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
+      setQuestionStartTime(Date.now()); // Reset timer for next question
       window.scrollTo(0, 0);
     }
   };
@@ -68,6 +85,12 @@ export default function Exam() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     setError(null);
+
+    // Track exam completion
+    if (examStartTime) {
+      const totalTimeSpent = Date.now() - examStartTime;
+      trackExamCompletion(totalQuestions, totalTimeSpent);
+    }
 
     try {
       console.log("Questionnaire completed with answers:", answers);
@@ -128,6 +151,12 @@ export default function Exam() {
   const confirmQuit = async () => {
     console.log("User chose to quit questionnaire");
     setError(null);
+
+    // Track exam abandonment
+    if (examStartTime) {
+      const timeSpent = Date.now() - examStartTime;
+      trackExamAbandonment(currentQuestionIndex + 1, totalQuestions, timeSpent);
+    }
 
     try {
       // Update questionnaire status to quit/incomplete (false) in Google Sheets

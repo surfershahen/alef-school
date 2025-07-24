@@ -2,6 +2,7 @@ import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { PlayCircle } from "lucide-react";
 import { SectionContainer } from "@/components/ui/section-container";
+import { trackVideoInteraction } from "@/utils/vercelAnalytics";
 
 export default function Testimonials() {
   const [playingVideo, setPlayingVideo] = useState(null);
@@ -62,15 +63,20 @@ export default function Testimonials() {
   ];
 
   const handleVideoClick = (index) => {
+    const testimonialName =
+      videoTestimonials[index]?.name || `testimonial_${index}`;
+
     if (playingVideo === index) {
       setPlayingVideo(null);
       if (videoRefs.current[index]) {
         videoRefs.current[index].pause();
+        trackVideoInteraction(testimonialName, "pause");
       }
     } else {
       setPlayingVideo(index);
       if (videoRefs.current[index]) {
         videoRefs.current[index].play();
+        trackVideoInteraction(testimonialName, "play");
       }
     }
   };
