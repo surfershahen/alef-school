@@ -26,26 +26,32 @@ Enhanced section time tracking now measures **exactly how much time users spend*
 
 ## 📈 Events Generated
 
-### **Section View Start:**
-
+### **Section Time Tracking (ONLY):**
 ```javascript
-section_view: {
-  section_name: "hero_section_view_start",
-  timestamp: 1672531200000
-}
-```
-
-### **Section Time Tracking:**
-
-```javascript
-section_time_tracking: {
-  section_name: "hero_section_time_spent",
-  time_on_section: 15000,      // 15 seconds in milliseconds
-  time_in_seconds: 15,         // 15 seconds for easy reading
-  engagement_level: "high",    // high/medium/low classification
+section_time_spent: {
+  section: "hero",                    // Clean, short section name
+  time_seconds: 15,                   // Easy to read - seconds spent
+  time_ms: 15000,                     // Precise timing in milliseconds
+  engagement_level: "high",           // high/medium/low classification
   timestamp: 1672531215000
 }
 ```
+
+### **NO MORE Section View Start Events**
+We removed confusing events like:
+- ❌ `hero_section_view_start` 
+- ❌ `signup_form_section_view_start`
+- ❌ `features_section_view_start`
+
+### **Clean Section Names:**
+- **hero** (was: hero_section)
+- **signup** (was: signup_form_section) 
+- **features** (was: features_section)
+- **steps** (was: learning_steps_section)
+- **testimonials** (was: testimonials_section)
+- **whatsapp** (was: whatsapp_testimonials_section)
+- **qualifications** (was: qualifications_section)
+- **final_cta** (was: final_cta_section)
 
 ## 🎯 Business Insights You'll Gain
 
@@ -72,20 +78,20 @@ section_time_tracking: {
 ### **Typical Good Engagement:**
 
 ```
-Hero Section: 8-12 seconds (high engagement)
-Features: 5-8 seconds (medium engagement)
-Testimonials: 10-15 seconds (high engagement)
-Signup Form: 20-30 seconds (conversion action)
-Final CTA: 3-5 seconds (decision point)
+hero: 8-12 seconds (high engagement)
+features: 5-8 seconds (medium engagement)
+testimonials: 10-15 seconds (high engagement)
+signup: 20-30 seconds (conversion action)
+final_cta: 3-5 seconds (decision point)
 ```
 
 ### **Warning Signs:**
 
 ```
-Hero Section: <3 seconds (not compelling)
-Features: <2 seconds (too complex/boring)
-Testimonials: <5 seconds (not credible)
-Signup Form: >60 seconds (form issues)
+hero: <3 seconds (not compelling)
+features: <2 seconds (too complex/boring)
+testimonials: <5 seconds (not credible)
+signup: >60 seconds (form issues)
 ```
 
 ## 🔍 How to Use This Data

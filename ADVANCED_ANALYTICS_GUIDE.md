@@ -14,10 +14,10 @@ Your Alef School app now has comprehensive analytics tracking that will provide 
 
 ### 2. **Form Interactions**
 
-- **Field focus/blur**: Which fields users interact with
+- **Form start/completion**: When users begin and finish forms
 - **Validation errors**: Specific field errors and frequencies
-- **Error clearing**: When users fix validation errors
-- **Form abandonment**: Which fields cause users to leave
+- **Form abandonment**: When and where users leave forms
+- **Completion timing**: How long successful submissions take
 
 ### 3. **CTA Performance**
 
@@ -93,11 +93,11 @@ section_view: { section_name: "hero_section", time_on_section: 15000 }
 ### **Form Events**
 
 ```javascript
-// Field interactions
-form_field_interaction: {
-  field_name: "email",
-  action: "focus",
-  form_name: "signup_form"
+// Form start tracking
+form_start: {
+  form_name: "signup_form",
+  first_field: "name",
+  start_timestamp: 1672531200000
 }
 
 // Validation tracking

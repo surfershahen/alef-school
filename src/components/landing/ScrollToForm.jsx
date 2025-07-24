@@ -1,18 +1,19 @@
 import PropTypes from "prop-types";
 import { useCallback } from "react";
-import { trackCTAClick } from "@/utils/vercelAnalytics";
+import { trackCTAButtonClick } from "@/utils/vercelAnalytics";
 
 export default function ScrollToForm({
   children,
   className,
   ctaLocation = "unknown",
+  ctaName = "scroll_to_signup",
 }) {
   const handleScrollToForm = useCallback(
     (e) => {
       e.preventDefault();
 
-      // Track CTA click
-      trackCTAClick("scroll_to_signup", ctaLocation, "signup_form");
+      // Track CTA click with enhanced tracking
+      trackCTAButtonClick(ctaName, ctaLocation, "signup_form");
 
       // Use requestAnimationFrame for smooth scrolling performance
       requestAnimationFrame(() => {
@@ -32,7 +33,7 @@ export default function ScrollToForm({
         }
       });
     },
-    [ctaLocation]
+    [ctaLocation, ctaName]
   );
 
   return (
@@ -51,4 +52,5 @@ ScrollToForm.propTypes = {
   children: PropTypes.node.isRequired,
   className: PropTypes.string,
   ctaLocation: PropTypes.string,
+  ctaName: PropTypes.string,
 };

@@ -51,6 +51,7 @@ export default function Hero() {
               <ScrollToForm
                 className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center"
                 ctaLocation="hero_section"
+                ctaName="hero_main_cta"
               >
                 بدي احكي بطلاقة
                 <ChevronRight className="mr-2 w-5 h-5" />

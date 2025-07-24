@@ -48,25 +48,16 @@ export const useScrollTracking = (pageName = "unknown") => {
   useEffect(() => {
     console.log("🚀 Initializing section time tracking...");
 
-    // Define section selectors for landing pages
+    // Define section selectors for landing pages with cleaner names
     const sectionMappings = [
-      { selector: '[data-section="hero"]', name: "hero_section" },
-      { selector: '[data-section="features"]', name: "features_section" },
-      {
-        selector: '[data-section="testimonials"]',
-        name: "testimonials_section",
-      },
-      { selector: '[data-section="steps"]', name: "learning_steps_section" },
-      { selector: '[data-section="signup"]', name: "signup_form_section" },
-      { selector: '[data-section="cta"]', name: "final_cta_section" },
-      {
-        selector: '[data-section="qualifications"]',
-        name: "qualifications_section",
-      },
-      {
-        selector: '[data-section="whatsapp"]',
-        name: "whatsapp_testimonials_section",
-      },
+      { selector: '[data-section="hero"]', name: "hero" },
+      { selector: '[data-section="features"]', name: "features" },
+      { selector: '[data-section="testimonials"]', name: "testimonials" },
+      { selector: '[data-section="steps"]', name: "steps" },
+      { selector: '[data-section="signup"]', name: "signup" },
+      { selector: '[data-section="cta"]', name: "final_cta" },
+      { selector: '[data-section="qualifications"]', name: "qualifications" },
+      { selector: '[data-section="whatsapp"]', name: "whatsapp" },
     ];
 
     const observers = [];
@@ -89,7 +80,7 @@ export const useScrollTracking = (pageName = "unknown") => {
                     sectionStartTimes.current.set(name, currentTime);
 
                     console.log(`👁️ Section "${name}" entered view`);
-                    trackSectionView(`${name}_view_start`, null);
+                    // Remove view start tracking - only track time spent
                   }
                 } else {
                   // Section left viewport

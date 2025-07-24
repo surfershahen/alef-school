@@ -24,17 +24,71 @@ export const trackEvent = (eventName, properties = {}) => {
   }
 };
 
+// ENHANCED CTA TRACKING FUNCTIONS
+
+// 1. CTA Button Click Tracking
+export const trackCTAButtonClick = (ctaName, location, targetAction = null) => {
+  trackEvent("cta_button_click", {
+    cta_name: ctaName,
+    cta_location: location,
+    target_action: targetAction,
+    click_timestamp: Date.now(),
+  });
+};
+
+// 2. Form Start Tracking (First Input Interaction)
+export const trackFormStart = (formName, firstField = null) => {
+  trackEvent("form_start", {
+    form_name: formName,
+    first_field: firstField,
+    start_timestamp: Date.now(),
+  });
+};
+
+// 3. Form Submission Tracking (Conversion Signal)
+export const trackFormSubmissionSuccess = (formName, submissionData = {}) => {
+  trackEvent("form_submission", {
+    form_name: formName,
+    status: "success",
+    submission_timestamp: Date.now(),
+    ...submissionData,
+  });
+};
+
+// 4. Form Abandonment Tracking
+export const trackFormAbandonment = (
+  formName,
+  lastField,
+  timeSpent = null,
+  fieldsCompleted = 0
+) => {
+  trackEvent("form_abandonment", {
+    form_name: formName,
+    last_field: lastField,
+    time_spent: timeSpent,
+    fields_completed: fieldsCompleted,
+    abandonment_timestamp: Date.now(),
+  });
+};
+
+// LEGACY FUNCTIONS (Updated to use new structure)
+
 // Common tracking functions
 export const trackFormSubmission = (
   formName,
   success = true,
   errorMessage = null
 ) => {
-  trackEvent("form_submission", {
-    form_name: formName,
-    success,
-    error_message: errorMessage,
-  });
+  if (success) {
+    trackFormSubmissionSuccess(formName, { error_message: null });
+  } else {
+    trackEvent("form_submission", {
+      form_name: formName,
+      status: "error",
+      error_message: errorMessage,
+      timestamp: Date.now(),
+    });
+  }
 };
 
 export const trackPageView = (pageName) => {
@@ -68,28 +122,11 @@ export const trackScrollDepth = (percentage, section = null) => {
   });
 };
 
-// Form field interactions
-export const trackFormFieldInteraction = (
-  fieldName,
-  action,
-  formName = "unknown"
-) => {
-  trackEvent("form_field_interaction", {
-    field_name: fieldName,
-    action, // 'focus', 'blur', 'error', 'clear_error'
-    form_name: formName,
-    timestamp: Date.now(),
-  });
-};
+// Form field interactions (REMOVED - no longer tracking individual field interactions)
 
-// CTA and button tracking with context
+// CTA and button tracking with context (DEPRECATED - use trackCTAButtonClick)
 export const trackCTAClick = (ctaText, location, targetPage = null) => {
-  trackEvent("cta_click", {
-    cta_text: ctaText,
-    location,
-    target_page: targetPage,
-    timestamp: Date.now(),
-  });
+  trackCTAButtonClick(ctaText, location, targetPage);
 };
 
 // Video/Media interactions
@@ -106,30 +143,30 @@ export const trackVideoInteraction = (videoName, action, currentTime = 0) => {
 export const trackSectionView = (sectionName, timeOnSection = null) => {
   console.log("🔍 trackSectionView called:", { sectionName, timeOnSection });
 
-  const eventData = {
-    section_name: sectionName,
-    timestamp: Date.now(),
-  };
-
+  // Only track time spent events, not section view start events
   if (timeOnSection !== null) {
     const timeInSeconds = Math.round(timeOnSection / 1000);
-    eventData.time_on_section = timeOnSection;
-    eventData.time_in_seconds = timeInSeconds;
 
-    // Categorize engagement level based on time spent
-    eventData.engagement_level =
-      timeInSeconds >= 10 ? "high" : timeInSeconds >= 5 ? "medium" : "low";
+    // Create cleaner section names
+    const cleanSectionName = sectionName
+      .replace("_time_spent", "")
+      .replace("_section", "");
+
+    const eventData = {
+      section: cleanSectionName,
+      time_seconds: timeInSeconds,
+      time_ms: timeOnSection,
+      engagement_level:
+        timeInSeconds >= 10 ? "high" : timeInSeconds >= 5 ? "medium" : "low",
+      timestamp: Date.now(),
+    };
 
     console.log("📊 Section time tracking data:", eventData);
 
-    // Track as a more specific event for time-based analysis
-    trackEvent("section_time_tracking", eventData);
-  } else {
-    console.log("👁️ Section view start data:", eventData);
-
-    // Track as section view start
-    trackEvent("section_view", eventData);
+    // Track as section time spent with cleaner event name
+    trackEvent("section_time_spent", eventData);
   }
+  // Remove section view start tracking completely
 };
 
 // Exam/Questionnaire specific tracking

@@ -10,11 +10,8 @@ import { submitToGoogleSheets } from "@/utils/googleSheets";
 import { validateForm, commonRules } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
 import { saveUserInfo } from "@/utils/localStorage";
-import {
-  trackFormSubmission,
-  trackFormFieldInteraction,
-  trackError,
-} from "@/utils/vercelAnalytics";
+import { trackError } from "@/utils/vercelAnalytics";
+import { useFormTracking } from "@/hooks/useFormTracking";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -30,6 +27,9 @@ export default function SignupForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
+
+  // Enhanced form tracking
+  const { handleFormStart, handleFormSuccess } = useFormTracking("signup_form");
 
   // Memoized and optimized change handler for better INP
   const handleChange = useCallback(
@@ -49,13 +49,24 @@ export default function SignupForm() {
             ...prev,
             [name]: "",
           }));
-          // Track error clearing
-          trackFormFieldInteraction(name, "clear_error", "signup_form");
         }
       });
     },
     [errors]
   );
+
+  // Handle field focus (form start tracking)
+  const handleFieldFocus = useCallback(
+    (fieldName) => {
+      handleFormStart(fieldName);
+    },
+    [handleFormStart]
+  );
+
+  // Handle field blur
+  const handleFieldBlur = useCallback((fieldName) => {
+    // Field blur tracking removed - only tracking form start/completion/abandonment
+  }, []);
 
   // Optimized submit handler
   const handleSubmit = useCallback(
@@ -69,7 +80,6 @@ export default function SignupForm() {
 
         // Track validation errors for each field
         Object.keys(validation.errors).forEach((fieldName) => {
-          trackFormFieldInteraction(fieldName, "error", "signup_form");
           trackError("validation_error", validation.errors[fieldName], {
             field: fieldName,
             form: "signup_form",
@@ -94,8 +104,12 @@ export default function SignupForm() {
 
         setIsSubmitted(true);
 
-        // Track successful form submission
-        trackFormSubmission("signup_form", true);
+        // Track successful form submission with enhanced data
+        handleFormSuccess({
+          user_city: formData.city,
+          has_phone: !!formData.phone,
+          submission_method: "google_sheets",
+        });
 
         // Delay navigation slightly to ensure success message is visible
         setTimeout(() => {
@@ -106,8 +120,12 @@ export default function SignupForm() {
       } catch (error) {
         logError(error, "SignupForm.handleSubmit");
 
-        // Track failed form submission
-        trackFormSubmission("signup_form", false, error.message);
+        // Track failed form submission (but don't track as abandonment)
+        trackError("form_submission_error", error.message, {
+          form: "signup_form",
+          fields_completed: Object.keys(formData).filter((key) => formData[key])
+            .length,
+        });
 
         setErrors((prev) => ({
           ...prev,
@@ -119,7 +137,7 @@ export default function SignupForm() {
         setIsSubmitting(false);
       }
     },
-    [formData, navigate]
+    [formData, navigate, handleFormSuccess]
   );
 
   // Memoized form fields to prevent unnecessary re-renders
@@ -216,20 +234,8 @@ export default function SignupForm() {
                             type={field.type}
                             value={formData[field.name]}
                             onChange={handleChange}
-                            onFocus={() =>
-                              trackFormFieldInteraction(
-                                field.name,
-                                "focus",
-                                "signup_form"
-                              )
-                            }
-                            onBlur={() =>
-                              trackFormFieldInteraction(
-                                field.name,
-                                "blur",
-                                "signup_form"
-                              )
-                            }
+                            onFocus={() => handleFieldFocus(field.name)}
+                            onBlur={() => handleFieldBlur(field.name)}
                             dir="rtl"
                             autoComplete={
                               field.name === "email"

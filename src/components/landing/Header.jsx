@@ -6,7 +6,11 @@ export default function Header() {
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         {/* Left side - Contact Us button */}
         <div className="order-last">
-          <ScrollToForm className="text-[#0188D6] text-lg hover:text-[#0165a3] transition-colors font-medium">
+          <ScrollToForm
+            className="text-[#0188D6] text-lg hover:text-[#0165a3] transition-colors font-medium"
+            ctaLocation="cta-header"
+            ctaName="header_contact_cta"
+          >
             تواصل معنا
           </ScrollToForm>
         </div>
@@ -20,10 +24,7 @@ export default function Header() {
               className="w-20 h-20 bg-transparent"
             />
           </div>
-          <div className="flex flex-col items-start">
-            {/* <h1 className="text-2xl font-bold">ALEFH SCHOOL</h1>
-            <span className="text-[#0188D6] text-lg">مدرسة ألف</span> */}
-          </div>
+          <div className="flex flex-col items-start"></div>
         </div>
       </div>
     </header>
