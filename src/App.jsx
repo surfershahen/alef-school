@@ -1,5 +1,6 @@
 import { RouterProvider } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import router from "@/router";
 import { Toaster } from "@/components/ui/toaster";
 import FontStyles from "@/components/landing/FontStyles";
@@ -11,7 +12,7 @@ function App() {
     console.log("Vercel Analytics initialized", {
       environment: import.meta.env.MODE,
       isDev: import.meta.env.DEV,
-      hostname: window.location.hostname
+      hostname: window.location.hostname,
     });
   }, []);
 
@@ -21,6 +22,7 @@ function App() {
       <RouterProvider router={router} />
       <Toaster />
       <Analytics />
+      <SpeedInsights />
     </>
   );
 }

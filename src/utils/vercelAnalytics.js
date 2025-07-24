@@ -8,9 +8,9 @@ export const trackEvent = (eventName, properties = {}) => {
       isDev: import.meta.env.DEV,
       mode: import.meta.env.MODE,
       url: window.location.href,
-      host: window.location.host
+      host: window.location.host,
     });
-    
+
     track(eventName, properties);
     console.log("Vercel Analytics event tracked:", eventName, properties);
   } catch (error) {
@@ -19,7 +19,7 @@ export const trackEvent = (eventName, properties = {}) => {
       eventName,
       properties,
       error: error.message,
-      stack: error.stack
+      stack: error.stack,
     });
   }
 };
