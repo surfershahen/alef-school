@@ -11,11 +11,13 @@ import WhatsAppTestimonials from "@/components/landing/WhatsAppTestimonials";
 import Qualifications from "@/components/landing/Qualifications";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { initializeUrlTracking } from "@/utils/urlTracking";
+import { trackPageView } from "@/utils/vercelAnalytics";
 
 export default function LandingPage() {
   // Initialize URL tracking on page load
   useEffect(() => {
     initializeUrlTracking();
+    trackPageView("landing_page");
   }, []);
 
   return (

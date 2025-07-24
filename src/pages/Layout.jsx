@@ -1,3 +1,10 @@
+import { Analytics } from "@vercel/analytics/react";
+
 export default function Layout({ children }) {
-  return <div>{children}</div>;
+  return (
+    <div>
+      {children}
+      <Analytics />
+    </div>
+  );
 }

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { getUserInfo } from "@/utils/localStorage";
+import { trackPageView } from "@/utils/vercelAnalytics";
 
 export default function ThankYou() {
   const navigate = useNavigate();
@@ -24,6 +25,9 @@ export default function ThankYou() {
 
   // Dynamically load Calendly script and initialize widget with pre-filled answers
   useEffect(() => {
+    // Track page view
+    trackPageView("thank_you_page");
+
     const scriptSrc = "https://assets.calendly.com/assets/external/widget.js";
 
     const initCalendly = () => {

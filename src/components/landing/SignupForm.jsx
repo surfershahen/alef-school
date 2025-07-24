@@ -10,6 +10,7 @@ import { submitToGoogleSheets } from "@/utils/googleSheets";
 import { validateForm, commonRules } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
 import { saveUserInfo } from "@/utils/localStorage";
+import { trackFormSubmission } from "@/utils/vercelAnalytics";
 
 import { SectionContainer } from "@/components/ui/section-container";
 import SectionDivider from "@/components/ui/SectionDivider";
@@ -78,6 +79,9 @@ export default function SignupForm() {
 
         setIsSubmitted(true);
 
+        // Track successful form submission
+        trackFormSubmission("signup_form", true);
+
         // Delay navigation slightly to ensure success message is visible
         setTimeout(() => {
           navigate(createPageUrl("exam"), {
@@ -86,6 +90,10 @@ export default function SignupForm() {
         }, 1000);
       } catch (error) {
         logError(error, "SignupForm.handleSubmit");
+
+        // Track failed form submission
+        trackFormSubmission("signup_form", false, error.message);
+
         setErrors((prev) => ({
           ...prev,
           submit:

@@ -18,6 +18,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { updateQuestionnaireStatus } from "@/utils/googleSheets";
 import { validateQuestionnaireAnswers } from "@/utils/aiProcessing";
+import { trackPageView } from "@/utils/vercelAnalytics";
 import { logError } from "@/utils/errorHandling";
 
 export default function Exam() {
@@ -32,6 +33,9 @@ export default function Exam() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Track page view
+    trackPageView("exam_page");
+
     // Get form data from location state
     if (location.state?.formData) {
       setFormData(location.state.formData);
