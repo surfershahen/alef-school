@@ -7,7 +7,8 @@ const patterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
   phone: /^[0-9+\s()-]{8,15}$/,
   name: /^[\p{L}\s-]{2,50}$/u,
-  city: /^[\p{L}\s-]{2,50}$/u,
+  // Updated city pattern to handle autocomplete formats like "Haifa, Israel"
+  city: /^[\p{L}\s,.-]{2,100}$/u,
 };
 
 // Validation messages
@@ -17,6 +18,35 @@ const messages = {
   invalidPhone: "يرجى إدخال رقم هاتف صحيح",
   invalidName: "يرجى إدخال اسم صحيح",
   invalidCity: "يرجى إدخال اسم مدينة صحيح",
+};
+
+/**
+ * Cleans city input to extract just the city name from autocomplete format
+ * @param {string} cityInput - Raw city input from user
+ * @returns {string} - Cleaned city name
+ */
+export const cleanCityInput = (cityInput) => {
+  if (!cityInput) return "";
+  
+  // Remove extra whitespace
+  let cleaned = cityInput.trim();
+  
+  // If it contains a comma (autocomplete format like "Haifa, Israel")
+  if (cleaned.includes(",")) {
+    // Take only the part before the first comma
+    cleaned = cleaned.split(",")[0].trim();
+  }
+  
+  // If it contains a period (some autocomplete formats)
+  if (cleaned.includes(".")) {
+    // Take only the part before the first period
+    cleaned = cleaned.split(".")[0].trim();
+  }
+  
+  // Remove any remaining special characters that might be problematic
+  cleaned = cleaned.replace(/[^\p{L}\s-]/gu, "");
+  
+  return cleaned;
 };
 
 /**
@@ -44,8 +74,14 @@ export const validateField = (value, rules) => {
     return messages.invalidName;
   }
 
-  if (rules.city && !patterns.city.test(value)) {
-    return messages.invalidCity;
+  if (rules.city) {
+    // Clean the city input first
+    const cleanedCity = cleanCityInput(value);
+    
+    // Check if the cleaned city is valid
+    if (!patterns.city.test(cleanedCity) || cleanedCity.length < 2) {
+      return messages.invalidCity;
+    }
   }
 
   return null;

@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { submitToGoogleSheets } from "@/utils/googleSheets";
-import { validateForm, commonRules } from "@/utils/validation";
+import { validateForm, commonRules, cleanCityInput } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
 import { saveUserInfo } from "@/utils/localStorage";
 import { trackError } from "@/utils/vercelAnalytics";
@@ -73,8 +73,14 @@ export default function SignupForm() {
     async (e) => {
       e.preventDefault();
 
+      // Clean the city input before validation
+      const cleanedFormData = {
+        ...formData,
+        city: cleanCityInput(formData.city),
+      };
+
       // Validate form using centralized validation
-      const validation = validateForm(formData, commonRules);
+      const validation = validateForm(cleanedFormData, commonRules);
       if (!validation.isValid) {
         setErrors(validation.errors);
 
@@ -92,29 +98,29 @@ export default function SignupForm() {
       setErrors((prev) => ({ ...prev, submit: "" }));
 
       try {
-        // Submit form data to Google Sheets
-        const result = await submitToGoogleSheets(formData);
+        // Submit cleaned form data to Google Sheets
+        const result = await submitToGoogleSheets(cleanedFormData);
 
         if (!result.success) {
           throw new Error(result.message);
         }
 
         // Persist user info for later Calendly prefill
-        saveUserInfo({ name: formData.name, email: formData.email });
+        saveUserInfo({ name: cleanedFormData.name, email: cleanedFormData.email });
 
         setIsSubmitted(true);
 
         // Track successful form submission with enhanced data
         handleFormSuccess({
-          user_city: formData.city,
-          has_phone: !!formData.phone,
+          user_city: cleanedFormData.city,
+          has_phone: !!cleanedFormData.phone,
           submission_method: "google_sheets",
         });
 
         // Delay navigation slightly to ensure success message is visible
         setTimeout(() => {
           navigate(createPageUrl("exam"), {
-            state: { formData },
+            state: { formData: cleanedFormData },
           });
         }, 1000);
       } catch (error) {
@@ -123,7 +129,7 @@ export default function SignupForm() {
         // Track failed form submission (but don't track as abandonment)
         trackError("form_submission_error", error.message, {
           form: "signup_form",
-          fields_completed: Object.keys(formData).filter((key) => formData[key])
+          fields_completed: Object.keys(cleanedFormData).filter((key) => cleanedFormData[key])
             .length,
         });
 
@@ -149,6 +155,7 @@ export default function SignupForm() {
         type: "text",
         label: "الاسم الكامل",
         placeholder: "أدخل اسمك الكامل",
+        autoComplete: "name",
       },
       {
         id: "email",
@@ -156,6 +163,7 @@ export default function SignupForm() {
         type: "email",
         label: "البريد الإلكتروني",
         placeholder: "أدخل بريدك الإلكتروني",
+        autoComplete: "email",
       },
       {
         id: "phone",
@@ -163,6 +171,7 @@ export default function SignupForm() {
         type: "tel",
         label: "رقم الهاتف (للتواصل عبر واتساب)",
         placeholder: "أدخل رقم هاتفك",
+        autoComplete: "tel",
       },
       {
         id: "city",
@@ -170,6 +179,7 @@ export default function SignupForm() {
         type: "text",
         label: "اسم المدينة",
         placeholder: "ادخل اسم المدينة",
+        autoComplete: "address-level2", // Better autocomplete for city
       },
     ],
     []
@@ -237,13 +247,7 @@ export default function SignupForm() {
                             onFocus={() => handleFieldFocus(field.name)}
                             onBlur={() => handleFieldBlur(field.name)}
                             dir="rtl"
-                            autoComplete={
-                              field.name === "email"
-                                ? "email"
-                                : field.name === "tel"
-                                ? "tel"
-                                : "on"
-                            }
+                            autoComplete={field.autoComplete}
                             className={`w-full p-3 rounded-xl text-sm sm:text-base min-h-[44px] transition-colors duration-150 ${
                               errors[field.name]
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-200"
