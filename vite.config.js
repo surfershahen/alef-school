@@ -12,11 +12,34 @@ export default defineConfig({
   build: {
     outDir: "dist",
     assetsDir: "assets",
-    rollupOptions: {
-      output: {
-        assetFileNames: "assets/[name]-[hash][extname]",
+    // Optimize for mobile performance
+    target: "es2015", // Better mobile compatibility
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true, // Remove console logs in production
+        drop_debugger: true,
       },
     },
+    rollupOptions: {
+      output: {
+        // Optimize chunk splitting for better caching
+        manualChunks: {
+          vendor: ["react", "react-dom"],
+          router: ["react-router-dom"],
+          motion: ["framer-motion"],
+          icons: ["lucide-react"],
+          analytics: ["@vercel/analytics", "@vercel/speed-insights"],
+        },
+        assetFileNames: "assets/[name]-[hash][extname]",
+        chunkFileNames: "assets/[name]-[hash].js",
+        entryFileNames: "assets/[name]-[hash].js",
+      },
+    },
+    // Optimize CSS
+    cssCodeSplit: true,
+    // Optimize for mobile
+    chunkSizeWarningLimit: 1000,
   },
   resolve: {
     alias: {
@@ -30,5 +53,20 @@ export default defineConfig({
         ".js": "jsx",
       },
     },
+    // Pre-bundle dependencies for faster loading
+    include: [
+      "react",
+      "react-dom",
+      "react-router-dom",
+      "framer-motion",
+      "lucide-react",
+      "@vercel/analytics",
+      "@vercel/speed-insights",
+    ],
+  },
+  // Optimize for mobile performance
+  define: {
+    // Remove React DevTools in production
+    __DEV__: JSON.stringify(process.env.NODE_ENV === "development"),
   },
 });

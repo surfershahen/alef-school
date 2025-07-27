@@ -13,6 +13,9 @@
     text-rendering: optimizeLegibility;
     /* Optimize scroll behavior */
     scroll-behavior: smooth;
+    /* Optimize for mobile performance */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
   }
 
   body {
@@ -20,6 +23,11 @@
     overflow-x: hidden;
     /* Optimize rendering for better INP */
     contain: layout style paint;
+    /* Optimize for mobile */
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    /* Prevent zoom on input focus on iOS */
+    touch-action: manipulation;
   }
 
   /* Prevent layout shift from images */
@@ -30,6 +38,12 @@
     image-rendering: optimizeQuality;
     /* Prevent layout shift during loading */
     display: block;
+    /* Optimize for mobile */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    user-drag: none;
   }
 
   /* Prevent layout shift from videos */
@@ -39,6 +53,9 @@
     /* Optimize video rendering */
     object-fit: cover;
     display: block;
+    /* Optimize for mobile */
+    -webkit-user-drag: none;
+    user-drag: none;
   }
 
   /* Optimize interactive elements for better INP */
@@ -48,12 +65,32 @@
   select {
     touch-action: manipulation;
     will-change: transform;
+    /* Optimize for mobile */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* Prevent zoom on iOS */
+    font-size: 16px;
   }
 
   /* Optimize focus states for accessibility and performance */
   *:focus-visible {
     outline: 2px solid #0ea5e9;
     outline-offset: 2px;
+  }
+
+  /* Optimize for mobile touch targets */
+  button,
+  [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    /* Optimize tap delay */
+    -webkit-tap-highlight-color: transparent;
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 
@@ -76,6 +113,8 @@
     /* Optimize for mobile touch */
     touch-action: manipulation;
     will-change: contents;
+    /* Prevent zoom on iOS */
+    font-size: 16px;
   }
 
   /* Prevent layout shift for buttons */
@@ -86,6 +125,9 @@
     will-change: transform;
     /* Optimize tap delay on mobile */
     -webkit-tap-highlight-color: transparent;
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   /* Prevent layout shift for error messages */
@@ -98,6 +140,8 @@
     will-change: transform, opacity;
     backface-visibility: hidden;
     perspective: 1000px;
+    /* Optimize for mobile */
+    transform: translateZ(0);
   }
 
   /* Container queries for responsive design without layout shift */
@@ -110,20 +154,24 @@
   @keyframes fadeIn {
     from {
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(10px) translateZ(0);
     }
     to {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) translateZ(0);
     }
   }
 
   .animate-in {
     animation: fadeIn 0.2s ease-out forwards;
+    /* Optimize for mobile */
+    will-change: transform, opacity;
   }
 
   .fade-in-50 {
     animation: fadeIn 0.15s ease-out forwards;
+    /* Optimize for mobile */
+    will-change: transform, opacity;
   }
 
   /* Optimize loading states */
@@ -131,6 +179,8 @@
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
     animation: loading 1.5s infinite;
+    /* Optimize for mobile */
+    will-change: background-position;
   }
 
   @keyframes loading {
@@ -150,6 +200,8 @@
     overflow: hidden;
     will-change: transform;
     contain: layout style paint;
+    /* Optimize for mobile */
+    transform: translateZ(0);
   }
 
   .video-container video {
@@ -159,6 +211,54 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    /* Optimize for mobile */
+    transform: translateZ(0);
+  }
+
+  /* Mobile-specific optimizations */
+  .mobile-optimized {
+    /* Optimize for mobile performance */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    /* Optimize touch interactions */
+    touch-action: manipulation;
+    /* Prevent layout shift */
+    contain: layout style paint;
+  }
+
+  /* Optimize exam questions for mobile */
+  .exam-question {
+    /* Optimize for mobile touch */
+    touch-action: manipulation;
+    /* Prevent layout shift */
+    contain: layout style paint;
+    /* Optimize animations */
+    will-change: transform, opacity;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+  }
+
+  .exam-option {
+    /* Optimize for mobile touch */
+    min-height: 48px;
+    touch-action: manipulation;
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Optimize tap delay */
+    -webkit-tap-highlight-color: transparent;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+    /* Optimize animations */
+    will-change: transform;
+  }
+
+  /* Optimize progress bar for mobile */
+  .progress-mobile {
+    /* Optimize for mobile */
+    transform: translateZ(0);
+    /* Prevent layout shift */
+    contain: layout style paint;
   }
 }
 
@@ -190,6 +290,8 @@
     -webkit-overflow-scrolling: touch;
     /* Optimize touch scrolling */
     overscroll-behavior-y: contain;
+    /* Prevent zoom on input focus */
+    touch-action: manipulation;
   }
 
   /* Optimize mobile form inputs */
@@ -199,6 +301,8 @@
     font-size: 16px; /* Prevent zoom on iOS */
     -webkit-appearance: none;
     border-radius: 0; /* Prevent iOS styling */
+    /* Optimize for mobile */
+    touch-action: manipulation;
   }
 
   /* Optimize mobile buttons */
@@ -207,6 +311,53 @@
     -webkit-touch-callout: none;
     -webkit-user-select: none;
     user-select: none;
+    /* Optimize for mobile */
+    touch-action: manipulation;
+    /* Hardware acceleration */
+    transform: translateZ(0);
+  }
+
+  /* Optimize mobile animations */
+  .motion-safe {
+    /* Reduce animation complexity on mobile */
+    transition-duration: 0.2s;
+    animation-duration: 0.2s;
+  }
+
+  /* Optimize mobile loading */
+  .loading-skeleton {
+    /* Reduce animation complexity on mobile */
+    animation-duration: 1s;
+  }
+
+  /* Optimize mobile exam interface */
+  .exam-question {
+    /* Reduce padding on mobile */
+    padding: 1rem;
+  }
+
+  .exam-option {
+    /* Optimize spacing on mobile */
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Optimize for very small screens */
+@media (max-width: 480px) {
+  .exam-question {
+    padding: 0.75rem;
+  }
+
+  .exam-option {
+    padding: 0.5rem;
+    font-size: 14px;
+  }
+
+  /* Reduce animation complexity on very small screens */
+  .motion-safe {
+    transition-duration: 0.15s;
+    animation-duration: 0.15s;
   }
 }
 

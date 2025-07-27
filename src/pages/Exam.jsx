@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,6 +26,21 @@ import {
   trackError,
 } from "@/utils/vercelAnalytics";
 import { logError } from "@/utils/errorHandling";
+import { examPerformanceTracker } from "@/utils/performance";
+
+// Optimized animation variants for better performance
+const questionVariants = {
+  initial: { opacity: 0, x: 20 },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: -20 },
+};
+
+const optionVariants = {
+  initial: { opacity: 0, y: 10 },
+  animate: { opacity: 1, y: 0 },
+  hover: { scale: 1.02 },
+  tap: { scale: 0.98 },
+};
 
 export default function Exam() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -40,29 +55,49 @@ export default function Exam() {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Memoize current question to prevent unnecessary re-renders
+  const currentQuestion = useMemo(() => questions[currentQuestionIndex], [currentQuestionIndex]);
+  const totalQuestions = useMemo(() => questions.length, []);
+
+  // Memoize progress percentage
+  const progressPercentage = useMemo(() => 
+    Math.min(((currentQuestionIndex + 1) / totalQuestions) * 100, 100),
+    [currentQuestionIndex, totalQuestions]
+  );
+
   useEffect(() => {
     // Track page view
     trackPageView("exam_page");
 
+    // Initialize performance tracking for exam
+    if (examPerformanceTracker) {
+      examPerformanceTracker.startQuestionTimer();
+    }
+
     // Get form data from location state
     if (location.state?.formData) {
       setFormData(location.state.formData);
-      // Simulate loading delay
-      setTimeout(() => {
+      // Reduced loading delay for better perceived performance
+      const timer = setTimeout(() => {
         setIsLoading(false);
         setExamStartTime(Date.now());
         setQuestionStartTime(Date.now());
-      }, 1000);
+      }, 500); // Reduced from 1000ms to 500ms
+
+      return () => clearTimeout(timer);
     } else {
       // Redirect to home if no form data
       navigate(createPageUrl("index"));
     }
   }, [location.state, navigate]);
 
-  const currentQuestion = questions[currentQuestionIndex];
-  const totalQuestions = questions.length;
+  // Optimized answer handler with useCallback
+  const handleAnswer = useCallback((answer) => {
+    // Track performance for option selection
+    if (examPerformanceTracker) {
+      examPerformanceTracker.trackOptionSelection(answer);
+    }
 
-  const handleAnswer = (answer) => {
     setAnswers((prev) => ({
       ...prev,
       [currentQuestion.id]: answer,
@@ -74,15 +109,26 @@ export default function Exam() {
       trackExamProgress(currentQuestionIndex + 1, totalQuestions, timeSpent);
     }
 
-    // Move to next question
+    // Move to next question with optimized state updates
     if (currentQuestionIndex < totalQuestions - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
       setQuestionStartTime(Date.now()); // Reset timer for next question
-      window.scrollTo(0, 0);
+      
+      // Track performance for question transition
+      if (examPerformanceTracker) {
+        examPerformanceTracker.trackQuestionTransition();
+        examPerformanceTracker.startQuestionTimer();
+      }
+      
+      // Optimized scroll behavior for mobile
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
     }
-  };
+  }, [currentQuestion.id, currentQuestionIndex, questionStartTime, totalQuestions]);
 
-  const handleSubmit = async () => {
+  // Optimized submit handler
+  const handleSubmit = useCallback(async () => {
     setIsSubmitting(true);
     setError(null);
 
@@ -142,13 +188,14 @@ export default function Exam() {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [answers, examStartTime, formData, navigate, totalQuestions]);
 
-  const handleQuit = () => {
+  // Optimized quit handlers
+  const handleQuit = useCallback(() => {
     setShowQuitDialog(true);
-  };
+  }, []);
 
-  const confirmQuit = async () => {
+  const confirmQuit = useCallback(async () => {
     console.log("User chose to quit questionnaire");
     setError(null);
 
@@ -175,24 +222,21 @@ export default function Exam() {
     setShowQuitDialog(false);
     // Navigate to thank you page with user's name
     navigate("/thank-you", { state: { name: formData?.name } });
-  };
+  }, [examStartTime, currentQuestionIndex, totalQuestions, formData, navigate]);
 
-  const cancelQuit = () => {
+  const cancelQuit = useCallback(() => {
     setShowQuitDialog(false);
-  };
+  }, []);
 
-  // Calculate progress percentage
-  const progressPercentage = Math.min(
-    ((currentQuestionIndex + 1) / totalQuestions) * 100,
-    100
-  );
-
-  // Show loading state
+  // Show loading state with optimized skeleton
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" />
+          <div className="relative">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500 mx-auto mb-4" />
+            <div className="absolute inset-0 bg-blue-500/10 rounded-full animate-pulse"></div>
+          </div>
           <p className="text-xl font-medium text-gray-600">
             جاري تحميل الاختبار...
           </p>
@@ -202,85 +246,114 @@ export default function Exam() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-3xl mx-auto px-4">
-        {/* Progress Bar */}
-        <div className="mb-8">
-          <Progress value={progressPercentage} className="h-2" />
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        {/* Optimized Progress Bar */}
+        <div className="mb-6 sm:mb-8">
+          <Progress value={progressPercentage} className="h-2 progress-mobile" />
           <p className="text-sm text-gray-600 mt-2 text-center">
             السؤال {currentQuestionIndex + 1} من {totalQuestions}
           </p>
         </div>
 
-        {/* Question */}
-        <motion.div
-          key={currentQuestionIndex}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          className="bg-white rounded-2xl p-6 shadow-lg"
-        >
-          <h2 className="text-xl font-bold mb-6 text-right">
-            {currentQuestion.title}
-          </h2>
+        {/* Optimized Question Container */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentQuestionIndex}
+            variants={questionVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            transition={{ 
+              duration: 0.3,
+              ease: "easeInOut",
+              // Optimize for mobile performance
+              type: "tween"
+            }}
+            className="bg-white rounded-2xl p-4 sm:p-6 shadow-lg exam-question mobile-optimized"
+          >
+            <h2 className="text-lg sm:text-xl font-bold mb-4 sm:mb-6 text-right">
+              {currentQuestion.title}
+            </h2>
 
-          <div className="space-y-4">
-            {currentQuestion.options.map((option) => (
-              <motion.button
-                key={option.value}
-                onClick={() => handleAnswer(option.value)}
-                className={`w-full p-4 rounded-xl border-2 text-right flex items-center justify-between ${
-                  answers[currentQuestion.id] === option.value
-                    ? "border-blue-500 bg-blue-50"
-                    : "border-gray-200 hover:border-blue-300"
-                }`}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                dir="rtl"
-              >
-                <div className="flex items-center gap-3">
-                  {option.icon && (
-                    <span className="text-gray-600">{option.icon}</span>
-                  )}
-                  <div className="text-right">
-                    <p className="font-medium">{option.label}</p>
-                    {option.description && (
-                      <p className="text-sm text-gray-600 mt-1">
-                        {option.description}
-                      </p>
+            <div className="space-y-3 sm:space-y-4">
+              {currentQuestion.options.map((option, index) => (
+                <motion.button
+                  key={option.value}
+                  onClick={() => handleAnswer(option.value)}
+                  variants={optionVariants}
+                  initial="initial"
+                  animate="animate"
+                  whileHover="hover"
+                  whileTap="tap"
+                  transition={{ 
+                    duration: 0.2,
+                    delay: index * 0.05, // Stagger animation for better performance
+                    ease: "easeOut"
+                  }}
+                  className={`w-full p-3 sm:p-4 rounded-xl border-2 text-right flex items-center justify-between touch-manipulation exam-option ${
+                    answers[currentQuestion.id] === option.value
+                      ? "border-blue-500 bg-blue-50"
+                      : "border-gray-200 hover:border-blue-300"
+                  }`}
+                  dir="rtl"
+                  // Optimize for mobile touch
+                  style={{ 
+                    minHeight: '48px',
+                    WebkitTapHighlightColor: 'transparent'
+                  }}
+                >
+                  <div className="flex items-center gap-2 sm:gap-3">
+                    {option.icon && (
+                      <span className="text-gray-600 flex-shrink-0">
+                        {option.icon}
+                      </span>
                     )}
+                    <div className="text-right flex-1">
+                      <p className="font-medium text-sm sm:text-base">{option.label}</p>
+                      {option.description && (
+                        <p className="text-xs sm:text-sm text-gray-600 mt-1">
+                          {option.description}
+                        </p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.button>
-            ))}
-          </div>
-        </motion.div>
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Navigation Buttons */}
-        <div className="mt-8 flex justify-between">
+        {/* Optimized Navigation Buttons */}
+        <div className="mt-6 sm:mt-8 flex justify-between gap-4">
           <Button
             onClick={handleQuit}
             variant="outline"
-            className="text-red-500 hover:text-red-600"
+            className="text-red-500 hover:text-red-600 flex-1 sm:flex-none"
+            style={{ minHeight: '48px' }}
           >
             <X className="h-5 w-5 ml-2" />
-            إنهاء الاختبار
+            <span className="hidden sm:inline">إنهاء الاختبار</span>
+            <span className="sm:hidden">إنهاء</span>
           </Button>
 
           {currentQuestionIndex === totalQuestions - 1 && (
             <Button
               onClick={handleSubmit}
               disabled={isSubmitting}
-              className="bg-blue-500 hover:bg-blue-600 text-white"
+              className="bg-blue-500 hover:bg-blue-600 text-white flex-1 sm:flex-none"
+              style={{ minHeight: '48px' }}
             >
               {isSubmitting ? (
                 <>
                   <Loader2 className="h-5 w-5 ml-2 animate-spin" />
-                  جاري الإرسال...
+                  <span className="hidden sm:inline">جاري الإرسال...</span>
+                  <span className="sm:hidden">جاري...</span>
                 </>
               ) : (
                 <>
-                  إنهاء
+                  <span className="hidden sm:inline">إنهاء</span>
+                  <span className="sm:hidden">تم</span>
                   <ArrowRight className="h-5 w-5 mr-2" />
                 </>
               )}
@@ -288,19 +361,23 @@ export default function Exam() {
           )}
         </div>
 
-        {/* Error Message */}
+        {/* Optimized Error Message */}
         {error && (
-          <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+          <motion.div 
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl"
+          >
             <div className="flex items-center">
-              <AlertTriangle className="h-5 w-5 text-red-500 ml-2" />
-              <p className="text-red-700">{error}</p>
+              <AlertTriangle className="h-5 w-5 text-red-500 ml-2 flex-shrink-0" />
+              <p className="text-red-700 text-sm sm:text-base">{error}</p>
             </div>
-          </div>
+          </motion.div>
         )}
 
-        {/* Quit Confirmation Dialog */}
+        {/* Optimized Quit Confirmation Dialog */}
         <AlertDialog open={showQuitDialog} onOpenChange={setShowQuitDialog}>
-          <AlertDialogContent>
+          <AlertDialogContent className="max-w-sm mx-auto">
             <AlertDialogHeader>
               <AlertDialogTitle>
                 هل أنت متأكد من إنهاء الاختبار؟

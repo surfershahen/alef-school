@@ -5,6 +5,7 @@ import router from "@/router";
 import { Toaster } from "@/components/ui/toaster";
 import FontStyles from "@/components/landing/FontStyles";
 import { useEffect } from "react";
+import { initializePerformanceTracking } from "@/utils/performance";
 
 function App() {
   useEffect(() => {
@@ -14,6 +15,9 @@ function App() {
       isDev: import.meta.env.DEV,
       hostname: window.location.hostname,
     });
+
+    // Initialize performance tracking for mobile optimization
+    initializePerformanceTracking();
   }, []);
 
   return (
@@ -26,5 +30,4 @@ function App() {
     </>
   );
 }
-
 export default App;
