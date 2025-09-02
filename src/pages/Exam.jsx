@@ -23,7 +23,6 @@ import {
   trackExamProgress,
   trackExamCompletion,
   trackExamAbandonment,
-  
 } from "@/utils/vercelAnalytics";
 import { logError } from "@/utils/errorHandling";
 import { examPerformanceTracker } from "@/utils/performance";
@@ -419,7 +418,7 @@ export default function Exam() {
                   </>
                 ) : (
                   <>
-                    <span className="hidden sm:inline">إنهاء الاختبار</span>
+                    <span className="hidden sm:inline">تم </span>
                     <span className="sm:hidden">تم</span>
                     <ArrowRight className="h-5 w-5 mr-2" />
                   </>
