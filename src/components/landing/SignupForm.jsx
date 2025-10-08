@@ -4,6 +4,7 @@ import { CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
 import { submitToGoogleSheets } from "@/utils/googleSheets";
@@ -23,6 +24,7 @@ export default function SignupForm() {
     email: "",
     city: "",
   });
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -64,7 +66,7 @@ export default function SignupForm() {
   );
 
   // Handle field blur
-  const handleFieldBlur = useCallback((fieldName) => {
+  const handleFieldBlur = useCallback(() => {
     // Field blur tracking removed - only tracking form start/completion/abandonment
   }, []);
 
@@ -78,6 +80,15 @@ export default function SignupForm() {
         ...formData,
         city: cleanCityInput(formData.city),
       };
+
+      // Check if terms are accepted
+      if (!acceptedTerms) {
+        setErrors((prev) => ({
+          ...prev,
+          terms: "يجب الموافقة على شروط الاستخدام وسياسة الخصوصية",
+        }));
+        return;
+      }
 
       // Validate form using centralized validation
       const validation = validateForm(cleanedFormData, commonRules);
@@ -106,7 +117,10 @@ export default function SignupForm() {
         }
 
         // Persist user info for later Calendly prefill
-        saveUserInfo({ name: cleanedFormData.name, email: cleanedFormData.email });
+        saveUserInfo({
+          name: cleanedFormData.name,
+          email: cleanedFormData.email,
+        });
 
         setIsSubmitted(true);
 
@@ -129,8 +143,9 @@ export default function SignupForm() {
         // Track failed form submission (but don't track as abandonment)
         trackError("form_submission_error", error.message, {
           form: "signup_form",
-          fields_completed: Object.keys(cleanedFormData).filter((key) => cleanedFormData[key])
-            .length,
+          fields_completed: Object.keys(cleanedFormData).filter(
+            (key) => cleanedFormData[key]
+          ).length,
         });
 
         setErrors((prev) => ({
@@ -143,7 +158,7 @@ export default function SignupForm() {
         setIsSubmitting(false);
       }
     },
-    [formData, navigate, handleFormSuccess]
+    [formData, navigate, handleFormSuccess, acceptedTerms]
   );
 
   // Memoized form fields to prevent unnecessary re-renders
@@ -265,6 +280,45 @@ export default function SignupForm() {
                           </div>
                         </div>
                       ))}
+
+                      {/* Privacy Terms Checkbox */}
+                      <div className="min-h-[70px]">
+                        <div className="flex items-start gap-2 flex-row-reverse">
+                          <label
+                            htmlFor="terms"
+                            className="text-xs sm:text-sm text-gray-700 cursor-pointer leading-relaxed text-right flex-1"
+                          >
+                            הריני משאר כי קראתי, הבנתי והסכמתי ל
+                            <a
+                              href="/privacy-terms.pdf"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#0188D6] hover:text-[#0166a8] underline font-semibold mx-1"
+                            >
+                              תנאי השימוש המפורטים בתקנון ובמדיניות הפרטיות
+                            </a>
+                          </label>
+                          <Checkbox
+                            id="terms"
+                            checked={acceptedTerms}
+                            onCheckedChange={(checked) => {
+                              setAcceptedTerms(checked);
+                              if (checked && errors.terms) {
+                                setErrors((prev) => ({ ...prev, terms: "" }));
+                              }
+                            }}
+                            className="h-3 w-3 mt-1 shrink-0 border-gray-400"
+                          />
+                        </div>
+                        {/* Fixed height error container */}
+                        <div className="h-5 mt-1 flex items-start justify-end">
+                          {errors.terms && (
+                            <p className="text-xs sm:text-sm text-red-500 text-right animate-in fade-in-50 duration-150">
+                              {errors.terms}
+                            </p>
+                          )}
+                        </div>
+                      </div>
 
                       {/* Button Container - Fixed dimensions */}
                       <div className="pt-4 min-h-[60px]">
