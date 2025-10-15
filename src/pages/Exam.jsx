@@ -24,6 +24,7 @@ import {
   trackExamCompletion,
   trackExamAbandonment,
 } from "@/utils/vercelAnalytics";
+import { trackMetaPixelPageView } from "@/utils/metaPixel";
 import { logError } from "@/utils/errorHandling";
 import { examPerformanceTracker } from "@/utils/performance";
 
@@ -79,6 +80,7 @@ export default function Exam() {
   useEffect(() => {
     // Track page view
     trackPageView("exam_page");
+    trackMetaPixelPageView("exam_page");
 
     // Initialize performance tracking for exam
     if (examPerformanceTracker) {

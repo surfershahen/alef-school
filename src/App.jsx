@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import FontStyles from "@/components/landing/FontStyles";
 import { useEffect } from "react";
 import { initializePerformanceTracking } from "@/utils/performance";
+import { trackMetaPixelPageView } from "@/utils/metaPixel";
 
 function App() {
   useEffect(() => {
@@ -18,6 +19,9 @@ function App() {
 
     // Initialize performance tracking for mobile optimization
     initializePerformanceTracking();
+
+    // Track initial page view with Meta Pixel
+    trackMetaPixelPageView("app_initialization");
   }, []);
 
   return (

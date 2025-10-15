@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import { getUserInfo } from "@/utils/localStorage";
 import { trackPageView } from "@/utils/vercelAnalytics";
+import { trackMetaPixelPageView, trackMetaPixelLead, trackMetaPixelFormSubmission } from "@/utils/metaPixel";
 
 export default function ThankYou() {
   const navigate = useNavigate();
@@ -27,12 +28,14 @@ export default function ThankYou() {
   useEffect(() => {
     // Track page view
     trackPageView("thank_you_page");
+    trackMetaPixelPageView("thank_you_page");
 
-    // Track Meta Pixel conversion
-    if (typeof window.fbq === "function") {
-      window.fbq("track", "Lead");
-      window.fbq("track", "CompleteRegistration");
-    }
+    // Track Meta Pixel conversion events
+    trackMetaPixelLead({ content_name: "exam_completion" });
+    trackMetaPixelFormSubmission("exam_completion", { 
+      content_name: "exam_completion",
+      value: 1 
+    });
 
     const scriptSrc = "https://assets.calendly.com/assets/external/widget.js";
 
