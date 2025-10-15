@@ -24,6 +24,9 @@ export default function LandingPage() {
     initializeUrlTracking();
     trackPageView("landing_page");
     trackMetaPixelPageView("landing_page");
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "PageView");
+    }
   }, []);
 
   return (

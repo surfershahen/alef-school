@@ -6,7 +6,6 @@ import { useEffect, useRef } from "react";
 import { getUserInfo } from "@/utils/localStorage";
 import { trackPageView } from "@/utils/vercelAnalytics";
 import {
-  trackMetaPixelPageView,
   trackMetaPixelLead,
   trackMetaPixelFormSubmission,
 } from "@/utils/metaPixel";
@@ -32,7 +31,9 @@ export default function ThankYou() {
   useEffect(() => {
     // Track page view
     trackPageView("thank_you_page");
-    trackMetaPixelPageView("thank_you_page");
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "CompleteRegistration");
+    }
 
     // Track Meta Pixel conversion events
     trackMetaPixelLead({ content_name: "exam_completion" });

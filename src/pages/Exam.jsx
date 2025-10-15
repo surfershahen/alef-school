@@ -81,6 +81,10 @@ export default function Exam() {
     // Track page view
     trackPageView("exam_page");
     trackMetaPixelPageView("exam_page");
+    if (typeof window !== "undefined" && typeof window.fbq === "function") {
+      window.fbq("track", "PageView");
+      window.fbq("track", "Lead");
+    }
 
     // Initialize performance tracking for exam
     if (examPerformanceTracker) {
