@@ -28,6 +28,12 @@ export default function ThankYou() {
     // Track page view
     trackPageView("thank_you_page");
 
+    // Track Meta Pixel conversion
+    if (typeof window.fbq === "function") {
+      window.fbq("track", "Lead");
+      window.fbq("track", "CompleteRegistration");
+    }
+
     const scriptSrc = "https://assets.calendly.com/assets/external/widget.js";
 
     const initCalendly = () => {
