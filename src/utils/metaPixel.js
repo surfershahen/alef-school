@@ -31,7 +31,10 @@ export const trackMetaPixelFormSubmission = (formName, parameters = {}) => {
       content_name: formName,
       ...parameters,
     });
-    console.log("Meta Pixel CompleteRegistration tracked", { formName, parameters });
+    console.log("Meta Pixel CompleteRegistration tracked", {
+      formName,
+      parameters,
+    });
   }
 };
 
