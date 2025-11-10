@@ -6,8 +6,18 @@ export const TIKTOK_CONVERSION_TOKEN =
 const callTikTok = (callback) => {
   if (typeof window === "undefined") return;
   const { ttq } = window;
-  if (typeof ttq === "function") {
+  if (ttq && typeof ttq.page === "function") {
     callback(ttq);
+  } else if (ttq && Array.isArray(ttq)) {
+    // Pixel script not fully loaded yet; defer until ready
+    ttq.push([
+      "ready",
+      () => {
+        if (typeof ttq.page === "function") {
+          callback(ttq);
+        }
+      },
+    ]);
   } else {
     console.warn("TikTok Pixel not initialized yet");
   }
