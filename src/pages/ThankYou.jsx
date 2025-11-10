@@ -6,9 +6,15 @@ import { useEffect, useRef } from "react";
 import { getUserInfo } from "@/utils/localStorage";
 import { trackPageView } from "@/utils/vercelAnalytics";
 import {
+  trackMetaPixelPageView,
   trackMetaPixelLead,
   trackMetaPixelFormSubmission,
 } from "@/utils/metaPixel";
+import {
+  trackTikTokPageView,
+  trackTikTokLead,
+  trackTikTokCompleteRegistration,
+} from "@/utils/tiktokPixel";
 
 export default function ThankYou() {
   const navigate = useNavigate();
@@ -31,6 +37,8 @@ export default function ThankYou() {
   useEffect(() => {
     // Track page view
     trackPageView("thank_you_page");
+    trackMetaPixelPageView("thank_you_page");
+    trackTikTokPageView("thank_you_page");
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "CompleteRegistration");
     }
@@ -38,6 +46,11 @@ export default function ThankYou() {
     // Track Meta Pixel conversion events
     trackMetaPixelLead({ content_name: "exam_completion" });
     trackMetaPixelFormSubmission("exam_completion", {
+      content_name: "exam_completion",
+      value: 1,
+    });
+    trackTikTokLead({ content_name: "exam_completion" });
+    trackTikTokCompleteRegistration({
       content_name: "exam_completion",
       value: 1,
     });

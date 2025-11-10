@@ -14,6 +14,7 @@ import { initializeUrlTracking } from "@/utils/urlTracking";
 import { trackPageView } from "@/utils/vercelAnalytics";
 import { useScrollTracking } from "@/hooks/useScrollTracking";
 import { trackMetaPixelPageView } from "@/utils/metaPixel";
+import { trackTikTokPageView } from "@/utils/tiktokPixel";
 
 export default function LandingPage() {
   // Initialize scroll tracking with enhanced section timing (this automatically handles section tracking)
@@ -24,6 +25,7 @@ export default function LandingPage() {
     initializeUrlTracking();
     trackPageView("landing_page");
     trackMetaPixelPageView("landing_page");
+    trackTikTokPageView("landing_page");
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "PageView");
     }

@@ -7,6 +7,7 @@ import FontStyles from "@/components/landing/FontStyles";
 import { useEffect } from "react";
 import { initializePerformanceTracking } from "@/utils/performance";
 import { trackMetaPixelPageView } from "@/utils/metaPixel";
+import { trackTikTokPageView } from "@/utils/tiktokPixel";
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
 
     // Track initial page view with Meta Pixel
     trackMetaPixelPageView("app_initialization");
+    trackTikTokPageView("app_initialization");
   }, []);
 
   return (
