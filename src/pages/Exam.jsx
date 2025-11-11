@@ -25,7 +25,11 @@ import {
   trackExamAbandonment,
 } from "@/utils/vercelAnalytics";
 import { trackMetaPixelPageView } from "@/utils/metaPixel";
-import { trackTikTokPageView, trackTikTokEvent } from "@/utils/tiktokPixel";
+import {
+  trackTikTokPageView,
+  trackTikTokEvent,
+  trackTikTokLeadSubmit,
+} from "@/utils/tiktokPixel";
 import { logError } from "@/utils/errorHandling";
 import { examPerformanceTracker } from "@/utils/performance";
 
@@ -84,6 +88,7 @@ export default function Exam() {
     trackMetaPixelPageView("exam_page");
     trackTikTokPageView("exam_page");
     trackTikTokEvent("ViewContent", { content_name: "exam_page" });
+    trackTikTokLeadSubmit({ content_name: "exam_page" });
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "PageView");
       window.fbq("track", "Lead");

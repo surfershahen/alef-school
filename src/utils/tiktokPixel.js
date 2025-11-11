@@ -47,6 +47,10 @@ export const trackTikTokCompleteRegistration = (parameters = {}) => {
   trackTikTokEvent("CompleteRegistration", parameters);
 };
 
+export const trackTikTokLeadSubmit = (parameters = {}) => {
+  trackTikTokEvent("LeadSubmit", parameters);
+};
+
 export const trackTikTokSubmitForm = (parameters = {}) => {
   trackTikTokEvent("SubmitForm", parameters);
 };

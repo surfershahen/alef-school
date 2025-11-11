@@ -12,8 +12,8 @@ import {
 } from "@/utils/metaPixel";
 import {
   trackTikTokPageView,
-  trackTikTokLead,
   trackTikTokCompleteRegistration,
+  trackTikTokLeadSubmit,
 } from "@/utils/tiktokPixel";
 
 export default function ThankYou() {
@@ -49,10 +49,11 @@ export default function ThankYou() {
       content_name: "exam_completion",
       value: 1,
     });
-    trackTikTokLead({ content_name: "exam_completion" });
+    trackTikTokLeadSubmit({ content_name: "exam_completion" });
     trackTikTokCompleteRegistration({
       content_name: "exam_completion",
       value: 1,
+      currency: "USD",
     });
 
     const scriptSrc = "https://assets.calendly.com/assets/external/widget.js";
