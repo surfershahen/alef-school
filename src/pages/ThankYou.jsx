@@ -13,7 +13,6 @@ import {
 import {
   trackTikTokPageView,
   trackTikTokCompleteRegistration,
-  trackTikTokLeadSubmit,
 } from "@/utils/tiktokPixel";
 
 export default function ThankYou() {
@@ -49,7 +48,6 @@ export default function ThankYou() {
       content_name: "exam_completion",
       value: 1,
     });
-    trackTikTokLeadSubmit({ content_name: "exam_completion" });
     trackTikTokCompleteRegistration({
       content_name: "exam_completion",
       value: 1,

@@ -87,7 +87,6 @@ export default function Exam() {
     trackPageView("exam_page");
     trackMetaPixelPageView("exam_page");
     trackTikTokPageView("exam_page");
-    trackTikTokEvent("ViewContent", { content_name: "exam_page" });
     trackTikTokLeadSubmit({ content_name: "exam_page" });
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "PageView");
