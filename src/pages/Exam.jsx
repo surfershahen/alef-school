@@ -28,7 +28,6 @@ import { trackMetaPixelPageView } from "@/utils/metaPixel";
 import {
   trackTikTokPageView,
   trackTikTokEvent,
-  trackTikTokLeadSubmit,
 } from "@/utils/tiktokPixel";
 import { logError } from "@/utils/errorHandling";
 import { examPerformanceTracker } from "@/utils/performance";
@@ -87,7 +86,6 @@ export default function Exam() {
     trackPageView("exam_page");
     trackMetaPixelPageView("exam_page");
     trackTikTokPageView("exam_page");
-    trackTikTokLeadSubmit({ content_name: "exam_page" });
     if (typeof window !== "undefined" && typeof window.fbq === "function") {
       window.fbq("track", "PageView");
       window.fbq("track", "Lead");
