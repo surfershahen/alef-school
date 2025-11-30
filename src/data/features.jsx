@@ -1,10 +1,17 @@
-import { Users, MessageCircle, Clock, BookOpen, ThumbsUp } from "lucide-react";
+import {
+  Users,
+  MessageCircle,
+  Clock,
+  BookOpen,
+  ThumbsUp,
+  HelpingHand,
+} from "lucide-react";
 
 export const features = [
   {
     icon: <Users className="h-8 w-8 text-[#0188D6]" />,
-    title: "+2500 طالب",
-    description: "أكثر من 2500 طالب عرب جرّبونا وبيحكوا عبري بستايل!",
+    title: "+3000 طالب",
+    description: "أكثر من 3000 طالب عرب جرّبونا وبيحكوا عبري بستايل!",
   },
   {
     icon: <MessageCircle className="h-8 w-8 text-[#0188D6]" />,
@@ -27,7 +34,7 @@ export const features = [
     description: " طريقة خاصة للعرب – بتخليك تحكي عبري زي أهل البلاد",
   },
   {
-    icon: <MessageCircle className="h-8 w-8 text-[#0188D6]" />,
+    icon: <HelpingHand className="h-8 w-8 text-[#0188D6]" />,
     title: "دعم مستمر",
     description: " دعم مستمر ومجتمع بيشجّعك تتقدّم",
   },

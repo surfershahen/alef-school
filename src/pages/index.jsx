@@ -7,7 +7,7 @@ import SignupForm from "@/components/landing/SignupForm";
 import Features from "@/components/landing/Features";
 import LearningSteps from "@/components/landing/LearningSteps";
 import Testimonials from "@/components/landing/Testimonials";
-import WhatsAppTestimonials from "@/components/landing/WhatsAppTestimonials";
+// import WhatsAppTestimonials from "@/components/landing/WhatsAppTestimonials";
 import Qualifications from "@/components/landing/Qualifications";
 import FinalCTA from "@/components/landing/FinalCTA";
 import { initializeUrlTracking } from "@/utils/urlTracking";
@@ -60,9 +60,9 @@ export default function LandingPage() {
         <Testimonials />
       </section>
 
-      <section data-section="whatsapp">
+      {/* <section data-section="whatsapp">
         <WhatsAppTestimonials />
-      </section>
+      </section> */}
 
       <section data-section="qualifications">
         <Qualifications />

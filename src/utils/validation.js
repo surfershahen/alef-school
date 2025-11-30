@@ -5,11 +5,15 @@
 // Common validation patterns
 const patterns = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-  phone: /^[0-9+\s()-]{8,15}$/,
   name: /^[\p{L}\s-]{2,50}$/u,
   // Updated city pattern to handle autocomplete formats like "Haifa, Israel"
   city: /^[\p{L}\s,.-]{2,100}$/u,
 };
+
+const phonePatterns = [
+  /^\d{10}$/, // Local format e.g. 0522926777
+  /^\+972\s?\d{9}$/, // International autocomplete format e.g. +972 522926777
+];
 
 // Validation messages
 const messages = {
@@ -27,25 +31,25 @@ const messages = {
  */
 export const cleanCityInput = (cityInput) => {
   if (!cityInput) return "";
-  
+
   // Remove extra whitespace
   let cleaned = cityInput.trim();
-  
+
   // If it contains a comma (autocomplete format like "Haifa, Israel")
   if (cleaned.includes(",")) {
     // Take only the part before the first comma
     cleaned = cleaned.split(",")[0].trim();
   }
-  
+
   // If it contains a period (some autocomplete formats)
   if (cleaned.includes(".")) {
     // Take only the part before the first period
     cleaned = cleaned.split(".")[0].trim();
   }
-  
+
   // Remove any remaining special characters that might be problematic
   cleaned = cleaned.replace(/[^\p{L}\s-]/gu, "");
-  
+
   return cleaned;
 };
 
@@ -66,8 +70,14 @@ export const validateField = (value, rules) => {
     return messages.invalidEmail;
   }
 
-  if (rules.phone && !patterns.phone.test(value)) {
-    return messages.invalidPhone;
+  if (rules.phone) {
+    const trimmedValue = value.trim();
+    const isValidPhone = phonePatterns.some((pattern) =>
+      pattern.test(trimmedValue)
+    );
+    if (!isValidPhone) {
+      return messages.invalidPhone;
+    }
   }
 
   if (rules.name && !patterns.name.test(value)) {
@@ -77,7 +87,7 @@ export const validateField = (value, rules) => {
   if (rules.city) {
     // Clean the city input first
     const cleanedCity = cleanCityInput(value);
-    
+
     // Check if the cleaned city is valid
     if (!patterns.city.test(cleanedCity) || cleanedCity.length < 2) {
       return messages.invalidCity;
@@ -97,7 +107,7 @@ export const validateForm = (formData, rules) => {
   const errors = {};
   let isValid = true;
 
-  Object.keys(rules).forEach(field => {
+  Object.keys(rules).forEach((field) => {
     const error = validateField(formData[field], rules[field]);
     if (error) {
       errors[field] = error;
@@ -116,4 +126,24 @@ export const commonRules = {
   email: { required: true, email: true },
   phone: { required: true, phone: true },
   city: { required: true, city: true },
+};
+
+/**
+ * Convenience helper to validate lead form data using the common rules.
+ * Returns a simple boolean while logging failures for easier debugging.
+ * @param {Object} formData - Form data to validate
+ * @returns {boolean} - True if all rules pass, false otherwise
+ */
+export const validateFormData = (formData) => {
+  const { isValid, errors } = validateForm(formData, commonRules);
+
+  if (!isValid) {
+    Object.entries(errors).forEach(([field, message]) => {
+      console.error(`❌ Validation failed: ${field} - ${message}`);
+    });
+    return false;
+  }
+
+  console.log("✅ Form data validation passed");
+  return true;
 };

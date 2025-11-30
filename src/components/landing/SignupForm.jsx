@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { submitToGoogleSheets } from "@/utils/googleSheets";
+import { submitLeadToWebhook } from "@/utils/webhookService";
 import { validateForm, commonRules, cleanCityInput } from "@/utils/validation";
 import { logError } from "@/utils/errorHandling";
 import { saveUserInfo } from "@/utils/localStorage";
@@ -109,12 +109,31 @@ export default function SignupForm() {
       setErrors((prev) => ({ ...prev, submit: "" }));
 
       try {
-        // Submit cleaned form data to Google Sheets
-        const result = await submitToGoogleSheets(cleanedFormData);
+        // Submit cleaned form data to webhook (initial lead payload)
+        const result = await submitLeadToWebhook(cleanedFormData);
 
         if (!result.success) {
           throw new Error(result.message);
         }
+
+        const leadPayload = result.data || {
+          ...cleanedFormData,
+          source: "Direct",
+          aiAnalysis: null,
+          status: false,
+          submittedAt: new Date()
+            .toLocaleString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: false,
+            })
+            .replace(/\//g, ".")
+            .replace(",", ""),
+        };
 
         // Persist user info for later Calendly prefill
         saveUserInfo({
@@ -128,13 +147,13 @@ export default function SignupForm() {
         handleFormSuccess({
           user_city: cleanedFormData.city,
           has_phone: !!cleanedFormData.phone,
-          submission_method: "google_sheets",
+          submission_method: "webhook",
         });
 
         // Delay navigation slightly to ensure success message is visible
         setTimeout(() => {
           navigate(createPageUrl("exam"), {
-            state: { formData: cleanedFormData },
+            state: { formData: leadPayload },
           });
         }, 1000);
       } catch (error) {

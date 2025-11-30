@@ -16,7 +16,7 @@ import { ArrowRight, ArrowLeft, Loader2, X, AlertTriangle } from "lucide-react";
 import { questions } from "@/components/questionnaire/questions";
 import { useLocation, useNavigate } from "react-router-dom";
 import { createPageUrl } from "@/utils";
-import { updateQuestionnaireStatus } from "@/utils/googleSheets";
+import { updateQuestionnaireStatus } from "@/utils/webhookService";
 import { validateQuestionnaireAnswers } from "@/utils/aiProcessing";
 import {
   trackPageView,
@@ -25,10 +25,7 @@ import {
   trackExamAbandonment,
 } from "@/utils/vercelAnalytics";
 import { trackMetaPixelPageView } from "@/utils/metaPixel";
-import {
-  trackTikTokPageView,
-  trackTikTokEvent,
-} from "@/utils/tiktokPixel";
+import { trackTikTokPageView, trackTikTokEvent } from "@/utils/tiktokPixel";
 import { logError } from "@/utils/errorHandling";
 import { examPerformanceTracker } from "@/utils/performance";
 
@@ -205,10 +202,10 @@ export default function Exam() {
         );
       }
 
-      // Update questionnaire status to completed (true) in Google Sheets WITH REAL ANSWERS
+      // Send questionnaire completion to webhook with REAL ANSWERS
       if (formData?.email) {
         console.log(
-          "📤 Sending REAL questionnaire answers to Google Apps Script for AI processing..."
+          "📤 Sending REAL questionnaire answers to AI service for processing..."
         );
         const statusResult = await updateQuestionnaireStatus(
           formData,
@@ -221,7 +218,7 @@ export default function Exam() {
           // Continue anyway - don't block user experience
         } else {
           console.log(
-            "✅ Questionnaire status updated with REAL answers - AI processing will be handled by Google Apps Script"
+            "✅ Questionnaire status updated with REAL answers - AI processing handled inside the app"
           );
         }
       }
@@ -257,20 +254,6 @@ export default function Exam() {
     if (examStartTime) {
       const timeSpent = Date.now() - examStartTime;
       trackExamAbandonment(currentQuestionIndex + 1, totalQuestions, timeSpent);
-    }
-
-    try {
-      // Update questionnaire status to quit/incomplete (false) in Google Sheets
-      if (formData?.email) {
-        const statusResult = await updateQuestionnaireStatus(formData, false);
-        if (!statusResult.success) {
-          logError(statusResult, "Exam.confirmQuit");
-          // Continue anyway - don't block user experience
-        }
-      }
-    } catch (error) {
-      logError(error, "Exam.confirmQuit");
-      // Continue anyway - don't block user experience
     }
 
     setShowQuitDialog(false);
