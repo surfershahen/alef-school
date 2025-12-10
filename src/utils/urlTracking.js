@@ -3,12 +3,58 @@
  * Captures URL parameters for lead source tracking
  */
 
+const TRACKING_KEYS = [
+  "fbclid",
+  "gclid",
+  "utm_source",
+  "utm_medium",
+  "utm_campaign",
+  "utm_content",
+  "utm_term",
+  "utm_id",
+  "agid",
+];
+
+const hasAnyTrackingParam = (params) =>
+  TRACKING_KEYS.some((key) => params[key]);
+
+const buildTrackedUrl = (trackingParams) => {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  const params = new URLSearchParams();
+  TRACKING_KEYS.forEach((key) => {
+    const value = trackingParams[key];
+    if (value) {
+      params.set(key, value);
+    }
+  });
+
+  const queryString = params.toString();
+  if (!queryString) {
+    return null;
+  }
+
+  const { origin, pathname } = window.location;
+  return `${origin}${pathname}?${queryString}`;
+};
+
+const currentUrlLooksTracked = () => {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  return /[?&](utm_|gclid|fbclid|agid|utm_id)/i.test(window.location.href);
+};
+
 /**
  * Get URL parameters from current page
  * @returns {Object} Object containing URL parameters
  */
 export const getUrlParameters = () => {
   const urlParams = new URLSearchParams(window.location.search);
+  const agid = urlParams.get("agid") || urlParams.get("AgId") || null;
 
   return {
     fbclid: urlParams.get("fbclid") || null,
@@ -18,6 +64,8 @@ export const getUrlParameters = () => {
     utm_campaign: urlParams.get("utm_campaign") || null,
     utm_content: urlParams.get("utm_content") || null,
     utm_term: urlParams.get("utm_term") || null,
+    utm_id: urlParams.get("utm_id") || null,
+    agid,
   };
 };
 
@@ -26,7 +74,7 @@ export const getUrlParameters = () => {
  * @param {Object} urlParams - URL parameters object
  */
 export const storeUrlParameters = (urlParams) => {
-  const hasParams = Object.values(urlParams).some((param) => param !== null);
+  const hasParams = hasAnyTrackingParam(urlParams);
 
   if (hasParams) {
     sessionStorage.setItem("url_parameters", JSON.stringify(urlParams));
@@ -54,15 +102,19 @@ export const getStoredUrlParameters = () => {
  */
 export const initializeUrlTracking = () => {
   const urlParams = getUrlParameters();
-  storeUrlParameters(urlParams);
+  const hasParams = hasAnyTrackingParam(urlParams);
 
-  // Log URL parameters for debugging
-  if (Object.values(urlParams).some((param) => param !== null)) {
-    console.log("🎯 URL parameters detected:", urlParams);
-  } else {
-    console.log("📊 No URL parameters found");
+  if (hasParams) {
+    const paramsWithLanding = {
+      ...urlParams,
+      landing_url: window.location.href,
+    };
+    storeUrlParameters(paramsWithLanding);
+    console.log("🎯 URL parameters detected:", paramsWithLanding);
+    return paramsWithLanding;
   }
 
+  console.log("📊 No URL parameters found");
   return urlParams;
 };
 
@@ -95,22 +147,23 @@ export const getAllTrackingParameters = () => {
  * @returns {string} The determined source value.
  */
 export const determineSourceValue = (trackingParams) => {
-  const { fbclid, gclid, utm_source, utm_campaign } = trackingParams;
+  const hasPaidParams = hasAnyTrackingParam(trackingParams);
 
-  // Priority 1: Facebook or Google Click ID - return the full URL
-  if (fbclid || gclid) {
+  if (!hasPaidParams) {
+    return "Direct";
+  }
+
+  if (trackingParams.landing_url) {
+    return trackingParams.landing_url;
+  }
+
+  if (currentUrlLooksTracked()) {
     return window.location.href;
   }
 
-  // Priority 2: UTM parameters
-  if (utm_source) {
-    if (utm_campaign) {
-      return `${utm_source} - ${utm_campaign}`;
-    }
-    return utm_source;
-  }
-  if (utm_campaign) {
-    return utm_campaign;
+  const rebuiltUrl = buildTrackedUrl(trackingParams);
+  if (rebuiltUrl) {
+    return rebuiltUrl;
   }
 
   // Default fallback
