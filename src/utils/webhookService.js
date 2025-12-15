@@ -8,16 +8,22 @@ import { validateForm, commonRules } from "./validation";
 import { getAllTrackingParameters, determineSourceValue } from "./urlTracking";
 import { generateMoreInfoProfile } from "./aiProcessing";
 
-const WEBHOOK_URL =
+const INITIAL_WEBHOOK_URL =
   "https://hook.us2.make.com/in5t62k9fxtmd7ok1iqqu6mn9somju7b";
+const COMPLETION_WEBHOOK_URL =
+  "https://hook.us2.make.com/h8cpk9qgw4lzba89anxu8z22gmrf8f44";
 
 const normalizeString = (value) =>
   typeof value === "string" ? value.trim() : value || "";
 
-const sendWebhookPayload = async (payload, context) => {
+const sendWebhookPayload = async (payload, context, webhookUrl) => {
+  if (!webhookUrl) {
+    throw new Error(`Webhook URL missing for ${context}`);
+  }
+
   console.log(`📤 Sending ${context} payload to webhook:`, payload);
 
-  const response = await fetch(WEBHOOK_URL, {
+  const response = await fetch(webhookUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -66,11 +72,7 @@ const buildLeadPayload = (formData, source) => ({
 });
 
 const buildCompletionPayload = (userData, aiAnalysis) => ({
-  name: normalizeString(userData.name),
   phone: normalizeString(userData.phone),
-  email: normalizeString(userData.email),
-  city: normalizeString(userData.city),
-  source: userData.source || "Direct",
   aiAnalysis,
   status: true,
   submittedAt: getFormattedTimestamp(),
@@ -100,7 +102,11 @@ export const submitLeadToWebhook = async (formData) => {
 
     const payload = buildLeadPayload(formData, sourceValue);
 
-    await sendWebhookPayload(payload, "initial_submission");
+    await sendWebhookPayload(
+      payload,
+      "initial_submission",
+      INITIAL_WEBHOOK_URL
+    );
 
     console.log("✅ Lead data sent successfully to webhook");
 
@@ -154,7 +160,11 @@ export const updateQuestionnaireStatus = async (
     const aiAnalysis = await generateMoreInfoProfile(userData, answers);
     const completionPayload = buildCompletionPayload(userData, aiAnalysis);
 
-    await sendWebhookPayload(completionPayload, "questionnaire_completion");
+    await sendWebhookPayload(
+      completionPayload,
+      "questionnaire_completion",
+      COMPLETION_WEBHOOK_URL
+    );
 
     console.log("✅ Questionnaire completion sent to webhook");
 
