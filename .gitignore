@@ -10,7 +10,6 @@
 /build
 /dist
 /dist-ssr
-/api
 
 # Misc
 .DS_Store

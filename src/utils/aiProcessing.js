@@ -3,9 +3,10 @@ import { logError } from "./errorHandling";
 /**
  * AI Processing Utility
  * Handles questionnaire validation, mapping, and AI profile generation
+ * Uses secure serverless proxy to protect API key
  */
 
-const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const OPENAI_PROXY_URL = "/api/openai-proxy";
 const DEFAULT_VALUE = "לא ידוע";
 
 const hebrewLevelMap = {
@@ -180,12 +181,6 @@ const buildPrompt = (userData) => {
  * @returns {Promise<string>} - AI generated profile in Hebrew
  */
 export const generateMoreInfoProfile = async (user, answers) => {
-  const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
-
-  if (!apiKey) {
-    throw new Error("Missing OpenAI API key");
-  }
-
   const userData = buildUserData(user, answers);
   const prompt = buildPrompt(userData);
 
@@ -207,21 +202,37 @@ export const generateMoreInfoProfile = async (user, answers) => {
   };
 
   try {
-    const response = await fetch(OPENAI_API_URL, {
+    // Call secure proxy endpoint instead of OpenAI directly
+    const response = await fetch(OPENAI_PROXY_URL, {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(payload),
     });
 
-    const responseData = await response.json();
+    const rawText = await response.text();
+    const isJson =
+      response.headers
+        ?.get("content-type")
+        ?.toLowerCase()
+        .includes("application/json") || false;
+
+    let responseData = null;
+    if (isJson && rawText) {
+      try {
+        responseData = JSON.parse(rawText);
+      } catch (parseError) {
+        throw new Error("Invalid JSON response from API");
+      }
+    }
 
     if (!response.ok) {
       const errorMessage =
-        responseData?.error?.message ||
-        `OpenAI API error with status ${response.status}`;
+        responseData?.error ||
+        responseData?.message ||
+        rawText ||
+        `API error with status ${response.status}`;
       throw new Error(errorMessage);
     }
 
@@ -229,7 +240,7 @@ export const generateMoreInfoProfile = async (user, answers) => {
       responseData?.choices?.[0]?.message?.content?.trim() || "";
 
     if (!aiResponse) {
-      throw new Error("Empty response received from OpenAI");
+      throw new Error("Empty response received from AI");
     }
 
     return aiResponse;
