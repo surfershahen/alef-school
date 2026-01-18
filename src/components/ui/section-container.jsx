@@ -11,7 +11,7 @@ export function SectionContainer({
     <section
       id={id}
       className={cn(
-        "relative w-full px-4 py-16 sm:px-6 sm:py-20",
+        "relative w-full px-4 py-10 sm:px-6 sm:py-20",
         hasDivider && "border-t border-gray-100",
         className
       )}

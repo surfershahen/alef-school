@@ -17,7 +17,7 @@ export default function Hero() {
 
   return (
     <>
-      <SectionContainer className="bg-blue-100 pt-32 pb-8 px-6 sm:px-6 sm:pt-36 lg:pt-40 lg:pb-14">
+      <SectionContainer className="bg-blue-100 pt-24 pb-6 px-5 sm:px-6 sm:pt-36 lg:pt-40 lg:pb-14">
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute left-0 top-0 w-1/3 h-1/3 bg-[#E3B134] opacity-5 rounded-full transform -translate-x-1/2 -translate-y-1/2"></div>
           <div className="absolute right-0 bottom-0 w-1/2 h-1/2 bg-[#0188D6] opacity-5 rounded-full transform translate-x-1/4 translate-y-1/4"></div>
@@ -25,7 +25,7 @@ export default function Hero() {
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 z-10 flex flex-col items-center text-center md:items-start md:text-right">
             <motion.h1
-              className="text-2xl sm:text-3xl md:text-5xl font-bold leading-tight mb-4 title-font"
+              className="text-xl sm:text-3xl md:text-5xl font-bold leading-tight mb-3 title-font"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -34,7 +34,7 @@ export default function Hero() {
               <span className="block text-[#0188D6]">بطلاقة وب - ستايل ؟</span>
             </motion.h1>
             <motion.p
-              className="text-base sm:text-lg md:text-xl text-gray-700 mb-6 body-font"
+              className="text-sm sm:text-lg md:text-xl text-gray-700 mb-5 body-font px-4 md:px-0"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
@@ -43,24 +43,24 @@ export default function Hero() {
               بدون ضغط، بدون ملل، بس نتائج حقيقية 👌.
             </motion.p>
             <motion.div
-              className="w-full flex justify-center md:justify-start mt-4"
+              className="w-full flex justify-center md:justify-start mt-2"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <ScrollToForm
-                className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-8 py-4 sm:px-10 sm:py-6 text-base  sm:text-lg transition-all shadow-lg hover:shadow-xl  inline-flex items-center"
+                className="bg-[#E4665A] hover:bg-[#d13a3a] text-white font-bold rounded-md px-6 py-3 sm:px-10 sm:py-6 text-sm sm:text-lg transition-all shadow-lg hover:shadow-xl inline-flex items-center"
                 ctaLocation="hero_section"
                 ctaName="hero_main_cta"
               >
                 بدي احكي بطلاقة
-                <ChevronRight className="mr-2 w-5 h-5" />
+                <ChevronRight className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
               </ScrollToForm>
             </motion.div>
           </div>
-          <div className="md:w-1/2 mt-10 md:mt-0 z-10">
+          <div className="md:w-1/2 mt-8 md:mt-0 z-10">
             <motion.div
-              className="relative rounded-2xl shadow-2xl overflow-hidden max-w-md mx-auto md:max-w-none"
+              className="relative rounded-2xl shadow-2xl overflow-hidden max-w-[320px] mx-auto md:max-w-none"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.3 }}
@@ -69,7 +69,7 @@ export default function Hero() {
                 <div className="relative">
                   <video
                     src="assets/videos/about-us .mp4"
-                    className="w-full h-[250px] sm:h-[300px] md:h-[350px] object-cover"
+                    className="w-full h-[180px] sm:h-[300px] md:h-[350px] object-cover"
                     poster="assets/videos/poster.png"
                   />
                   <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
@@ -78,15 +78,10 @@ export default function Hero() {
                         setIsVideoPlaying(true);
                         trackVideoInteraction("hero_intro_video", "play");
                       }}
-                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white flex items-center justify-center transition-transform transform hover:scale-110"
+                      className="w-12 h-12 sm:w-20 sm:h-20 rounded-full bg-white flex items-center justify-center transition-transform transform hover:scale-110"
                     >
-                      <PlayCircle className="w-12 h-12 sm:w-16 sm:h-16 text-[#E4665A]" />
+                      <PlayCircle className="w-10 h-10 sm:w-16 sm:h-16 text-[#E4665A]" />
                     </button>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
-                    <p className="font-medium text-sm sm:text-base body-font text-center md:text-right">
-                      شاهد الفيديو: كيف تتقن العبرية خلال أسابيع
-                    </p>
                   </div>
                 </div>
               ) : (
@@ -101,7 +96,7 @@ export default function Hero() {
                     preload="auto"
                   />
                 </div>
-              )}
+              ) /* ...rest */ }
             </motion.div>
           </div>
         </div>

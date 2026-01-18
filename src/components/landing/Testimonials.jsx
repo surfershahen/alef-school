@@ -92,25 +92,25 @@ export default function Testimonials() {
     <>
       <SectionContainer className="bg-blue-50" hasDivider>
         <motion.div
-          className="text-center mb-10 sm:mb-12"
+          className="text-center mb-6 sm:mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#1D1D1B] title-font">
+          <h2 className="text-xl sm:text-3xl font-bold text-[#1D1D1B] title-font">
             ماذا يقول طلابنا؟
           </h2>
-          <p className="text-xl text-gray-600 mt-2 body-font">
+          <p className="text-base sm:text-xl text-gray-600 mt-1 sm:mt-2 body-font">
             نتائج حقيقية من طلاب حقيقيين
           </p>
         </motion.div>
         {/* Video Testimonials */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
           {videoTestimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              className="group relative overflow-hidden rounded-2xl shadow-xl bg-white body-font max-w-sm mx-auto w-full"
+              className="group relative overflow-hidden rounded-xl sm:rounded-2xl shadow-lg bg-white body-font max-w-sm mx-auto w-full"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -137,28 +137,28 @@ export default function Testimonials() {
                       }`}
                       onClick={() => handleVideoClick(index)}
                     >
-                      <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
-                        <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
+                      <button className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
+                        <PlayCircle className="w-7 h-7 sm:w-10 sm:h-10 text-[#E4665A]" />
                       </button>
                     </div>
                   </>
                 ) : (
                   <>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-center justify-center">
-                      <button className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
-                        <PlayCircle className="w-8 h-8 sm:w-10 sm:h-10 text-[#E4665A]" />
+                      <button className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-white/90 flex items-center justify-center transition-transform transform group-hover:scale-110 shadow-lg">
+                        <PlayCircle className="w-7 h-7 sm:w-10 sm:h-10 text-[#E4665A]" />
                       </button>
                     </div>
                   </>
                 )}
               </div>
-              <div className="p-4 sm:p-6 bg-white text-center sm:text-right">
-                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-3 mb-2 sm:mb-3 justify-center sm:justify-start">
-                  <h3 className="font-bold text-lg text-[#1D1D1B] title-font">
+              <div className="p-3 sm:p-6 bg-white text-center sm:text-right">
+                <div className="flex flex-col sm:flex-row items-center sm:items-start gap-1 sm:gap-3 mb-1 sm:mb-3 justify-center sm:justify-start">
+                  <h3 className="font-bold text-base sm:text-lg text-[#1D1D1B] title-font">
                     {testimonial.name}
                   </h3>
                 </div>
-                <p className="text-gray-600 body-font text-sm sm:text-base">
+                <p className="text-gray-600 body-font text-xs sm:text-base line-clamp-2 sm:line-clamp-none">
                   {testimonial.quote}
                 </p>
               </div>

@@ -223,16 +223,16 @@ export default function SignupForm() {
     <>
       <SectionContainer
         id="signup"
-        className="bg-gray-100 pt-8 pb-16 sm:pt-10 sm:pb-20"
+        className="bg-gray-100 pt-6 pb-10 sm:pt-10 sm:pb-20"
         hasDivider
       >
         <div className="max-w-6xl mx-auto">
-          <div className="bg-white rounded-2xl sm:rounded-[2rem] shadow-xl overflow-hidden">
+          <div className="bg-white rounded-xl sm:rounded-[2rem] shadow-xl overflow-hidden">
             <div className="flex flex-col md:flex-row">
               {/* Form Side - Fixed dimensions to prevent any layout shift */}
-              <div className="w-full md:w-1/2 p-5 sm:p-8 md:p-12 relative">
+              <div className="w-full md:w-1/2 p-4 sm:p-8 md:p-12 relative">
                 {/* Fixed height container that prevents all layout shifts */}
-                <div className="min-h-[650px] sm:min-h-[600px] flex flex-col justify-center relative">
+                <div className="min-h-[420px] sm:min-h-[600px] flex flex-col justify-center relative">
                   {/* Success Message Overlay - Better positioned to prevent CLS */}
                   {isSubmitted && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-95 z-20 backdrop-blur-sm">
@@ -242,15 +242,15 @@ export default function SignupForm() {
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <div className="flex justify-center mb-4">
+                        <div className="flex justify-center mb-3">
                           <div className="rounded-full bg-green-100 p-2 sm:p-3">
-                            <CheckCircle className="h-8 w-8 sm:h-10 sm:w-10 text-green-600" />
+                            <CheckCircle className="h-6 w-6 sm:h-10 sm:w-10 text-green-600" />
                           </div>
                         </div>
-                        <h3 className="text-lg sm:text-xl font-bold text-green-800 mb-2">
+                        <h3 className="text-base sm:text-xl font-bold text-green-800 mb-1">
                           تم التسجيل بنجاح!
                         </h3>
-                        <p className="text-green-700 text-sm sm:text-base">
+                        <p className="text-green-700 text-xs sm:text-base">
                           شكراً لتسجيلك! سنتواصل معك قريباً عبر الواتساب.
                         </p>
                       </motion.div>
@@ -261,14 +261,14 @@ export default function SignupForm() {
                   <div className="w-full">
                     <form
                       onSubmit={handleSubmit}
-                      className="space-y-5 sm:space-y-6 w-full"
+                      className="space-y-3 sm:space-y-6 w-full"
                       noValidate
                     >
                       {formFields.map((field) => (
-                        <div key={field.id} className="min-h-[85px]">
+                        <div key={field.id} className="min-h-[75px] sm:min-h-[85px]">
                           <Label
                             htmlFor={field.id}
-                            className="block text-sm sm:text-base text-gray-700 font-bold mb-2 sm:text-right"
+                            className="block text-xs sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
                           >
                             {field.label}
                           </Label>
@@ -282,7 +282,7 @@ export default function SignupForm() {
                             onBlur={() => handleFieldBlur(field.name)}
                             dir="rtl"
                             autoComplete={field.autoComplete}
-                            className={`w-full p-3 rounded-xl text-sm sm:text-base min-h-[44px] transition-colors duration-150 ${
+                            className={`w-full p-2 sm:p-3 rounded-lg sm:rounded-xl text-sm sm:text-base min-h-[40px] sm:min-h-[44px] transition-colors duration-150 ${
                               errors[field.name]
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-200"
                                 : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
@@ -290,9 +290,9 @@ export default function SignupForm() {
                             placeholder={field.placeholder}
                           />
                           {/* Fixed height error container to prevent layout shift */}
-                          <div className="h-5 mt-1 flex items-start">
+                          <div className="h-4 sm:h-5 mt-0.5 flex items-start">
                             {errors[field.name] && (
-                              <p className="text-xs sm:text-sm text-red-500 sm:text-right animate-in fade-in-50 duration-150">
+                              <p className="text-[10px] sm:text-sm text-red-500 sm:text-right animate-in fade-in-50 duration-150">
                                 {errors[field.name]}
                               </p>
                             )}
@@ -301,11 +301,11 @@ export default function SignupForm() {
                       ))}
 
                       {/* Privacy Terms Checkbox */}
-                      <div className="min-h-[70px]">
+                      <div className="min-h-[50px] sm:min-h-[70px]">
                         <div className="flex items-start gap-2 flex-row-reverse">
                           <label
                             htmlFor="terms"
-                            className="text-xs sm:text-sm text-gray-700 cursor-pointer leading-relaxed text-right flex-1"
+                            className="text-[10px] sm:text-sm text-gray-700 cursor-pointer leading-tight sm:leading-relaxed text-right flex-1"
                           >
                             הריני משאר כי קראתי, הבנתי והסכמתי ל
                             <a
@@ -326,13 +326,13 @@ export default function SignupForm() {
                                 setErrors((prev) => ({ ...prev, terms: "" }));
                               }
                             }}
-                            className="h-3 w-3 mt-1 shrink-0 border-gray-400"
+                            className="h-3 w-3 mt-0.5 shrink-0 border-gray-400"
                           />
                         </div>
                         {/* Fixed height error container */}
-                        <div className="h-5 mt-1 flex items-start justify-end">
+                        <div className="h-4 sm:h-5 mt-0.5 flex items-start justify-end">
                           {errors.terms && (
-                            <p className="text-xs sm:text-sm text-red-500 text-right animate-in fade-in-50 duration-150">
+                            <p className="text-[10px] sm:text-sm text-red-500 text-right animate-in fade-in-50 duration-150">
                               {errors.terms}
                             </p>
                           )}
@@ -340,16 +340,16 @@ export default function SignupForm() {
                       </div>
 
                       {/* Button Container - Fixed dimensions */}
-                      <div className="pt-4 min-h-[60px]">
+                      <div className="pt-2 sm:pt-4 min-h-[55px] sm:min-h-[60px]">
                         <Button
                           type="submit"
                           disabled={isSubmitting}
-                          className="w-full bg-[#E4665A] hover:bg-[#d13a3a] disabled:bg-gray-400 text-white rounded-xl p-3 text-base sm:text-lg font-bold min-h-[52px] flex items-center justify-center transition-all duration-150 transform active:scale-95"
+                          className="w-full bg-[#E4665A] hover:bg-[#d13a3a] disabled:bg-gray-400 text-white rounded-lg sm:rounded-xl p-2 sm:p-3 text-sm sm:text-lg font-bold min-h-[46px] sm:min-h-[52px] flex items-center justify-center transition-all duration-150 transform active:scale-95"
                         >
                           {isSubmitting ? (
-                            <span className="flex items-center">
+                            <span className="flex items-center text-xs sm:text-base">
                               <svg
-                                className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                                className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
@@ -377,9 +377,9 @@ export default function SignupForm() {
                       </div>
 
                       {/* Fixed height error container for submit errors */}
-                      <div className="h-6 flex items-start justify-center">
+                      <div className="h-4 sm:h-6 flex items-start justify-center">
                         {errors.submit && (
-                          <p className="text-xs sm:text-sm text-red-500 text-center animate-in fade-in-50 duration-150">
+                          <p className="text-[10px] sm:text-sm text-red-500 text-center animate-in fade-in-50 duration-150">
                             {errors.submit}
                           </p>
                         )}
@@ -390,14 +390,14 @@ export default function SignupForm() {
               </div>
 
               {/* Blue Side - Optimized with transform for better performance */}
-              <div className="w-full md:w-1/2 bg-[#0188D6] p-5 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right will-change-transform">
-                <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3 sm:mb-4 title-font">
+              <div className="w-full md:w-1/2 bg-[#0188D6] p-4 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right will-change-transform">
+                <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 title-font">
                   سجل واحصل على قاموس سلينج هدية منا الك
                   <br />{" "}
                 </h2>
 
-                <div className="bg-white/20 rounded-xl p-3 sm:p-4 backdrop-blur-sm">
-                  <p className="text-base sm:text-lg">
+                <div className="bg-white/20 rounded-lg sm:rounded-xl p-2 sm:p-4 backdrop-blur-sm">
+                  <p className="text-sm sm:text-lg">
                     🕐 خلال 24 ساعة راح نتواصل معك
                     <br />
                     خليك جاهز!

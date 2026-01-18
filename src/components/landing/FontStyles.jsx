@@ -12,7 +12,7 @@ export default function FontStyles() {
       .title-font {
         font-family: "Droid Arabic Kufi", sans-serif;
         font-weight: 800;
-        font-size: 34px;
+        font-size: 24px;
         line-height: 1.3;
       }
 
@@ -22,8 +22,27 @@ export default function FontStyles() {
       .body-font {
         font-family: "Droid Arabic Kufi", sans-serif;
         font-weight: 400;
-        font-size: 23px;
+        font-size: 16px;
         line-height: 1.5;
+      }
+
+      /* Responsive adjustments */
+      @media (min-width: 640px) {
+        h1, h2, h3, .title-font {
+          font-size: 30px;
+        }
+        p, body, .body-font {
+          font-size: 18px;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        h1, h2, h3, .title-font {
+          font-size: 34px;
+        }
+        p, body, .body-font {
+          font-size: 20px;
+        }
       }
     `}</style>
   );
