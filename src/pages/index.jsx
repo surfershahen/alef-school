@@ -33,7 +33,7 @@ export default function LandingPage() {
 
   return (
     <div
-      className="bg-white min-h-screen text-[#1D1D1B] overflow-x-hidden font-almoni"
+      className="bg-white min-h-screen text-[#1D1D1B] font-almoni block w-full"
       dir="rtl"
     >
       <FontStyles />

@@ -54,7 +54,7 @@ export default function SignupForm() {
         }
       });
     },
-    [errors]
+    [errors],
   );
 
   // Handle field focus (form start tracking)
@@ -62,7 +62,7 @@ export default function SignupForm() {
     (fieldName) => {
       handleFormStart(fieldName);
     },
-    [handleFormStart]
+    [handleFormStart],
   );
 
   // Handle field blur
@@ -163,7 +163,7 @@ export default function SignupForm() {
         trackError("form_submission_error", error.message, {
           form: "signup_form",
           fields_completed: Object.keys(cleanedFormData).filter(
-            (key) => cleanedFormData[key]
+            (key) => cleanedFormData[key],
           ).length,
         });
 
@@ -177,7 +177,7 @@ export default function SignupForm() {
         setIsSubmitting(false);
       }
     },
-    [formData, navigate, handleFormSuccess, acceptedTerms]
+    [formData, navigate, handleFormSuccess, acceptedTerms],
   );
 
   // Memoized form fields to prevent unnecessary re-renders
@@ -216,23 +216,23 @@ export default function SignupForm() {
         autoComplete: "address-level2", // Better autocomplete for city
       },
     ],
-    []
+    [],
   );
 
   return (
     <>
       <SectionContainer
         id="signup"
-        className="bg-gray-100 pt-6 pb-10 sm:pt-10 sm:pb-20"
+        className="bg-gray-100 pt-6 pb-10 sm:pt-10 sm:pb-20 lg:py-12"
         hasDivider
       >
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="bg-white rounded-xl sm:rounded-[2rem] shadow-xl overflow-hidden">
             <div className="flex flex-col md:flex-row">
               {/* Form Side - Fixed dimensions to prevent any layout shift */}
-              <div className="w-full md:w-1/2 p-4 sm:p-8 md:p-12 relative">
+              <div className="w-full md:w-1/2 p-4 sm:p-8 md:p-10 relative">
                 {/* Fixed height container that prevents all layout shifts */}
-                <div className="min-h-[420px] sm:min-h-[600px] flex flex-col justify-center relative">
+                <div className="min-h-[420px] sm:min-h-[500px] lg:min-h-[550px] flex flex-col justify-center relative">
                   {/* Success Message Overlay - Better positioned to prevent CLS */}
                   {isSubmitted && (
                     <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-95 z-20 backdrop-blur-sm">
@@ -265,10 +265,13 @@ export default function SignupForm() {
                       noValidate
                     >
                       {formFields.map((field) => (
-                        <div key={field.id} className="min-h-[75px] sm:min-h-[85px]">
+                        <div
+                          key={field.id}
+                          className="min-h-[65px] sm:min-h-[75px] lg:min-h-[80px]"
+                        >
                           <Label
                             htmlFor={field.id}
-                            className="block text-xs sm:text-base text-gray-700 font-bold mb-1 sm:mb-2 sm:text-right"
+                            className="block text-xs sm:text-sm lg:text-base text-gray-700 font-bold mb-1 sm:mb-1.5 sm:text-right"
                           >
                             {field.label}
                           </Label>
@@ -282,7 +285,7 @@ export default function SignupForm() {
                             onBlur={() => handleFieldBlur(field.name)}
                             dir="rtl"
                             autoComplete={field.autoComplete}
-                            className={`w-full p-2 sm:p-3 rounded-lg sm:rounded-xl text-sm sm:text-base min-h-[40px] sm:min-h-[44px] transition-colors duration-150 ${
+                            className={`w-full p-2 sm:p-2.5 rounded-lg sm:rounded-xl text-sm sm:text-base min-h-[38px] sm:min-h-[42px] transition-colors duration-150 ${
                               errors[field.name]
                                 ? "border-red-300 focus:border-red-500 focus:ring-red-200"
                                 : "border-gray-200 focus:border-blue-500 focus:ring-blue-200"
@@ -290,9 +293,9 @@ export default function SignupForm() {
                             placeholder={field.placeholder}
                           />
                           {/* Fixed height error container to prevent layout shift */}
-                          <div className="h-4 sm:h-5 mt-0.5 flex items-start">
+                          <div className="h-3 sm:h-4 mt-0.5 flex items-start">
                             {errors[field.name] && (
-                              <p className="text-[10px] sm:text-sm text-red-500 sm:text-right animate-in fade-in-50 duration-150">
+                              <p className="text-[10px] sm:text-xs text-red-500 sm:text-right animate-in fade-in-50 duration-150">
                                 {errors[field.name]}
                               </p>
                             )}
@@ -390,7 +393,7 @@ export default function SignupForm() {
               </div>
 
               {/* Blue Side - Optimized with transform for better performance */}
-              <div className="w-full md:w-1/2 bg-[#0188D6] p-4 sm:p-8 md:p-12 text-white flex flex-col justify-center text-center md:text-right will-change-transform">
+              <div className="w-full md:w-1/2 bg-[#0188D6] p-4 sm:p-8 md:p-10 text-white flex flex-col justify-center text-center md:text-right will-change-transform">
                 <h2 className="text-lg sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 title-font">
                   سجل واحصل على قاموس سلينج هدية منا الك
                   <br />{" "}
