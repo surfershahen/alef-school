@@ -37,7 +37,7 @@ const sendWebhookPayload = async (payload, context, webhookUrl) => {
     throw new Error(
       `Webhook (${context}) failed with status ${response.status}: ${
         responseBody || "No response body"
-      }`
+      }`,
     );
   }
 
@@ -105,7 +105,7 @@ export const submitLeadToWebhook = async (formData) => {
     await sendWebhookPayload(
       payload,
       "initial_submission",
-      INITIAL_WEBHOOK_URL
+      INITIAL_WEBHOOK_URL,
     );
 
     console.log("✅ Lead data sent successfully to webhook");
@@ -136,7 +136,7 @@ export const submitLeadToWebhook = async (formData) => {
 export const updateQuestionnaireStatus = async (
   userData,
   completed,
-  answers = null
+  answers = null,
 ) => {
   try {
     if (!completed) {
@@ -148,7 +148,7 @@ export const updateQuestionnaireStatus = async (
 
     if (!answers) {
       throw new Error(
-        "Questionnaire answers are required to generate AI profile"
+        "Questionnaire answers are required to generate AI profile",
       );
     }
 
@@ -163,7 +163,7 @@ export const updateQuestionnaireStatus = async (
     await sendWebhookPayload(
       completionPayload,
       "questionnaire_completion",
-      COMPLETION_WEBHOOK_URL
+      COMPLETION_WEBHOOK_URL,
     );
 
     console.log("✅ Questionnaire completion sent to webhook");

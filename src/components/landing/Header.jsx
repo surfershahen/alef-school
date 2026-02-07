@@ -21,7 +21,7 @@ export default function Header() {
             <img
               src="/alef-logo2-removebg-preview.png"
               alt="Alef School Logo"
-              className="h-10 w-auto sm:h-14 bg-transparent object-contain"
+              className="h-10 w-auto sm:h-20 bg-transparent object-contain"
             />
           </div>
           <div className="flex flex-col items-start"></div>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { PlayCircle, ChevronRight } from "lucide-react";
+import { PlayCircle, ChevronRight, ChevronDown } from "lucide-react";
 import ScrollToForm from "./ScrollToForm";
 import { SectionContainer } from "@/components/ui/section-container";
 import { trackVideoInteraction } from "@/utils/vercelAnalytics";
@@ -54,7 +54,7 @@ export default function Hero() {
                 ctaName="hero_main_cta"
               >
                 بدي احكي بطلاقة
-                <ChevronRight className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
+                <ChevronDown className="mr-2 w-4 h-4 sm:w-5 sm:h-5" />
               </ScrollToForm>
             </motion.div>
           </div>
@@ -69,9 +69,9 @@ export default function Hero() {
                 !isVideoPlaying ? (
                   <div className="relative">
                     <video
-                      src="assets/videos/about-us .mp4"
+                      src="assets/videos/landing-page-video.mp4"
                       className="w-full h-[180px] sm:h-[300px] md:h-[320px] lg:h-[380px] object-cover"
-                      poster="assets/videos/poster.png"
+                      // poster="assets/videos/poster.png"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
                       <button
@@ -90,7 +90,7 @@ export default function Hero() {
                     <video
                       ref={videoRef}
                       className="w-full h-full object-cover rounded-2xl bg-transparent"
-                      src="/assets/videos/about-us .mp4"
+                      src="/assets/videos/landing-page-video.mp4"
                       controls
                       autoPlay
                       playsInline
