@@ -203,7 +203,7 @@ export default function SignupForm() {
         id: "phone",
         name: "phone",
         type: "tel",
-        label: "رقم الهاتف (للتواصل عبر واتساب)",
+        label: "رقم الهاتف",
         placeholder: "أدخل رقم هاتفك",
         autoComplete: "tel",
       },
