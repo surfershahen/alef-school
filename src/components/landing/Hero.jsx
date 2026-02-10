@@ -71,7 +71,7 @@ export default function Hero() {
                     <video
                       src="assets/videos/landing-page-video.mp4"
                       className="w-full h-[180px] sm:h-[300px] md:h-[320px] lg:h-[380px] object-cover"
-                      // poster="assets/videos/poster.png"
+                      poster="assets/images/poster.png"
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
                       <button
